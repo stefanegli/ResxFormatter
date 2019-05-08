@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxFormatter", "ResxFormatter\ResxFormatter.csproj", "{694740C5-C9C1-419F-B36A-FCE1DEA4EE41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxFormatterTests", "ResxFormatterTests\ResxFormatterTests.csproj", "{210E95C9-03D5-476C-AD5D-6A253D167FA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{694740C5-C9C1-419F-B36A-FCE1DEA4EE41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{694740C5-C9C1-419F-B36A-FCE1DEA4EE41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{694740C5-C9C1-419F-B36A-FCE1DEA4EE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{694740C5-C9C1-419F-B36A-FCE1DEA4EE41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AC205ADE-9F78-4A62-A403-4F2FEC920471}
+	EndGlobalSection
+EndGlobal
