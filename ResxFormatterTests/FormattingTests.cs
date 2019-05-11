@@ -14,7 +14,7 @@
         {
             // Arrange
             var formatter = new ResxFormatter();
-            const string file = "Resource1.resx";
+            const string file = "_files\\Resource1.resx";
 
             // Act
             formatter.Run(file);
@@ -28,7 +28,7 @@
         {
             // Arrange
             var formatter = new ResxFormatter();
-            const string file = "NoModificationNeeded.resx";
+            const string file = "_files\\NoModificationNeeded.resx";
 
             // Act
             formatter.Run(file);
@@ -43,7 +43,7 @@
         {
             // Arrange
             var formatter = new ResxFormatter();
-            const string file = "AlreadySorted.resx";
+            const string file = "_files\\AlreadySorted.resx";
 
             // Act
             formatter.Run(file);
@@ -57,7 +57,7 @@
         {
             // Arrange
             var formatter = new ResxFormatter();
-            const string file = "WithResxComments.resx";
+            const string file = "_files\\WithResxComments.resx";
 
             // Act
             formatter.Run(file);

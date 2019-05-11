@@ -47,7 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resource1.resx">
+    <None Include="_files\Resource1.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -80,15 +80,15 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="NoModificationNeeded.resx">
+    <None Include="_files\NoModificationNeeded.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AlreadySorted.resx">
+    <None Include="_files\AlreadySorted.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="WithResxComments.resx">
+    <None Include="_files\WithResxComments.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
