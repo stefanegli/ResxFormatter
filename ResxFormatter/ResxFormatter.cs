@@ -10,24 +10,25 @@
         public void Run(String resxPath)
         {
             var hasCommentRemoved = false;
-            var toSave = new List<XElement>();
+            var toSave = new List<XNode>();
             var toSort = new List<XElement>();
-            var document = XDocument.Load(resxPath);
-            foreach (var element in document.Root.Elements())
+            var document = XDocument.Load(resxPath);            
+
+            foreach (var node in document.Root.Nodes())
             {
-                if (element.NodeType == System.Xml.XmlNodeType.Comment)
+                if (node.NodeType == System.Xml.XmlNodeType.Comment)
                 {
                     hasCommentRemoved = true;
-                    break;
+                    continue;
                 }
 
-                if (element.Name.LocalName == "data")
+                if (node is XElement element && element. Name.LocalName == "data")
                 {
                     toSort.Add(element);
                 }
                 else
                 {
-                    toSave.Add(element);
+                    toSave.Add(node);
                 }
             }
 
