@@ -9,13 +9,15 @@
     {
         public void Run(String resxPath)
         {
-            var sorted = new List<XElement>();
+            var hasCommentRemoved = false;
+            var toSave = new List<XElement>();
             var toSort = new List<XElement>();
             var document = XDocument.Load(resxPath);
             foreach (var element in document.Root.Elements())
             {
                 if (element.NodeType == System.Xml.XmlNodeType.Comment)
                 {
+                    hasCommentRemoved = true;
                     break;
                 }
 
@@ -25,13 +27,18 @@
                 }
                 else
                 {
-                    sorted.Add(element);
+                    toSave.Add(element);
                 }
             }
 
-            sorted.AddRange(toSort.OrderBy(e => e.Attribute("name").Value));
-            document.Root.ReplaceNodes(sorted);
-            document.Save(resxPath);
+            var sorted = toSort.OrderBy(e => e.Attribute("name").Value).ToList();
+            var requiresSorting = !toSort.SequenceEqual(sorted);
+            if (hasCommentRemoved || requiresSorting)
+            {
+                toSave.AddRange(sorted);
+                document.Root.ReplaceNodes(toSave);
+                document.Save(resxPath);
+            }
         }
     }
 }
