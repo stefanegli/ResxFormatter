@@ -16,7 +16,7 @@
 
             foreach (var node in document.Root.Nodes())
             {
-                if (node.NodeType == System.Xml.XmlNodeType.Comment)
+                if (!hasCommentRemoved && node.NodeType == System.Xml.XmlNodeType.Comment)
                 {
                     hasCommentRemoved = true;
                     continue;

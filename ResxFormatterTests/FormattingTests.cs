@@ -10,6 +10,35 @@
     public class FormattingTests
     {
         [Fact]
+        public void Additional_xml_comments_are_kept()
+        {
+            // Arrange
+            var formatter = new ResxFormatter();
+            const string file = "_files\\AdditionalXmlComments.resx";
+
+            // Act
+            formatter.Run(file);
+
+            // Assert
+            // TODO xml comments should retain their original position
+            Check.That(Sha256(file)).Equals("7A527237DE60E3C9308022A2EAC846427F5F55B021438EBD59CE3D480D3EDBCB");
+        }
+
+        [Fact]
+        public void Comment_is_removed_even_if_no_sorting_is_required()
+        {
+            // Arrange
+            var formatter = new ResxFormatter();
+            const string file = "_files\\AlreadySorted.resx";
+
+            // Act
+            formatter.Run(file);
+
+            // Assert
+            Check.That(Sha256(file)).Equals("C63EB8803EA8CCEC3A4A3B81B07E12A074CCF9093EEA50DF935F6624388BD117");
+        }
+
+        [Fact]
         public void Entries_are_sorted_alphabetically()
         {
             // Arrange
@@ -35,21 +64,6 @@
 
             // Assert
             Check.That(Sha256(file)).Equals("10CFCF38BC20667B5163CBE310DD09AAB821A653DFCA04CC720F0A6F3349FD21");
-        }
-
-
-        [Fact]
-        public void Comment_is_removed_even_if_no_sorting_is_required()
-        {
-            // Arrange
-            var formatter = new ResxFormatter();
-            const string file = "_files\\AlreadySorted.resx";
-
-            // Act
-            formatter.Run(file);
-
-            // Assert
-            Check.That(Sha256(file)).Equals("C63EB8803EA8CCEC3A4A3B81B07E12A074CCF9093EEA50DF935F6624388BD117");
         }
 
         [Fact]
