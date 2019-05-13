@@ -67,6 +67,36 @@
         }
 
         [Fact]
+        public void Invalid_resx_files_are_not_touched()
+        {
+            // Arrange
+            var formatter = new ResxFormatter();
+            const string file = "_files\\InvalidResx.resx";
+
+            // Act
+            formatter.Run(file);
+
+            // Assert
+            // TODO xml comments should retain their original position
+            Check.That(Sha256(file)).Equals("45DC5F4936DEA6FB3AC19465900F3237A2AA1A60C86D7113CADDD4B41C9805D0");
+        }
+
+        [Fact]
+        public void Plain_xml_files_are_not_touched()
+        {
+            // Arrange
+            var formatter = new ResxFormatter();
+            const string file = "_files\\Plain.xml";
+
+            // Act
+            formatter.Run(file);
+
+            // Assert
+            // TODO xml comments should retain their original position
+            Check.That(Sha256(file)).Equals("9A56A89CF34541F785EE4F93A3BC754A6EB5632F4F6ABA3427A555BBD119827E");
+        }
+
+        [Fact]
         public void Resx_comment_nodes_are_kept()
         {
             // Arrange
