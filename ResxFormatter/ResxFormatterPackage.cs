@@ -26,7 +26,7 @@
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             // avoid garbage collection
-            applicationObject = this.GetService(typeof(SDTE)) as EnvDTE80.DTE2;
+            applicationObject = await this.GetServiceAsync(typeof(SDTE)) as EnvDTE80.DTE2;
             if (applicationObject is object)
             {
                 events = applicationObject.Events;
