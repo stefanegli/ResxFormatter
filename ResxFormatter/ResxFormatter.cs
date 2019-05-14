@@ -24,7 +24,7 @@
                     continue;
                 }
 
-                if (node is XElement element && element.Name.LocalName == "data")
+                if (node is XElement element && (element.Name.LocalName == "data" || element.Name.LocalName == "metadata"))
                 {
                     toSort.Add(element);
                 }
@@ -42,7 +42,7 @@
                 }
             }
 
-            var sorted = toSort.OrderBy(e => e.Attribute("name").Value).ToList();
+            var sorted = toSort.OrderBy(e => e.Attribute("name").Value).OrderBy(e => e.Name.ToString()).ToList();
             var requiresSorting = !toSort.SequenceEqual(sorted);
             if (isResx && (hasCommentRemoved || requiresSorting))
             {

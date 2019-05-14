@@ -39,6 +39,21 @@
         }
 
         [Fact]
+        public void data_nodes_appear_after_meta_data_nodes()
+        {
+            // Arrange
+            var formatter = new ResxFormatter();
+            const string file = "_files\\Mixed.resx";
+
+            // Act
+            formatter.Run(file);
+
+            // Assert
+            // TODO xml comments should retain their original position
+            Check.That(Sha256(file)).Equals("14D1520823028EB6505DFF8591CDF43B76128EA7C0F13A7EEC250EE66A49B445");
+        }
+
+        [Fact]
         public void Entries_are_sorted_alphabetically()
         {
             // Arrange
@@ -79,6 +94,21 @@
             // Assert
             // TODO xml comments should retain their original position
             Check.That(Sha256(file)).Equals("45DC5F4936DEA6FB3AC19465900F3237A2AA1A60C86D7113CADDD4B41C9805D0");
+        }
+
+        [Fact]
+        public void meta_data_is_sorted_too()
+        {
+            // Arrange
+            var formatter = new ResxFormatter();
+            const string file = "_files\\MetaData.resx";
+
+            // Act
+            formatter.Run(file);
+
+            // Assert
+            // TODO xml comments should retain their original position
+            Check.That(Sha256(file)).Equals("4B04A955A37723EC38CF5C5F45B279F95DBABBB1A0CC38A90C9B079D5BAFF7B2");
         }
 
         [Fact]
