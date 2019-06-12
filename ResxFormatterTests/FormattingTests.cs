@@ -13,7 +13,7 @@
         public void Additional_xml_comments_are_kept()
         {
             // Arrange
-            var formatter = new ResxFormatter();
+            var formatter = new ResxFormatter(new FakeLog());
             const string file = "_files\\AdditionalXmlComments.resx";
 
             // Act
@@ -28,7 +28,7 @@
         public void Comment_is_removed_even_if_no_sorting_is_required()
         {
             // Arrange
-            var formatter = new ResxFormatter();
+            var formatter = new ResxFormatter(new FakeLog());
             const string file = "_files\\AlreadySorted.resx";
 
             // Act
@@ -39,10 +39,10 @@
         }
 
         [Fact]
-        public void data_nodes_appear_after_meta_data_nodes()
+        public void Data_nodes_appear_after_meta_data_nodes()
         {
             // Arrange
-            var formatter = new ResxFormatter();
+            var formatter = new ResxFormatter(new FakeLog());
             const string file = "_files\\Mixed.resx";
 
             // Act
@@ -57,7 +57,7 @@
         public void Entries_are_sorted_alphabetically()
         {
             // Arrange
-            var formatter = new ResxFormatter();
+            var formatter = new ResxFormatter(new FakeLog());
             const string file = "_files\\Resource1.resx";
 
             // Act
@@ -71,7 +71,7 @@
         public void File_remains_untouched_if_no_modification_is_necessary()
         {
             // Arrange
-            var formatter = new ResxFormatter();
+            var formatter = new ResxFormatter(new FakeLog());
             const string file = "_files\\NoModificationNeeded.resx";
 
             // Act
@@ -85,7 +85,7 @@
         public void Invalid_resx_files_are_not_touched()
         {
             // Arrange
-            var formatter = new ResxFormatter();
+            var formatter = new ResxFormatter(new FakeLog());
             const string file = "_files\\InvalidResx.resx";
 
             // Act
@@ -97,10 +97,10 @@
         }
 
         [Fact]
-        public void meta_data_is_sorted_too()
+        public void Meta_data_is_sorted_too()
         {
             // Arrange
-            var formatter = new ResxFormatter();
+            var formatter = new ResxFormatter(new FakeLog());
             const string file = "_files\\MetaData.resx";
 
             // Act
@@ -115,7 +115,7 @@
         public void Plain_xml_files_are_not_touched()
         {
             // Arrange
-            var formatter = new ResxFormatter();
+            var formatter = new ResxFormatter(new FakeLog());
             const string file = "_files\\Plain.xml";
 
             // Act
@@ -130,7 +130,7 @@
         public void Resx_comment_nodes_are_kept()
         {
             // Arrange
-            var formatter = new ResxFormatter();
+            var formatter = new ResxFormatter(new FakeLog());
             const string file = "_files\\WithResxComments.resx";
 
             // Act

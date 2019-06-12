@@ -17,7 +17,8 @@
     {
         private static EnvDTE80.DTE2 applicationObject;
         private static DocumentEvents documentEvents;
-        private static EnvDTE.Events events;
+        private static Events events;
+        private static ILog Log { get; } = new Log();
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
@@ -37,9 +38,11 @@
 
         private static void OnDocumentSaved(Document document)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             if (document.Kind.ToUpperInvariant() == "{8E7B96A8-E33D-11D0-A6D5-00C04FB67F6A}")
             {
-                var formatter = new ResxFormatter();
+                Log.WriteLine("Save event for xml document received.");
+                var formatter = new ResxFormatter(Log);
                 formatter.Run(document.FullName);
             }
         }

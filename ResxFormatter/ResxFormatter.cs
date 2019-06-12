@@ -8,6 +8,13 @@
 
     public class ResxFormatter
     {
+        public ResxFormatter(ILog log)
+        {
+            this.Log = log;
+        }
+
+        private ILog Log { get; }
+
         public void Run(String resxPath)
         {
             var isResx = false;
@@ -48,7 +55,13 @@
             {
                 toSave.AddRange(sorted);
                 document.Root.ReplaceNodes(toSave);
+                this.Log.WriteLine($"Updating {resxPath}");
                 document.Save(resxPath);
+            }
+            else
+            {
+                var reason = isResx ? "No modifications" : "Not a .resx file";
+                this.Log.WriteLine($"Update was not required: {reason}.");
             }
         }
     }
