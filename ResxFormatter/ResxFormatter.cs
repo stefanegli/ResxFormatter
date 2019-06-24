@@ -15,8 +15,9 @@
 
         private ILog Log { get; }
 
-        public void Run(String resxPath)
+        public bool Run(String resxPath)
         {
+            var result = false;
             var isResx = false;
             var hasCommentRemoved = false;
             var toSave = new List<XNode>();
@@ -57,12 +58,15 @@
                 document.Root.ReplaceNodes(toSave);
                 this.Log.WriteLine($"Updating {resxPath}");
                 document.Save(resxPath);
+                result = true;
             }
             else
             {
                 var reason = isResx ? "No modifications" : "Not a .resx file";
                 this.Log.WriteLine($"Update was not required: {reason}.");
             }
+
+            return result;
         }
     }
 }

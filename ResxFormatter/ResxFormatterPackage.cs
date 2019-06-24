@@ -39,11 +39,16 @@
         private static void OnDocumentSaved(Document document)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            if (document.Kind.ToUpperInvariant() == "{8E7B96A8-E33D-11D0-A6D5-00C04FB67F6A}")
+            if (document.Kind.ToUpperInvariant() == "{8E7B96A8-E33D-11D0-A6D5-00C04FB67F6A}"
+                && document.FullName.ToUpperInvariant().EndsWith(".RESX"))
             {
                 Log.WriteLine("Save event for xml document received.");
                 var formatter = new ResxFormatter(Log);
-                formatter.Run(document.FullName);
+                if (formatter.Run(document.FullName))
+                {
+                    document.Close(vsSaveChanges.vsSaveChangesNo);
+                    applicationObject.ItemOperations.OpenFile(document.FullName);
+                }
             }
         }
     }
