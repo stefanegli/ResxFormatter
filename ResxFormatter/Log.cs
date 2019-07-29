@@ -36,7 +36,7 @@
             var outWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
 
             var guid = Guid.Parse("{4DDD4974-C22A-4D9A-B148-3594680AAC76}");
-            outWindow.CreatePane(ref guid, "ResxFormatter", 1, 1);
+            outWindow.CreatePane(ref guid, Vsix.Name, 1, 1);
             outWindow.GetPane(ref guid, out var generalPane);
             return generalPane;
         }
