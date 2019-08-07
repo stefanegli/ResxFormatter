@@ -1,5 +1,7 @@
 # ResxFormatter
-Optimizies resx files after saving: Removes comments (in particular the 3KB documentation that is included in every resx file) and sorts entries alphabetically. No configuration required or possible. Use only with source control system and at your own risk.
+Optimizies resx files after saving: Removes comments (in particular the 3KB documentation that is included in every resx file) and sorts entries alphabetically. No configuration required or possible. Use only with a source control system and at your own risk.
+
+See the [change log](CHANGELOG.md) for changes and road map.
 
 ----
 Download this extension from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=stefan-egli.ResxFormatter)
