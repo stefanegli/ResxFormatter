@@ -4,7 +4,10 @@
         <Identity Id="ResxFormatter.61507132-4401-47b1-9950-575e43b964c6" Version="0.9" Language="en-US" Publisher="Stefan Egli" />
         <DisplayName>ResxFormatter</DisplayName>
         <Description xml:space="preserve">Formats .resx files: Sorts data entries by name and removes xml comments.</Description>
+        <MoreInfo>https://github.com/stefanegli/ResxFormatter</MoreInfo>
         <License>License.txt</License>
+        <ReleaseNotes>https://github.com/stefanegli/ResxFormatter/blob/master/CHANGELOG.md</ReleaseNotes>
+        <Tags>resources, resx, formatting</Tags>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0, 17.0)" />

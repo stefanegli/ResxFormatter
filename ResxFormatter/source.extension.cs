@@ -13,6 +13,6 @@ namespace ResxFormatter
         public const string Language = "en-US";
         public const string Version = "0.9";
         public const string Author = "Stefan Egli";
-        public const string Tags = "";
+        public const string Tags = "resources, resx, formatting";
     }
 }
