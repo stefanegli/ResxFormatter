@@ -1,6 +1,6 @@
 # Road map
 
-- [ ] Settings like which file extensions should be processed, or the "auto" reload
+- [ ] Settings like which file extensions should be processed, or enable / disable the "auto" reload
 
 Features that have a checkmark are complete and available for
 download in the
