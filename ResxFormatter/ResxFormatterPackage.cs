@@ -13,12 +13,23 @@
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideOptionPage(typeof(OptionPageGrid), Vsix.Name, OptionPageGrid.GeneralCategory, 0, 0, true)]
     public sealed class ResxFormatterPackage : AsyncPackage
     {
         private static EnvDTE80.DTE2 applicationObject;
         private static DocumentEvents documentEvents;
         private static Events events;
+
         private static ILog Log { get; } = new Log();
+
+        private bool ReloadFileAutomatically
+        {
+            get
+            {
+                var page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                return page.ReloadFileAutomatically;
+            }
+        }
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
@@ -32,11 +43,11 @@
             {
                 events = applicationObject.Events;
                 documentEvents = events.DocumentEvents;
-                documentEvents.DocumentSaved += OnDocumentSaved;
+                documentEvents.DocumentSaved += this.OnDocumentSaved;
             }
         }
 
-        private static void OnDocumentSaved(Document document)
+        private void OnDocumentSaved(Document document)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             if (document.Kind.ToUpperInvariant() == "{8E7B96A8-E33D-11D0-A6D5-00C04FB67F6A}"
@@ -44,8 +55,9 @@
             {
                 Log.WriteLine("Save event for xml document received.");
                 var formatter = new ResxFormatter(Log);
-                if (formatter.Run(document.FullName))
+                if (formatter.Run(document.FullName) && this.ReloadFileAutomatically)
                 {
+                    Log.WriteLine("Reloading file.");
                     document.Close(vsSaveChanges.vsSaveChangesNo);
                     applicationObject.ItemOperations.OpenFile(document.FullName);
                 }
