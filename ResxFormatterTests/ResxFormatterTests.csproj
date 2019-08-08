@@ -46,6 +46,7 @@
     <Compile Include="FakeLog.cs" />
     <Compile Include="FormattingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestFoundation\TheoryDataBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="_files\Resource1.resx">
