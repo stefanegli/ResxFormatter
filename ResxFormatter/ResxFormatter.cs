@@ -28,10 +28,13 @@
 
             foreach (var node in document.Root.Nodes())
             {
-                if (!hasCommentRemoved && node.NodeType == XmlNodeType.Comment)
+                if (this.Settings.RemoveDocumentationComment)
                 {
-                    hasCommentRemoved = true;
-                    continue;
+                    if (!hasCommentRemoved && node.NodeType == XmlNodeType.Comment)
+                    {
+                        hasCommentRemoved = true;
+                        continue;
+                    }
                 }
 
                 if (node is XElement element && (element.Name.LocalName == "data" || element.Name.LocalName == "metadata"))

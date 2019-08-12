@@ -74,6 +74,22 @@
                 };
 
                 yield return (noSort, "Entries are only sorted if 'sort' setting is active.", "Resource1.resx", "2C4EFA8D11C3B6AE7308FFB182B1794E6D61106B5771B120B06C559C0D1E52DC");
+
+                var keepComment = new Settings
+                {
+                    SortEntries = true,
+                    RemoveDocumentationComment = false
+                };
+
+                yield return (keepComment, "Documentation is only removed if 'doc' setting is active.", "Resource1.resx", "E47BF6D02610D33256E4A0E913669CF4A29BB9ED0FEB8DC43628277E960092B8");
+
+                var doNothing = new Settings
+                {
+                    SortEntries = false,
+                    RemoveDocumentationComment = false
+                };
+
+                yield return (doNothing, "Documentation is only removed if 'doc' setting is active.", "Resource1.resx", "D9643216D1B2B631BF12C0A3742C570AD460DB634636FB58FD9B98D8565A61F4");
             }
         }
     }
