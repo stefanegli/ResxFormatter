@@ -22,15 +22,6 @@
 
         private static ILog Log { get; } = new Log();
 
-        private bool ReloadFileAutomatically
-        {
-            get
-            {
-                var page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
-                return page.ReloadFileAutomatically;
-            }
-        }
-
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             // When initialized asynchronously, the current thread may be a background thread at this point.
@@ -47,15 +38,29 @@
             }
         }
 
+        private ISettings GetSettings()
+        {
+            // returning the "page" directly seems to force me to add a winforms assembly reference therefore a return a simple settings object
+            var page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+            return new Settings
+            {
+                ReloadFileAutomatically = page.ReloadFileAutomatically,
+                RemoveDocumentationComment = page.RemoveDocumentationComment,
+                SortEntries = page.SortEntries
+            };
+        }
+
         private void OnDocumentSaved(Document document)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
+
+            var settings = this.GetSettings();
             if (document.Kind.ToUpperInvariant() == "{8E7B96A8-E33D-11D0-A6D5-00C04FB67F6A}"
                 && document.FullName.ToUpperInvariant().EndsWith(".RESX"))
             {
                 Log.WriteLine("Save event for xml document received.");
                 var formatter = new ResxFormatter(Log);
-                if (formatter.Run(document.FullName) && this.ReloadFileAutomatically)
+                if (formatter.Run(document.FullName) && settings.ReloadFileAutomatically)
                 {
                     Log.WriteLine("Reloading file.");
                     document.Close(vsSaveChanges.vsSaveChangesNo);
