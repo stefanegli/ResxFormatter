@@ -1,6 +1,6 @@
 ﻿namespace ResxFormatter
 {
-    internal interface ISettings
+    public interface ISettings
     {
         bool ReloadFileAutomatically { get; }
         bool RemoveDocumentationComment { get; }

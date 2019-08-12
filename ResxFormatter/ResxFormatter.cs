@@ -8,12 +8,14 @@
 
     public class ResxFormatter
     {
-        public ResxFormatter(ILog log)
+        public ResxFormatter(ISettings settings, ILog log)
         {
             this.Log = log;
+            this.Settings = settings;
         }
 
         private ILog Log { get; }
+        private ISettings Settings { get; }
 
         public bool Run(String resxPath)
         {

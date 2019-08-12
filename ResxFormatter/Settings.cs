@@ -1,6 +1,6 @@
 ﻿namespace ResxFormatter
 {
-    internal class Settings : ISettings
+    public class Settings : ISettings
     {
         public bool ReloadFileAutomatically { get; set; }
         public bool RemoveDocumentationComment { get; set; }

@@ -59,7 +59,7 @@
                 && document.FullName.ToUpperInvariant().EndsWith(".RESX"))
             {
                 Log.WriteLine("Save event for xml document received.");
-                var formatter = new ResxFormatter(Log);
+                var formatter = new ResxFormatter(settings, Log);
                 if (formatter.Run(document.FullName) && settings.ReloadFileAutomatically)
                 {
                     Log.WriteLine("Reloading file.");

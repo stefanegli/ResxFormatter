@@ -46,4 +46,14 @@ namespace ResxFormatterTests.TestFoundation
             return this.Create().Select(o => new object[] { o.Item1, o.Item2, o.Item3 }).GetEnumerator();
         }
     }
+
+    internal abstract class TheoryDataBase<T1, T2, T3, T4> : TheoryDataBase
+    {
+        public abstract IEnumerable<(T1, T2, T3, T4)> Create();
+
+        public override IEnumerator<object[]> GetEnumerator()
+        {
+            return this.Create().Select(o => new object[] { o.Item1, o.Item2, o.Item3, o.Item4 }).GetEnumerator();
+        }
+    }
 }
