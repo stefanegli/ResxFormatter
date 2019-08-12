@@ -5,8 +5,14 @@
 
     internal class OptionPageGrid : DialogPage, ISettings
     {
+        internal const string ExperimentalCategory = "Experimental";
         internal const string FormattingCategory = "Formatting";
         internal const string GeneralCategory = "General";
+
+        [Category(ExperimentalCategory)]
+        [DisplayName("Fix Resx Writer (Restart required)")]
+        [Description("ATTENTION: Unwanted side effects possible: If enabled the ResXResourceWriter is tricked into not writing the 'documentation' comment. This is achived by modifying a static string field through reflection.")]
+        public bool FixResxWriter { get; set; }
 
         [Category(GeneralCategory)]
         [DisplayName("Reload file after saving")]

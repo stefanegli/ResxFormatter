@@ -4,6 +4,7 @@
   - [x] Enable / disable automatic file reload
   - [x] Enable / disable 'Remove documentation comment'
   - [x] Enable / disable sorting of resx entries
+  - [x] Experimantal setting for "fixing" the ResxWriter directly
   - [ ] List of file extensions that should be processed
         
 

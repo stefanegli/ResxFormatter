@@ -5,6 +5,8 @@
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
     using System;
+    using System.Reflection;
+    using System.Resources;
     using System.Runtime.InteropServices;
     using System.Threading;
     using Task = System.Threading.Tasks.Task;
@@ -35,6 +37,31 @@
                 events = applicationObject.Events;
                 documentEvents = events.DocumentEvents;
                 documentEvents.DocumentSaved += this.OnDocumentSaved;
+
+                if (this.GetSettings().FixResxWriter)
+                {
+                    Log.WriteLine("Fixing ResXResourceWriter.");
+                    FixResxWriter();
+                }
+            }
+        }
+
+        private static void FixResxWriter()
+        {
+            var field = typeof(ResXResourceWriter).GetField("ResourceSchema", BindingFlags.Static | BindingFlags.Public);
+            if (field != null)
+            {
+                // remove the comment from the schema as it only bloats the resource files
+                var schema = field.GetValue(null) as string;
+                if (schema != null)
+                {
+                    var endOfComment = schema.IndexOf("-->", StringComparison.Ordinal);
+                    if (endOfComment > 0)
+                    {
+                        schema = schema.Substring(endOfComment + 3);
+                        field.SetValue(null, schema);
+                    }
+                }
             }
         }
 
@@ -46,7 +73,8 @@
             {
                 ReloadFileAutomatically = page.ReloadFileAutomatically,
                 RemoveDocumentationComment = page.RemoveDocumentationComment,
-                SortEntries = page.SortEntries
+                SortEntries = page.SortEntries,
+                FixResxWriter = page.FixResxWriter,
             };
         }
 
