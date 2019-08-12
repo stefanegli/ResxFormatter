@@ -3,6 +3,7 @@
     using NFluent;
     using ResxFormatter;
     using ResxFormatterTests.TestFoundation;
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Security.Cryptography;
@@ -16,14 +17,17 @@
         public void Files_are_processed_correctly(ISettings settings, string message, string fileName, string expectedHash)
         {
             // Arrange
+            var tempFileName = $"_files\\{Guid.NewGuid()}.resx";
+
             var formatter = new ResxFormatter(settings, new FakeLog());
             var file = $"_files\\{fileName}";
+            File.Copy(file, tempFileName, true);
 
             // Act
-            formatter.Run(file);
+            formatter.Run(tempFileName);
 
             // Assert
-            Check.WithCustomMessage(message).That(Sha256(file)).Equals(expectedHash);
+            Check.WithCustomMessage(message + $" Result File: {tempFileName}").That(Sha256(tempFileName)).Equals(expectedHash);
         }
 
         private string Sha256(string path)
@@ -62,6 +66,14 @@
                 yield return (@default, "Meta data is sorted too.", "MetaData.resx", "4B04A955A37723EC38CF5C5F45B279F95DBABBB1A0CC38A90C9B079D5BAFF7B2");
                 yield return (@default, "Plain xml files are not touched.", "Plain.xml", "9A56A89CF34541F785EE4F93A3BC754A6EB5632F4F6ABA3427A555BBD119827E");
                 yield return (@default, "Comment nodes are kept.", "WithResxComments.resx", "FA02F7FCCC956A3424EF4F30CF9ED2D097C0B74EBEFC4ABE27FCE56D0FF3B910");
+
+                var noSort = new Settings
+                {
+                    SortEntries = false,
+                    RemoveDocumentationComment = true
+                };
+
+                yield return (noSort, "Entries are only sorted if 'sort' setting is active.", "Resource1.resx", "2C4EFA8D11C3B6AE7308FFB182B1794E6D61106B5771B120B06C559C0D1E52DC");
             }
         }
     }

@@ -52,8 +52,11 @@
                 }
             }
 
-            var sorted = toSort.OrderBy(e => e.Attribute("name").Value).OrderBy(e => e.Name.ToString()).ToList();
-            var requiresSorting = !toSort.SequenceEqual(sorted);
+            var sorted = this.Settings.SortEntries
+                ? toSort.OrderBy(e => e.Attribute("name").Value).OrderBy(e => e.Name.ToString()).ToList()
+                : toSort;
+
+            var requiresSorting = this.Settings.SortEntries && !toSort.SequenceEqual(sorted);
             if (isResx && (hasCommentRemoved || requiresSorting))
             {
                 toSave.AddRange(sorted);
