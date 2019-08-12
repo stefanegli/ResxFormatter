@@ -2,7 +2,10 @@
 
 - [ ] Settings / Options: 
   - [x] Enable / disable automatic file reload
+  - [x] Enable / disable 'Remove documentation comment'
+  - [x] Enable / disable sorting of resx entries
   - [ ] List of file extensions that should be processed
+        
 
 Features that have a checkmark are complete and available for
 download in the
