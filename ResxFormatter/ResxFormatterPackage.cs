@@ -21,8 +21,22 @@
         private static EnvDTE80.DTE2 applicationObject;
         private static DocumentEvents documentEvents;
         private static Events events;
+        private static ISettings settings;
 
         private static ILog Log { get; } = new Log();
+
+        private ISettings Settings
+        {
+            get
+            {
+                if (settings == null)
+                {
+                    settings = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                }
+
+                return settings;
+            }
+        }
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
@@ -38,7 +52,7 @@
                 documentEvents = events.DocumentEvents;
                 documentEvents.DocumentSaved += this.OnDocumentSaved;
 
-                if (this.GetSettings().FixResxWriter)
+                if (this.Settings.FixResxWriter)
                 {
                     Log.WriteLine("Fixing ResXResourceWriter.");
                     FixResxWriter();
@@ -65,24 +79,11 @@
             }
         }
 
-        private ISettings GetSettings()
-        {
-            // returning the "page" directly seems to force me to add a winforms assembly reference therefore a return a simple settings object
-            var page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
-            return new Settings
-            {
-                ReloadFileAutomatically = page.ReloadFileAutomatically,
-                RemoveDocumentationComment = page.RemoveDocumentationComment,
-                SortEntries = page.SortEntries,
-                FixResxWriter = page.FixResxWriter,
-            };
-        }
-
         private void OnDocumentSaved(Document document)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var settings = this.GetSettings();
+            var settings = this.Settings;
             if (document.Kind.ToUpperInvariant() == "{8E7B96A8-E33D-11D0-A6D5-00C04FB67F6A}"
                 && document.FullName.ToUpperInvariant().EndsWith(".RESX"))
             {
