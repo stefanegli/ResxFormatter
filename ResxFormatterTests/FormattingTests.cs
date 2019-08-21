@@ -50,7 +50,7 @@
         {
             public override IEnumerable<(ISettings, string, string, string)> Create()
             {
-                var @default = new Settings
+                var @default = new FakeSettings
                 {
                     SortEntries = true,
                     RemoveDocumentationComment = true
@@ -67,7 +67,7 @@
                 yield return (@default, "Plain xml files are not touched.", "Plain.xml", "9A56A89CF34541F785EE4F93A3BC754A6EB5632F4F6ABA3427A555BBD119827E");
                 yield return (@default, "Comment nodes are kept.", "WithResxComments.resx", "FA02F7FCCC956A3424EF4F30CF9ED2D097C0B74EBEFC4ABE27FCE56D0FF3B910");
 
-                var noSort = new Settings
+                var noSort = new FakeSettings
                 {
                     SortEntries = false,
                     RemoveDocumentationComment = true
@@ -75,7 +75,7 @@
 
                 yield return (noSort, "Entries are only sorted if 'sort' setting is active.", "Resource1.resx", "2C4EFA8D11C3B6AE7308FFB182B1794E6D61106B5771B120B06C559C0D1E52DC");
 
-                var keepComment = new Settings
+                var keepComment = new FakeSettings
                 {
                     SortEntries = true,
                     RemoveDocumentationComment = false
@@ -83,13 +83,21 @@
 
                 yield return (keepComment, "Documentation is only removed if 'doc' setting is active.", "Resource1.resx", "E47BF6D02610D33256E4A0E913669CF4A29BB9ED0FEB8DC43628277E960092B8");
 
-                var doNothing = new Settings
+                var doNothing = new FakeSettings
                 {
                     SortEntries = false,
                     RemoveDocumentationComment = false
                 };
 
                 yield return (doNothing, "Documentation is only removed if 'doc' setting is active.", "Resource1.resx", "D9643216D1B2B631BF12C0A3742C570AD460DB634636FB58FD9B98D8565A61F4");
+            }
+
+            private class FakeSettings : ISettings
+            {
+                public bool FixResxWriter => throw new NotImplementedException();
+                public bool ReloadFileAutomatically => throw new NotImplementedException();
+                public bool RemoveDocumentationComment { get; set; }
+                public bool SortEntries { get; set; }
             }
         }
     }
