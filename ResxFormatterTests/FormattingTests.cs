@@ -95,7 +95,7 @@
             private class FakeSettings : ISettings
             {
                 public bool FixResxWriter => throw new NotImplementedException();
-                public bool ReloadFileAutomatically => throw new NotImplementedException();
+                public ReloadMode ReloadFile => throw new NotImplementedException();
                 public bool RemoveDocumentationComment { get; set; }
                 public bool SortEntries { get; set; }
             }

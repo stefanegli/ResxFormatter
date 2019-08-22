@@ -17,7 +17,7 @@
         [Category(GeneralCategory)]
         [DisplayName("Reload file after saving")]
         [Description("Determines whether or not file is closed and re-opened if changes were my made by the extension so that they become immediately visible.")]
-        public bool ReloadFileAutomatically { get; set; } = true;
+        public ReloadMode ReloadFile { get; set; } = ReloadMode.AfterModification;
 
         [Category(FormattingCategory)]
         [DisplayName("Remove documentation comment")]

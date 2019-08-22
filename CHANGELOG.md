@@ -1,7 +1,7 @@
 # Road map
 
 - [ ] Settings / Options: 
-  - [x] Enable / disable automatic file reload
+  - [x] Configure automatic file reload after saving: Off, AfterModification, Always
   - [x] Enable / disable 'Remove documentation comment'
   - [x] Enable / disable sorting of resx entries
   - [x] Experimantal setting for "fixing" the ResxWriter directly
