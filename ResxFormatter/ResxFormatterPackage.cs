@@ -66,8 +66,7 @@
             if (field != null)
             {
                 // remove the comment from the schema as it only bloats the resource files
-                var schema = field.GetValue(null) as string;
-                if (schema != null)
+                if (field.GetValue(null) is string schema)
                 {
                     var endOfComment = schema.IndexOf("-->", StringComparison.Ordinal);
                     if (endOfComment > 0)
