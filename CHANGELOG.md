@@ -1,10 +1,6 @@
 # Road map
 
-- [ ] Settings / Options: 
-  - [x] Configure automatic file reload after saving: Off, AfterModification, Always
-  - [x] Enable / disable 'Remove documentation comment'
-  - [x] Enable / disable sorting of resx entries
-  - [x] Experimantal setting for "fixing" the ResxWriter directly
+- [ ] Settings / Options:
   - [ ] List of file extensions that should be processed
         
 
@@ -16,6 +12,13 @@ download in the
 
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
+
+## 1.0
+- [x] Settings / Options: 
+  - [x] Configure automatic file reload after saving: Off, AfterModification, Always
+  - [x] Enable / disable 'Remove documentation comment'
+  - [x] Enable / disable sorting of resx entries
+  - [x] Experimantal setting for "fixing" the ResxWriter directly
 
 ## 0.9
 

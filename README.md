@@ -11,6 +11,15 @@ or get the [CI build](http://vsixgallery.com/extension/ResxFormatter.61507132-44
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3fn0a5uhraovv6a3?svg=true)](https://ci.appveyor.com/project/stefanegli/resxformatter)
 
+
+# Settings
+A few things can be configured and probably you want to have this done as follows:
+
+![Settings](ResxFormatter/_doc/Settings.png)
+
+> Use the experimental setting with caution since it may have undesired side effects.
+
+
 # Contributing
 Please use the [issue tracker](https://github.com/stefanegli/ResxFormatter/issues) for submitting bug reports or feature requests.
 
