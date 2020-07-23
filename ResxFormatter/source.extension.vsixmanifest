@@ -7,6 +7,8 @@
         <MoreInfo>https://github.com/stefanegli/ResxFormatter</MoreInfo>
         <License>License.txt</License>
         <ReleaseNotes>https://github.com/stefanegli/ResxFormatter/blob/master/CHANGELOG.md</ReleaseNotes>
+        <Icon>Images\Icon.png</Icon>
+        <PreviewImage>Images\Preview.png</PreviewImage>
         <Tags>resources, resx, formatting</Tags>
     </Metadata>
     <Installation>
