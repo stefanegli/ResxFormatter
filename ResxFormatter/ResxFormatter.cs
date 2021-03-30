@@ -56,7 +56,9 @@
             }
 
             var sorted = this.Settings.SortEntries
-                ? toSort.OrderBy(e => e.Attribute("name").Value).OrderBy(e => e.Name.ToString()).ToList()
+                ? toSort.OrderBy(e => e.Attribute("name").Value, StringComparer.Ordinal)
+                    .OrderBy(e => e.Name.ToString(), StringComparer.Ordinal)
+                    .ToList()
                 : toSort;
 
             var requiresSorting = this.Settings.SortEntries && !toSort.SequenceEqual(sorted);

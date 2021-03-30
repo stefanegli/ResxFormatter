@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResxFormatterTests.TestFoundation
 {
@@ -54,6 +51,16 @@ namespace ResxFormatterTests.TestFoundation
         public override IEnumerator<object[]> GetEnumerator()
         {
             return this.Create().Select(o => new object[] { o.Item1, o.Item2, o.Item3, o.Item4 }).GetEnumerator();
+        }
+    }
+
+    internal abstract class TheoryDataBase<T1, T2, T3, T4, T5> : TheoryDataBase
+    {
+        public abstract IEnumerable<(T1, T2, T3, T4, T5)> Create();
+
+        public override IEnumerator<object[]> GetEnumerator()
+        {
+            return this.Create().Select(o => new object[] { o.Item1, o.Item2, o.Item3, o.Item4, o.Item5 }).GetEnumerator();
         }
     }
 }
