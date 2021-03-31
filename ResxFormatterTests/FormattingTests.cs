@@ -16,23 +16,23 @@
         {
             // Arrange
             string baseFileName = Path.GetFileNameWithoutExtension(fileName);
-            var tempFileName = $"_files\\{baseFileName}-actual.resx";
-            var expectedFileName = $"_files\\{Path.GetFileNameWithoutExtension(fileName)}-expected.resx";
+            var actualFile = $"_files\\{baseFileName}-actual.resx";
+            var expectedFile = $"_files\\{baseFileName}-expected.resx";
 
             var formatter = new ResxFormatter(settings, new FakeLog());
             var file = $"_files\\{fileName}";
-            File.Copy(file, tempFileName, true);
+            File.Copy(file, actualFile, true);
 
             var activeCulture = culture ?? "en-Us";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(activeCulture);
 
             // Act
-            formatter.Run(tempFileName);
+            formatter.Run(actualFile);
 
             // Assert
-            var actualLines = File.ReadAllLines(tempFileName);
-            var expectedLines = File.ReadAllLines(expectedFileName);
-            Check.That(actualLines).Equals(expectedLines);
+            var actual = File.ReadAllText(actualFile);
+            var expected = File.ReadAllText(expectedFile);
+            Check.That(actual).Equals(expected);
         }
 
         internal class ResxTestData : TheoryDataBase<ISettings, string, string, string>
