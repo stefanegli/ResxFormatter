@@ -39,23 +39,23 @@
         {
             public override IEnumerable<(string, string, string, ISettings)> Create()
             {
-                var @default = new FakeSettings
+                var sortAndRemoveDocumentation = new FakeSettings
                 {
                     SortEntries = true,
                     RemoveDocumentationComment = true
                 };
 
-                yield return ("Culture should not impact sorting", "InvariantCulture.resx", "et", @default);
-                yield return ("Additional xml comments are kept.", "AdditionalXmlComments.resx", null, @default);
-                yield return ("Comment is removed even if no sorting is required.", "AlreadySorted.resx", null, @default);
-                yield return ("Data nodes appear after meta data nodes.", "Mixed.resx", null, @default);
-                yield return ("Entries are sorted alphabetically.", "Sort.resx", null, @default);
-                yield return ("File remains untouched if no modification is necessary.", "NoModificationNeeded.resx", null, @default);
+                yield return ("Culture should not impact sorting", "InvariantCulture.resx", "et", sortAndRemoveDocumentation);
+                yield return ("Additional xml comments are kept.", "AdditionalXmlComments.resx", null, sortAndRemoveDocumentation);
+                yield return ("Comment is removed even if no sorting is required.", "AlreadySorted.resx", null, sortAndRemoveDocumentation);
+                yield return ("Data nodes appear after meta data nodes.", "Mixed.resx", null, sortAndRemoveDocumentation);
+                yield return ("Entries are sorted alphabetically.", "Sort.resx", null, sortAndRemoveDocumentation);
+                yield return ("File remains untouched if no modification is necessary.", "NoModificationNeeded.resx", null, sortAndRemoveDocumentation);
                 // TODO xml comments should retain their original position
-                yield return ("Invalid resx files are not touched.", "InvalidResx.resx", null, @default);
-                yield return ("Meta data is sorted too.", "MetaData.resx", null, @default);
-                yield return ("Plain xml files are not touched.", "Plain.xml", null, @default);
-                yield return ("Comment nodes are kept.", "WithResxComments.resx", null, @default);
+                yield return ("Invalid resx files are not touched.", "InvalidResx.resx", null, sortAndRemoveDocumentation);
+                yield return ("Meta data is sorted too.", "MetaData.resx", null, sortAndRemoveDocumentation);
+                yield return ("Plain xml files are not touched.", "Plain.xml", null, sortAndRemoveDocumentation);
+                yield return ("Comment nodes are kept.", "WithResxComments.resx", null, sortAndRemoveDocumentation);
 
                 yield return ("Entries are only sorted if 'sort' setting is active.", "DoNotSort.resx", null, new FakeSettings
                 {
