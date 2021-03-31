@@ -57,29 +57,23 @@
                 yield return ("Plain xml files are not touched.", "Plain.xml", null, @default);
                 yield return ("Comment nodes are kept.", "WithResxComments.resx", null, @default);
 
-                var noSort = new FakeSettings
+                yield return ("Entries are only sorted if 'sort' setting is active.", "DoNotSort.resx", null, new FakeSettings
                 {
                     SortEntries = false,
                     RemoveDocumentationComment = true
-                };
+                });
 
-                yield return ("Entries are only sorted if 'sort' setting is active.", "DoNotSort.resx", null, noSort);
-
-                var keepComment = new FakeSettings
+                yield return ("Documentation is only removed if 'doc' setting is active.", "KeepComments.resx", null, new FakeSettings
                 {
                     SortEntries = true,
                     RemoveDocumentationComment = false
-                };
+                });
 
-                yield return ("Documentation is only removed if 'doc' setting is active.", "KeepComments.resx", null, keepComment);
-
-                var doNothing = new FakeSettings
+                yield return ("Documentation is only removed if 'doc' setting is active.", "DoNothing.resx", null, new FakeSettings
                 {
                     SortEntries = false,
                     RemoveDocumentationComment = false
-                };
-
-                yield return ("Documentation is only removed if 'doc' setting is active.", "DoNothing.resx", null, doNothing);
+                });
             }
 
             private class FakeSettings : ISettings
