@@ -11,7 +11,7 @@ namespace ResxFormatter
         public const string Name = "ResxFormatter";
         public const string Description = @"Formats .resx files: Sorts data entries by name and removes xml comments.";
         public const string Language = "en-US";
-        public const string Version = "1.0";
+        public const string Version = "1.1";
         public const string Author = "Stefan Egli";
         public const string Tags = "resources, resx, formatting";
     }
