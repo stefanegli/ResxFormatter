@@ -12,7 +12,7 @@
     {
         [Theory]
         [ClassData(typeof(ResxTestData))]
-        public void Files_are_processed_correctly(ISettings settings, string message, string fileName, string culture)
+        public void Files_are_processed_correctly(string message, string fileName, string culture, ISettings settings)
         {
             // Arrange
             string baseFileName = Path.GetFileNameWithoutExtension(fileName);
@@ -32,12 +32,12 @@
             // Assert
             var actual = File.ReadAllText(actualFile);
             var expected = File.ReadAllText(expectedFile);
-            Check.That(actual).Equals(expected);
+            Check.WithCustomMessage(message).That(actual).Equals(expected);
         }
 
-        internal class ResxTestData : TheoryDataBase<ISettings, string, string, string>
+        internal class ResxTestData : TheoryDataBase<string, string, string, ISettings>
         {
-            public override IEnumerable<(ISettings, string, string, string)> Create()
+            public override IEnumerable<(string, string, string, ISettings)> Create()
             {
                 var @default = new FakeSettings
                 {
@@ -45,17 +45,17 @@
                     RemoveDocumentationComment = true
                 };
 
-                yield return (@default, "Culture", "InvariantCulture.resx", "et");
-                yield return (@default, "Additional xml comments are kept.", "AdditionalXmlComments.resx", null);
-                yield return (@default, "Comment is removed even if no sorting is required.", "AlreadySorted.resx", null);
-                yield return (@default, "Data nodes appear after meta data nodes.", "Mixed.resx", null);
-                yield return (@default, "Entries are sorted alphabetically.", "Sort.resx", null);
-                yield return (@default, "File remains untouched if no modification is necessary.", "NoModificationNeeded.resx", null);
+                yield return ("Culture should not impact sorting", "InvariantCulture.resx", "et", @default);
+                yield return ("Additional xml comments are kept.", "AdditionalXmlComments.resx", null, @default);
+                yield return ("Comment is removed even if no sorting is required.", "AlreadySorted.resx", null, @default);
+                yield return ("Data nodes appear after meta data nodes.", "Mixed.resx", null, @default);
+                yield return ("Entries are sorted alphabetically.", "Sort.resx", null, @default);
+                yield return ("File remains untouched if no modification is necessary.", "NoModificationNeeded.resx", null, @default);
                 // TODO xml comments should retain their original position
-                yield return (@default, "Invalid resx files are not touched.", "InvalidResx.resx", null);
-                yield return (@default, "Meta data is sorted too.", "MetaData.resx", null);
-                yield return (@default, "Plain xml files are not touched.", "Plain.xml", null);
-                yield return (@default, "Comment nodes are kept.", "WithResxComments.resx", null);
+                yield return ("Invalid resx files are not touched.", "InvalidResx.resx", null, @default);
+                yield return ("Meta data is sorted too.", "MetaData.resx", null, @default);
+                yield return ("Plain xml files are not touched.", "Plain.xml", null, @default);
+                yield return ("Comment nodes are kept.", "WithResxComments.resx", null, @default);
 
                 var noSort = new FakeSettings
                 {
@@ -63,7 +63,7 @@
                     RemoveDocumentationComment = true
                 };
 
-                yield return (noSort, "Entries are only sorted if 'sort' setting is active.", "DoNotSort.resx", null);
+                yield return ("Entries are only sorted if 'sort' setting is active.", "DoNotSort.resx", null, noSort);
 
                 var keepComment = new FakeSettings
                 {
@@ -71,7 +71,7 @@
                     RemoveDocumentationComment = false
                 };
 
-                yield return (keepComment, "Documentation is only removed if 'doc' setting is active.", "KeepComments.resx", null);
+                yield return ("Documentation is only removed if 'doc' setting is active.", "KeepComments.resx", null, keepComment);
 
                 var doNothing = new FakeSettings
                 {
@@ -79,7 +79,7 @@
                     RemoveDocumentationComment = false
                 };
 
-                yield return (doNothing, "Documentation is only removed if 'doc' setting is active.", "DoNothing.resx", null);
+                yield return ("Documentation is only removed if 'doc' setting is active.", "DoNothing.resx", null, doNothing);
             }
 
             private class FakeSettings : ISettings
