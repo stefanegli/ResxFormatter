@@ -1,14 +1,17 @@
 ﻿namespace ResxFormatter
 {
     using EnvDTE;
+
     using Microsoft.VisualStudio;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
+
     using System;
     using System.Reflection;
     using System.Resources;
     using System.Runtime.InteropServices;
     using System.Threading;
+
     using Task = System.Threading.Tasks.Task;
 
     [Guid("40d1f52e-e828-4cca-8279-df4ccd348f09")]
@@ -21,7 +24,7 @@
         private static EnvDTE80.DTE2 applicationObject;
         private static DocumentEvents documentEvents;
         private static Events events;
-        private static ISettings settings;
+        private static OptionPageGrid settings;
 
         private static ILog Log { get; } = new Log();
 
@@ -32,6 +35,13 @@
                 if (settings == null)
                 {
                     settings = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                }
+
+                var editorConfig = new ResxEditorConfigSettings();
+                if (editorConfig.IsActive)
+                {
+                    settings.SortEntries = editorConfig.SortEntries;
+                    settings.RemoveDocumentationComment = editorConfig.RemoveDocumentationComment;
                 }
 
                 return settings;
