@@ -13,6 +13,20 @@ or get the [CI build](http://vsixgallery.com/extension/ResxFormatter.61507132-44
 
 
 # Settings
+
+## EditorConfig
+It is recommended that you configure the formatting rules in the [EditorConfig](https://editorconfig.org/) file as follows:
+
+```
+[*.resx]
+resx_formatter_sort_entries=true
+resx_formatter_remove_documentation_comment=true
+```
+
+If one of these keys is set then the corresponding settings in the extension cannot be modified.
+
+
+## Visual Studio
 A few things can be configured and probably you want to have this done as follows:
 
 ![Settings](ResxFormatter/_doc/Settings.png)

@@ -2,7 +2,7 @@
 
 - [ ] Settings / Options:
   - [ ] List of file extensions that should be processed
-  - [ ] Support shared settings (EditorConfig)?
+  
         
 
 Features that have a checkmark are complete and available for
@@ -15,7 +15,8 @@ These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
 ## 1.1
-- [x] BugFix: #2 Use "ordinal sort" to ensure consistent results regardless of regional settings
+- [x] Formatting rules can be configured in an [EditorConfig](https://editorconfig.org/) file
+- [x] BugFix: Use "ordinal sort" to ensure consistent results regardless of regional settings (cf. Issue #2)
 
 ## 1.0
 - [x] Settings / Options: 
