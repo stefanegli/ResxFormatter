@@ -1,5 +1,11 @@
 ﻿namespace ResxFormatter
 {
+    public enum ConfigurationSource
+    {
+        VisualStudio,
+        EditorConfig
+    }
+
     public enum ReloadMode
     {
         Off,

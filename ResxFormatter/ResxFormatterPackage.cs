@@ -40,8 +40,13 @@
                 var editorConfig = new ResxEditorConfigSettings();
                 if (editorConfig.IsActive)
                 {
+                    settings.ConfigurationSource = ConfigurationSource.EditorConfig;
                     settings.SortEntries = editorConfig.SortEntries;
                     settings.RemoveDocumentationComment = editorConfig.RemoveDocumentationComment;
+                }
+                else
+                {
+                    settings.ConfigurationSource = ConfigurationSource.VisualStudio;
                 }
 
                 return settings;
