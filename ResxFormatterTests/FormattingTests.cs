@@ -1,11 +1,15 @@
 ﻿namespace ResxFormatterTests
 {
     using NFluent;
+
     using ResxFormatter;
+
     using ResxFormatterTests.TestFoundation;
+
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
+
     using Xunit;
 
     public class FormattingTests
@@ -78,6 +82,7 @@
 
             private class FakeSettings : ISettings
             {
+                public ConfigurationSource ConfigurationSource => ConfigurationSource.VisualStudio;
                 public bool FixResxWriter => false;
                 public ReloadMode ReloadFile => ReloadMode.Off;
                 public bool RemoveDocumentationComment { get; set; }

@@ -15,6 +15,7 @@
 
     public interface ISettings
     {
+        ConfigurationSource ConfigurationSource { get; }
         bool FixResxWriter { get; }
         ReloadMode ReloadFile { get; }
         bool RemoveDocumentationComment { get; }
