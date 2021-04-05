@@ -16,7 +16,7 @@ on the official Visual Studio extension gallery.
 
 ## 1.1
 - [x] Formatting rules can be configured in an [EditorConfig](https://editorconfig.org/) file
-- [x] BugFix: Use "ordinal sort" to ensure consistent results regardless of regional settings (cf. Issue #2)
+- [x] BugFix: Use "ordinal sort" to ensure consistent results regardless of regional settings (cf. issue #2)
 
 ## 1.0
 - [x] Settings / Options: 
