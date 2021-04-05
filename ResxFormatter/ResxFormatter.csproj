@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ILog.cs" />
+    <Compile Include="ISettingsHost.cs" />
     <Compile Include="ISettings.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="OptionPageGrid.cs">
@@ -55,6 +56,7 @@
     <Compile Include="ResxEditorConfigSettings.cs" />
     <Compile Include="ResxFormatter.cs" />
     <Compile Include="ResxFormatterPackage.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="source.extension.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
