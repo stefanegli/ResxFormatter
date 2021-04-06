@@ -5,6 +5,7 @@
     using System;
     using System.ComponentModel;
     using System.Reflection;
+    using System.Windows.Forms;
 
     internal class OptionPageGrid : DialogPage, ISettings, ISettingsHost
     {
@@ -95,6 +96,14 @@
             {
                 var log = new Log();
                 log.WriteLine(ex.ToString());
+            }
+        }
+
+        protected override void OnActivate(CancelEventArgs e)
+        {
+            if (this.Window is PropertyGrid grid)
+            {
+                grid.Refresh();
             }
         }
     }
