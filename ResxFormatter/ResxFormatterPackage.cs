@@ -38,7 +38,7 @@
                     settings = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
                 }
 
-                var solutionDir = Path.GetDirectoryName(applicationObject.Solution?.FullName);
+                var solutionDir = Path.GetDirectoryName(applicationObject?.Solution?.FullName);
                 var dummyResx = solutionDir == null ? null : Path.Combine(solutionDir, "dummy.resx");
                 var editorConfig = new ResxEditorConfigSettings(dummyResx);
                 if (editorConfig.IsActive)
