@@ -38,9 +38,7 @@
                     settings = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
                 }
 
-                var solutionDir = Path.GetDirectoryName(applicationObject?.Solution?.FullName);
-                var dummyResx = solutionDir == null ? null : Path.Combine(solutionDir, "dummy.resx");
-                var editorConfig = new ResxEditorConfigSettings(dummyResx);
+                var editorConfig = new ResxEditorConfigSettings(createResxFilePathForSettings());
                 if (editorConfig.IsActive)
                 {
                     settings.ConfigurationSource = ConfigurationSource.EditorConfig;
@@ -53,6 +51,14 @@
                 }
 
                 return settings;
+
+                string createResxFilePathForSettings()
+                {
+                    var fileName = "dummy.resx";
+                    var solutionPath = applicationObject?.Solution?.FullName;
+                    var solutionDir = string.IsNullOrWhiteSpace(solutionPath) ? null : Path.GetDirectoryName(solutionPath);
+                    return string.IsNullOrWhiteSpace(solutionDir) ? fileName : Path.Combine(solutionDir, fileName);
+                }
             }
         }
 
