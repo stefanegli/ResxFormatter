@@ -7,6 +7,7 @@
     using Microsoft.VisualStudio.Shell.Interop;
 
     using System;
+    using System.IO;
     using System.Reflection;
     using System.Resources;
     using System.Runtime.InteropServices;
@@ -37,7 +38,9 @@
                     settings = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
                 }
 
-                var editorConfig = new ResxEditorConfigSettings();
+                var solutionDir = Path.GetDirectoryName(applicationObject.Solution?.FullName);
+                var dummyResx = solutionDir == null ? null : Path.Combine(solutionDir, "dummy.resx");
+                var editorConfig = new ResxEditorConfigSettings(dummyResx);
                 if (editorConfig.IsActive)
                 {
                     settings.ConfigurationSource = ConfigurationSource.EditorConfig;
