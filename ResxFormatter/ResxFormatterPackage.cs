@@ -23,8 +23,11 @@
     public sealed class ResxFormatterPackage : AsyncPackage
     {
         private static EnvDTE80.DTE2 applicationObject;
+
         private static DocumentEvents documentEvents;
+
         private static Events events;
+
         private static OptionPageGrid settings;
 
         private static ILog Log { get; } = new Log();
@@ -38,27 +41,31 @@
                     settings = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
                 }
 
-                var editorConfig = new ResxEditorConfigSettings(createResxFilePathForSettings());
-                if (editorConfig.IsActive)
-                {
-                    settings.ConfigurationSource = ConfigurationSource.EditorConfig;
-                    settings.SortEntries = editorConfig.SortEntries;
-                    settings.RemoveDocumentationComment = editorConfig.RemoveDocumentationComment;
-                }
-                else
-                {
-                    settings.ConfigurationSource = ConfigurationSource.VisualStudio;
-                }
-
+                ApplyEditorConfigSettings(settings);
                 return settings;
+            }
+        }
 
-                string createResxFilePathForSettings()
-                {
-                    var fileName = "dummy.resx";
-                    var solutionPath = applicationObject?.Solution?.FullName;
-                    var solutionDir = string.IsNullOrWhiteSpace(solutionPath) ? null : Path.GetDirectoryName(solutionPath);
-                    return string.IsNullOrWhiteSpace(solutionDir) ? fileName : Path.Combine(solutionDir, fileName);
-                }
+        internal static void ApplyEditorConfigSettings(OptionPageGrid currentSettings)
+        {
+            var editorConfig = new ResxEditorConfigSettings(createResxFilePathForSettings());
+            if (editorConfig.IsActive)
+            {
+                currentSettings.ConfigurationSource = ConfigurationSource.EditorConfig;
+                currentSettings.SortEntries = editorConfig.SortEntries;
+                currentSettings.RemoveDocumentationComment = editorConfig.RemoveDocumentationComment;
+            }
+            else
+            {
+                currentSettings.ConfigurationSource = ConfigurationSource.VisualStudio;
+            }
+
+            string createResxFilePathForSettings()
+            {
+                var fileName = "dummy.resx";
+                var solutionPath = applicationObject?.Solution?.FullName;
+                var solutionDir = string.IsNullOrWhiteSpace(solutionPath) ? null : Path.GetDirectoryName(solutionPath);
+                return string.IsNullOrWhiteSpace(solutionDir) ? fileName : Path.Combine(solutionDir, fileName);
             }
         }
 
