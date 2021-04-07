@@ -25,6 +25,8 @@ resx_formatter_remove_documentation_comment=true
 
 If one of these keys is set then the corresponding settings in the extension cannot be modified.
 
+> :warning: Currently EditorConfig files in sub folders of the solution are ignored.
+
 
 ## Visual Studio
 A few things can be configured and probably you want to have this done as follows:
