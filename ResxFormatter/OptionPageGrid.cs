@@ -103,6 +103,7 @@
         {
             if (this.Window is PropertyGrid grid)
             {
+                ResxFormatterPackage.ApplyEditorConfigSettings(this);
                 grid.Refresh();
             }
         }
