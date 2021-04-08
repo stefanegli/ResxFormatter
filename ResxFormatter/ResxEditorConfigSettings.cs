@@ -1,23 +1,32 @@
-﻿namespace ResxFormatter
+﻿using System;
+
+namespace ResxFormatter
 {
     internal class ResxEditorConfigSettings
     {
         public ResxEditorConfigSettings(string targetFile = "dummy.resx")
         {
-            var parser = new EditorConfig.Core.EditorConfigParser();
-            var settings = parser.Parse(targetFile).Properties;
-
             var isActive = false;
-            if (settings.TryGetValue("resx_formatter_sort_entries", out string sortEntries))
+            try
             {
-                isActive = true;
-                this.SortEntries = IsEnabled(sortEntries);
-            }
+                var parser = new EditorConfig.Core.EditorConfigParser();
+                var settings = parser.Parse(targetFile).Properties;
+                if (settings.TryGetValue("resx_formatter_sort_entries", out string sortEntries))
+                {
+                    isActive = true;
+                    this.SortEntries = IsEnabled(sortEntries);
+                }
 
-            if (settings.TryGetValue("resx_formatter_remove_documentation_comment", out string removeComment))
+                if (settings.TryGetValue("resx_formatter_remove_documentation_comment", out string removeComment))
+                {
+                    isActive = true;
+                    this.RemoveDocumentationComment = IsEnabled(removeComment);
+                }
+            }
+            catch (Exception ex)
             {
-                isActive = true;
-                this.RemoveDocumentationComment = IsEnabled(removeComment);
+                var log = new Log();
+                log.WriteLine("Failed to parse EditorConfig file:\n" + ex.ToString());
             }
 
             this.IsActive = isActive;
