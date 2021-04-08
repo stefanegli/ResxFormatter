@@ -36,6 +36,9 @@ A few things can be configured and probably you want to have this done as follow
 
 > Use the experimental setting with caution since it may have undesired side effects.
 
+| :warning: Extension settings for formatting rules are deprecated and will be removed in a future version. Use EditorConfig files instead. |
+| ---- |
+
 
 # Contributing
 Please use the [issue tracker](https://github.com/stefanegli/ResxFormatter/issues) for submitting bug reports or feature requests.

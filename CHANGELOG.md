@@ -2,6 +2,9 @@
 
 - [ ] Settings / Options:
   - [ ] List of file extensions that should be processed
+  - [ ] Formatting rules can only be configured by EditorConfig file (no EditorConfig == no effect)
+  - [ ] Support different EditorConfig settings for sub folders of solution
+  - [ ] "FixResxWriter" setting without restart of Visual Studio
   
         
 
@@ -17,6 +20,9 @@ on the official Visual Studio extension gallery.
 ## 1.1
 - [x] Formatting rules can be configured in an [EditorConfig](https://editorconfig.org/) file
 - [x] BugFix: Use "ordinal sort" to ensure consistent results regardless of regional settings (cf. issue #2)
+
+| :warning: Extension settings for formatting rules are deprecated and will be removed in a future version. Use EditorConfig files instead. |
+| ---- |
 
 ## 1.0
 - [x] Settings / Options: 
