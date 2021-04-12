@@ -2,6 +2,7 @@
 {
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
+
     using System;
 
     public class Log : ILog
@@ -24,10 +25,18 @@
 
         public void WriteLine(string message)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            var line = $"[{DateTime.Now.ToLongTimeString()}] {message}{Environment.NewLine}";
-            OutputPane?.OutputString(line);
+            if (ThreadHelper.CheckAccess())
+            {
+                WriteLineInternal(message);
+            }
+            else
+            {
+                System.Threading.Tasks.Task.Run(async () =>
+                {
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    WriteLineInternal(message);
+                });
+            }
         }
 
         private static IVsOutputWindowPane CreateOutputPane()
@@ -39,6 +48,12 @@
             outWindow.CreatePane(ref guid, Vsix.Name, 1, 1);
             outWindow.GetPane(ref guid, out var generalPane);
             return generalPane;
+        }
+
+        private static void WriteLineInternal(string message)
+        {
+            var line = $"[{DateTime.Now.ToLongTimeString()}] {message}{Environment.NewLine}";
+            OutputPane?.OutputString(line);
         }
     }
 }
