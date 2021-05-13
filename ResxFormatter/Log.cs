@@ -23,6 +23,11 @@
             }
         }
 
+        public void Write(Exception ex)
+        {
+            this.WriteLine(ex.ToString());
+        }
+
         public void WriteLine(string message)
         {
             if (ThreadHelper.CheckAccess())
