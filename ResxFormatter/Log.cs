@@ -36,9 +36,8 @@
             }
             else
             {
-                System.Threading.Tasks.Task.Run(async () =>
+                ThreadHelper.JoinableTaskFactory.StartOnIdle(() =>
                 {
-                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                     WriteLineInternal(message);
                 });
             }
