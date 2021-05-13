@@ -52,6 +52,7 @@
 
         private static void WriteLineInternal(string message)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var line = $"[{DateTime.Now.ToLongTimeString()}] {message}{Environment.NewLine}";
             OutputPane?.OutputString(line);
         }
