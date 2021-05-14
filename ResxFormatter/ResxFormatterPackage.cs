@@ -77,10 +77,7 @@
                 documentEvents = events.DocumentEvents;
                 documentEvents.DocumentSaved += this.OnDocumentSaved;
 
-                if (this.Settings.ConfigurationSource == ConfigurationSource.EditorConfig)
-                {
-                    Log.WriteLine("EditorConfig settings found.");
-                }
+                Log.WriteLine(this.Settings.ToString());
             }
         }
 

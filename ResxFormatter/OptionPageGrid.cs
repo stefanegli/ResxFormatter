@@ -99,6 +99,11 @@
             }
         }
 
+        public override string ToString()
+        {
+            return $"{this.ConfigurationSource}: {nameof(this.SortEntries)}={this.SortEntries}, {nameof(this.RemoveDocumentationComment)}={this.RemoveDocumentationComment}";
+        }
+
         protected override void OnActivate(CancelEventArgs e)
         {
             if (this.Window is PropertyGrid grid)
