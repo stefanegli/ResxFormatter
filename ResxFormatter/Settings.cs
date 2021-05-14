@@ -2,8 +2,9 @@
 {
     public class Settings : ISettings
     {
+        private readonly ResxWriterFix resxWriterFix = new ResxWriterFix();
         private ConfigurationSource configurationSource = ConfigurationSource.VisualStudio;
-        private bool fixResxWriter;
+
         private bool removeDocumentationComment = true;
 
         public Settings(ISettingsHost settingsHost)
@@ -35,10 +36,10 @@
 
         public bool FixResxWriter
         {
-            get => this.fixResxWriter;
+            get => this.resxWriterFix.IsActive;
             set
             {
-                if (this.fixResxWriter != value)
+                if (this.resxWriterFix.IsActive != value)
                 {
                     var isEditorConfig = this.ConfigurationSource == ConfigurationSource.EditorConfig;
                     this.SettingsHost.SetReadOnly(nameof(this.FixResxWriter), isEditorConfig && !this.RemoveDocumentationComment);
@@ -49,7 +50,7 @@
                     }
                 }
 
-                this.fixResxWriter = value;
+                this.resxWriterFix.IsActive = value;
             }
         }
 

@@ -8,8 +8,6 @@
 
     using System;
     using System.IO;
-    using System.Reflection;
-    using System.Resources;
     using System.Runtime.InteropServices;
     using System.Threading;
 
@@ -23,13 +21,9 @@
     public sealed class ResxFormatterPackage : AsyncPackage
     {
         private static EnvDTE80.DTE2 applicationObject;
-
         private static DocumentEvents documentEvents;
-
         private static Events events;
-
         private static OptionPageGrid settings;
-
         private static ILog Log { get; } = new Log();
 
         private ISettings Settings
@@ -83,28 +77,9 @@
                 documentEvents = events.DocumentEvents;
                 documentEvents.DocumentSaved += this.OnDocumentSaved;
 
-                if (this.Settings.FixResxWriter)
+                if (this.Settings.ConfigurationSource == ConfigurationSource.EditorConfig)
                 {
-                    Log.WriteLine("Fixing ResXResourceWriter.");
-                    FixResxWriter();
-                }
-            }
-        }
-
-        private static void FixResxWriter()
-        {
-            var field = typeof(ResXResourceWriter).GetField("ResourceSchema", BindingFlags.Static | BindingFlags.Public);
-            if (field != null)
-            {
-                // remove the comment from the schema as it only bloats the resource files
-                if (field.GetValue(null) is string schema)
-                {
-                    var endOfComment = schema.IndexOf("-->", StringComparison.Ordinal);
-                    if (endOfComment > 0)
-                    {
-                        schema = schema.Substring(endOfComment + 3);
-                        field.SetValue(null, schema);
-                    }
+                    Log.WriteLine("EditorConfig settings found.");
                 }
             }
         }

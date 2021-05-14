@@ -56,6 +56,7 @@
     <Compile Include="ResxEditorConfigSettings.cs" />
     <Compile Include="ResxFormatter.cs" />
     <Compile Include="ResxFormatterPackage.cs" />
+    <Compile Include="ResxWriterFix.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="source.extension.cs">
       <AutoGen>True</AutoGen>
