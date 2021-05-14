@@ -4,7 +4,7 @@ using System.Resources;
 
 namespace ResxFormatter
 {
-    internal class ResxWriterFix
+    public class ResxWriterFix
     {
         private bool isActive;
 
