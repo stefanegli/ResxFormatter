@@ -25,8 +25,7 @@ namespace ResxFormatter
             }
             catch (Exception ex)
             {
-                var log = new Log();
-                log.WriteLine("Failed to parse EditorConfig file:\n" + ex.ToString());
+                Log.Current.WriteLine("Failed to parse EditorConfig file:\n" + ex.ToString());
             }
 
             this.IsActive = isActive;

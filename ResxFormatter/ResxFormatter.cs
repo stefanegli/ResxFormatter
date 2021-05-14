@@ -17,7 +17,7 @@
         private ILog Log { get; }
         private ISettings Settings { get; }
 
-        public bool Run(String resxPath)
+        public bool Run(string resxPath)
         {
             var result = false;
             var isResx = false;

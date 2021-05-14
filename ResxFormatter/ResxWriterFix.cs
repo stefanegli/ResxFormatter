@@ -17,7 +17,7 @@ namespace ResxFormatter
                 {
                     if (value)
                     {
-                        Log.WriteLine("Fixing ResXResourceWriter.");
+                        Log.Current.WriteLine("Fixing ResXResourceWriter.");
                         FixResxWriter();
                     }
                 }
@@ -25,8 +25,6 @@ namespace ResxFormatter
                 this.isActive = value;
             }
         }
-
-        private static ILog Log { get; } = new Log();
 
         private static void FixResxWriter()
         {

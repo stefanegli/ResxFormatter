@@ -10,6 +10,11 @@
 
     public class SettingsTests
     {
+        public SettingsTests()
+        {
+            Log.Current.IsActive = false;
+        }
+
         [Fact]
         public void EditorConfig_settings_disable_formatting_settings()
         {

@@ -94,8 +94,7 @@
             }
             catch (Exception ex)
             {
-                var log = new Log();
-                log.Write(ex);
+                Log.Current.Write(ex);
             }
         }
 

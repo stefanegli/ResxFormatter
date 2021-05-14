@@ -24,7 +24,6 @@
         private static DocumentEvents documentEvents;
         private static Events events;
         private static OptionPageGrid settings;
-        private static ILog Log { get; } = new Log();
 
         private ISettings Settings
         {
@@ -77,7 +76,7 @@
                 documentEvents = events.DocumentEvents;
                 documentEvents.DocumentSaved += this.OnDocumentSaved;
 
-                Log.WriteLine(this.Settings.ToString());
+                Log.Current.WriteLine(this.Settings.ToString());
             }
         }
 
@@ -89,13 +88,13 @@
             if (document.Kind.ToUpperInvariant() == "{8E7B96A8-E33D-11D0-A6D5-00C04FB67F6A}"
                 && document.FullName.ToUpperInvariant().EndsWith(".RESX"))
             {
-                Log.WriteLine("Save event for xml document received.");
-                var formatter = new ResxFormatter(settings, Log);
+                Log.Current.WriteLine("Save event for xml document received.");
+                var formatter = new ResxFormatter(settings, Log.Current);
                 if ((formatter.Run(document.FullName) && settings.ReloadFile == ReloadMode.Off)
                     || settings.ReloadFile == ReloadMode.Always)
 
                 {
-                    Log.WriteLine("Reloading file.");
+                    Log.Current.WriteLine("Reloading file.");
                     document.Close(vsSaveChanges.vsSaveChangesNo);
                     applicationObject.ItemOperations.OpenFile(document.FullName);
                 }

@@ -9,6 +9,14 @@
     {
         private static IVsOutputWindowPane outputPane;
 
+        private Log()
+        {
+        }
+
+        public static ILog Current { get; } = new Log();
+
+        public bool IsActive { get; set; } = true;
+
         private static IVsOutputWindowPane OutputPane
         {
             get
@@ -30,6 +38,11 @@
 
         public void WriteLine(string message)
         {
+            if (!this.IsActive)
+            {
+                return;
+            }
+
             if (ThreadHelper.CheckAccess())
             {
                 WriteLineInternal(message);
