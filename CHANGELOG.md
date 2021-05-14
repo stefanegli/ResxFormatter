@@ -4,7 +4,7 @@
   - [ ] List of file extensions that should be processed
   - [ ] Formatting rules can only be configured by EditorConfig file (no EditorConfig == no effect)
   - [ ] Support different EditorConfig settings for sub folders of solution
-  - [ ] "FixResxWriter" setting without restart of Visual Studio
+  - [x] "FixResxWriter" setting without restart of Visual Studio
   
         
 

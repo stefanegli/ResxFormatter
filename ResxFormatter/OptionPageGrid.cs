@@ -29,7 +29,7 @@
         }
 
         [Category(ExperimentalCategory)]
-        [DisplayName("Fix Resx Writer (Restart required)")]
+        [DisplayName("Fix Resx Writer")]
         [Description("ATTENTION: Unwanted side effects possible: If enabled the ResXResourceWriter is tricked into not writing the 'documentation' comment. This is achived by modifying a static string field through reflection.")]
         [ReadOnly(false)]
         public bool FixResxWriter
