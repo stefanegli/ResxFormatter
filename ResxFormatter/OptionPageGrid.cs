@@ -98,10 +98,8 @@
             }
         }
 
-        public override string ToString()
-        {
-            return $"{this.ConfigurationSource}: {nameof(this.SortEntries)}={this.SortEntries}, {nameof(this.RemoveDocumentationComment)}={this.RemoveDocumentationComment}";
-        }
+        public override string ToString() =>
+            $"{this.ConfigurationSource}: {nameof(this.SortEntries)}={this.SortEntries}, {nameof(this.RemoveDocumentationComment)}={this.RemoveDocumentationComment}, {nameof(this.FixResxWriter)}={this.FixResxWriter}";
 
         protected override void OnActivate(CancelEventArgs e)
         {
