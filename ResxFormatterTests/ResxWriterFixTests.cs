@@ -53,10 +53,14 @@
                 }
 
                 // Assert
+                var originalLines = File.ReadAllLines(original);
+                var activeLines = File.ReadAllLines(active);
+                var inactiveLines = File.ReadAllLines(inactive);
+
                 Check.That(fix.IsActive).IsFalse();
-                Check.WithCustomMessage("active").That(File.ReadAllLines(active)).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-active-expected.resx"));
-                Check.WithCustomMessage("inactive").That(File.ReadAllLines(inactive)).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-inactive-expected.resx"));
-                Check.WithCustomMessage("original").That(File.ReadAllLines(original)).Equals(File.ReadAllLines(inactive));
+                Check.WithCustomMessage("active").That(activeLines).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-active-expected.resx"));
+                Check.WithCustomMessage("inactive").That(inactiveLines).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-inactive-expected.resx"));
+                Check.WithCustomMessage("original").That(originalLines).Equals(inactiveLines);
             }
             finally
             {
