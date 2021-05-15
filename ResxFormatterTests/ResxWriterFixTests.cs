@@ -46,7 +46,7 @@
                 }
 
                 fix.IsActive = false;
-                Thread.Sleep(200);
+                Thread.Sleep(10);
                 using (var resx = new ResXResourceWriter(inactive))
                 {
                     resx.AddResource("a", "x");
