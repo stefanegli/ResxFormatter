@@ -17,6 +17,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 2.0 PREVIEW 
+- [x] Support for Visual Studio 2022 (use 1.x version for older versions of Visual Studio)
+
+
 ## 1.1
 - [x] Formatting rules can be configured in an [EditorConfig](https://editorconfig.org/) file
 - [x] BugFix: Use "ordinal sort" to ensure consistent results regardless of regional settings (cf. issue #2)

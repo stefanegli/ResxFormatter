@@ -1,10 +1,10 @@
 ﻿namespace ResxFormatter
 {
-    using EnvDTE;
+    using Community.VisualStudio.Toolkit;
 
     using Microsoft.VisualStudio;
     using Microsoft.VisualStudio.Shell;
-    using Microsoft.VisualStudio.Shell.Interop;
+    
 
     using System;
     using System.IO;
@@ -20,10 +20,9 @@
     [ProvideOptionPage(typeof(OptionPageGrid), Vsix.Name, OptionPageGrid.GeneralCategory, 0, 0, true)]
     public sealed class ResxFormatterPackage : AsyncPackage
     {
-        private static EnvDTE80.DTE2 applicationObject;
-        private static DocumentEvents documentEvents;
-        private static Events events;
+       
         private static OptionPageGrid settings;
+
 
         private ISettings Settings
         {
@@ -56,7 +55,7 @@
             string createResxFilePathForSettings()
             {
                 var fileName = "dummy.resx";
-                var solutionPath = applicationObject?.Solution?.FullName;
+                var solutionPath = "";//applicationObject?.Solution?.FullName;
                 var solutionDir = string.IsNullOrWhiteSpace(solutionPath) ? null : Path.GetDirectoryName(solutionPath);
                 return string.IsNullOrWhiteSpace(solutionDir) ? fileName : Path.Combine(solutionDir, fileName);
             }
@@ -64,39 +63,28 @@
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            // When initialized asynchronously, the current thread may be a background thread at this point.
-            // Do any initialization that requires the UI thread after switching to the UI thread.
-            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-
-            // avoid garbage collection
-            applicationObject = await this.GetServiceAsync(typeof(SDTE)) as EnvDTE80.DTE2;
-            if (applicationObject is object)
-            {
-                events = applicationObject.Events;
-                documentEvents = events.DocumentEvents;
-                documentEvents.DocumentSaved += this.OnDocumentSaved;
-
-                Log.Current.WriteLine(this.Settings.ToString());
-            }
+            VS.Events.DocumentEvents.Saved += this.OnDocumentSaved;
+            Log.Current.WriteLine(this.Settings.ToString());
+            
         }
 
-        private void OnDocumentSaved(Document document)
+        private void OnDocumentSaved(object sender,  string document)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             var settings = this.Settings;
-            if (document.Kind.ToUpperInvariant() == "{8E7B96A8-E33D-11D0-A6D5-00C04FB67F6A}"
-                && document.FullName.ToUpperInvariant().EndsWith(".RESX"))
+
+            if (document.ToUpperInvariant().EndsWith(".RESX"))
             {
-                Log.Current.WriteLine("Save event for xml document received.");
+                Log.Current.WriteLine("Save event for xml document received: " + document);
                 var formatter = new ResxFormatter(settings, Log.Current);
-                if ((formatter.Run(document.FullName) && settings.ReloadFile == ReloadMode.Off)
+                if ((formatter.Run(document) && settings.ReloadFile == ReloadMode.Off)
                     || settings.ReloadFile == ReloadMode.Always)
 
                 {
                     Log.Current.WriteLine("Reloading file.");
-                    document.Close(vsSaveChanges.vsSaveChangesNo);
-                    applicationObject.ItemOperations.OpenFile(document.FullName);
+                    //document.Close(vsSaveChanges.vsSaveChangesNo);
+                    //applicationObject.ItemOperations.OpenFile(document.FullName);
                 }
             }
         }
