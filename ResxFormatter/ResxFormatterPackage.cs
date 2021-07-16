@@ -3,7 +3,8 @@
      using global::ResxFormatter.VisualStudio;
 
     using Microsoft.VisualStudio;
-    using Microsoft.VisualStudio.Shell; 
+    using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Shell.Interop;
 
     using System;
     using System.IO;
@@ -19,7 +20,7 @@
     [ProvideOptionPage(typeof(OptionPageGrid), Vsix.Name, OptionPageGrid.GeneralCategory, 0, 0, true)]
     public sealed class ResxFormatterPackage : AsyncPackage
     {
-       
+        private static EnvDTE80.DTE2 applicationObject;
         private static OptionPageGrid settings;
         private static VsDocumentEvents documentEvents;
 
@@ -63,6 +64,11 @@
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            applicationObject = (EnvDTE80.DTE2) await this.GetServiceAsync(typeof(SDTE));
+            if (applicationObject is null) 
+            {
+                throw new InvalidOperationException("Failed to get DTE2 instance.");
+            }
 
             documentEvents = new VsDocumentEvents();
             documentEvents.Saved += this.OnDocumentSaved;
@@ -84,9 +90,17 @@
 
                 {
                     Log.Current.WriteLine("Reloading file.");
-                    document.Reload();
+                    document.Close();
+
+                    Task.Run(async () =>
+                    {
+                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                        applicationObject.ItemOperations.OpenFile(document.Path);
+                    });
                 }
             }
+           
+
         }
     }
 }

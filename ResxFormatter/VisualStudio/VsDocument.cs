@@ -18,12 +18,9 @@
 
         private RunningDocumentTable Documents { get; }
 
-        public void Reload() 
+        public void Close() 
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
             this.Documents.CloseDocument(__FRAMECLOSE.FRAMECLOSE_NoSave, this.Cookie);
-            VsShellUtilities.OpenDocument(ServiceProvider.GlobalProvider, this.Path);
         }
     }
 }
