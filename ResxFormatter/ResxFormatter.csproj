@@ -64,6 +64,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>source.extension.vsixmanifest</DependentUpon>
     </Compile>
+    <Compile Include="VisualStudio\VsDocument.cs" />
+    <Compile Include="VisualStudio\VsDocumentEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source.extension.vsixmanifest">
@@ -79,9 +81,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Community.VisualStudio.Toolkit">
-      <Version>17.0.75.152-pre</Version>
-    </PackageReference>
     <PackageReference Include="editorconfig">
       <Version>0.12.2</Version>
     </PackageReference>

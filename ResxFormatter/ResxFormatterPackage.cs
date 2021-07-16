@@ -1,10 +1,9 @@
 ﻿namespace ResxFormatter
 {
-    using Community.VisualStudio.Toolkit;
+     using global::ResxFormatter.VisualStudio;
 
     using Microsoft.VisualStudio;
-    using Microsoft.VisualStudio.Shell;
-    
+    using Microsoft.VisualStudio.Shell; 
 
     using System;
     using System.IO;
@@ -22,6 +21,7 @@
     {
        
         private static OptionPageGrid settings;
+        private static VsDocumentEvents documentEvents;
 
 
         private ISettings Settings
@@ -63,22 +63,23 @@
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            VS.Events.DocumentEvents.Saved += this.OnDocumentSaved;
+
+            documentEvents = new VsDocumentEvents();
+            documentEvents.Saved += this.OnDocumentSaved;
             Log.Current.WriteLine(this.Settings.ToString());
             
         }
 
-        private void OnDocumentSaved(object sender,  string document)
+        private void OnDocumentSaved(object sender,  VsDocument document)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
             var settings = this.Settings;
-
-            if (document.ToUpperInvariant().EndsWith(".RESX"))
+            if (document.IsResx)
             {
-                Log.Current.WriteLine("Save event for xml document received: " + document);
+                Log.Current.WriteLine("Save event for xml document received: " + document.Path);
                 var formatter = new ResxFormatter(settings, Log.Current);
-                if ((formatter.Run(document) && settings.ReloadFile == ReloadMode.Off)
+                if ((formatter.Run(document.Path) && settings.ReloadFile == ReloadMode.Off)
                     || settings.ReloadFile == ReloadMode.Always)
 
                 {
