@@ -37,7 +37,7 @@
             if (Saved != null)
             {
                 var info = this.Documents.GetDocumentInfo(docCookie);
-                var document = new VsDocument(docCookie, info.Moniker);
+                var document = new VsDocument(this.Documents, docCookie, info.Moniker);
                 Saved?.Invoke(this, document);
             }
 

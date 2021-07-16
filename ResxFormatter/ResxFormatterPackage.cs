@@ -84,8 +84,7 @@
 
                 {
                     Log.Current.WriteLine("Reloading file.");
-                    //document.Close(vsSaveChanges.vsSaveChangesNo);
-                    //applicationObject.ItemOperations.OpenFile(document.FullName);
+                    document.Reload();
                 }
             }
         }
