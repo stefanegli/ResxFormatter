@@ -12,12 +12,12 @@
     /// </summary>
     public class VsDocumentEvents : IVsRunningDocTableEvents
     {
-        private  RunningDocumentTable documents { get; }
+        private  RunningDocumentTable Documents { get; }
 
         public VsDocumentEvents()
         {
-            documents = new RunningDocumentTable();
-            documents.Advise(this);
+            this.Documents = new RunningDocumentTable();
+            this.Documents.Advise(this);
         }
 
         public event EventHandler<VsDocument> Saved;
@@ -36,7 +36,7 @@
         {
             if (Saved != null)
             {
-                var info = documents.GetDocumentInfo(docCookie);
+                var info = this.Documents.GetDocumentInfo(docCookie);
                 var document = new VsDocument(docCookie, info.Moniker);
                 Saved?.Invoke(this, document);
             }
