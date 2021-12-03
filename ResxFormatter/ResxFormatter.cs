@@ -17,6 +17,9 @@
         private ILog Log { get; }
         private ISettings Settings { get; }
 
+        /// <summary>
+        /// Returns true if the given file was modified.
+        /// </summary>
         public bool Run(string resxPath)
         {
             var result = false;
