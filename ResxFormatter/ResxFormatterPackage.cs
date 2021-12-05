@@ -1,6 +1,6 @@
 ﻿namespace ResxFormatter
 {
-     using global::ResxFormatter.VisualStudio;
+    using global::ResxFormatter.VisualStudio;
 
     using Microsoft.VisualStudio;
     using Microsoft.VisualStudio.Shell;
@@ -31,7 +31,7 @@
             {
                 if (settings == null)
                 {
-                    settings = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                    settings = (OptionPageGrid)this.GetDialogPage(typeof(OptionPageGrid));
                 }
 
                 ApplyEditorConfigSettings(settings);
@@ -64,8 +64,8 @@
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            applicationObject = (EnvDTE80.DTE2) await this.GetServiceAsync(typeof(SDTE));
-            if (applicationObject is null) 
+            applicationObject = (EnvDTE80.DTE2)await this.GetServiceAsync(typeof(SDTE));
+            if (applicationObject is null)
             {
                 throw new InvalidOperationException("Failed to get DTE2 instance.");
             }
@@ -73,10 +73,9 @@
             documentEvents = new VsDocumentEvents();
             documentEvents.Saved += this.OnDocumentSaved;
             Log.Current.WriteLine(this.Settings.ToString());
-            
         }
 
-        private void OnDocumentSaved(object sender,  VsDocument document)
+        private void OnDocumentSaved(object sender, VsDocument document)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
@@ -85,7 +84,7 @@
             {
                 Log.Current.WriteLine("Save event for xml document received: " + document.Path);
                 var formatter = new ResxFormatter(settings, Log.Current);
-                if ((formatter.Run(document.Path) && settings.ReloadFile == ReloadMode.Off)
+                if ((formatter.Run(document.Path) && settings.ReloadFile == ReloadMode.AfterModification)
                     || settings.ReloadFile == ReloadMode.Always)
 
                 {
@@ -99,8 +98,6 @@
                     });
                 }
             }
-           
-
         }
     }
 }
