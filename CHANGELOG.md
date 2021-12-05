@@ -17,6 +17,10 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 1.2
+- [x] BugFix: Reload settings now work as advertised (cf. issue #4)
+
+
 ## 1.1
 - [x] Formatting rules can be configured in an [EditorConfig](https://editorconfig.org/) file
 - [x] BugFix: Use "ordinal sort" to ensure consistent results regardless of regional settings (cf. issue #2)
