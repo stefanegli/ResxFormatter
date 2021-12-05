@@ -19,7 +19,7 @@
         public void Files_are_processed_correctly(string message, string fileName, string culture, ISettings settings)
         {
             // Arrange
-            string baseFileName = Path.GetFileNameWithoutExtension(fileName);
+            var baseFileName = Path.GetFileNameWithoutExtension(fileName);
             var actualFile = $"_files\\{baseFileName}-actual.resx";
             var expectedFile = $"_files\\{baseFileName}-expected.resx";
 

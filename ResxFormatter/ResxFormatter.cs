@@ -14,15 +14,17 @@
             this.Settings = settings;
         }
 
+        public bool IsFileChanged { get; private set; }
+
         private ILog Log { get; }
         private ISettings Settings { get; }
 
         /// <summary>
         /// Returns true if the given file was modified.
         /// </summary>
-        public bool Run(string resxPath)
+        public void Run(string resxPath)
         {
-            var result = false;
+            this.IsFileChanged = false;
             var isResx = false;
             var hasCommentRemoved = false;
             var toSave = new List<XNode>();
@@ -71,7 +73,7 @@
                 document.Root.ReplaceNodes(toSave);
                 this.Log.WriteLine($"Updating {resxPath}");
                 document.Save(resxPath);
-                result = true;
+                this.IsFileChanged = true;
             }
             else
             {
@@ -79,7 +81,7 @@
                 this.Log.WriteLine($"Update was not required: {reason}.");
             }
 
-            return result;
+
         }
     }
 }
