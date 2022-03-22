@@ -4,9 +4,7 @@
   - [ ] List of file extensions that should be processed
   - [ ] Formatting rules can only be configured by EditorConfig file (no EditorConfig == no effect)
   - [ ] Support different EditorConfig settings for sub folders of solution
-  - [x] "FixResxWriter" setting without restart of Visual Studio
-  
-        
+
 
 Features that have a checkmark are complete and available for
 download in the
@@ -17,8 +15,9 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
-## 2.0 PREVIEW 
-- [x] Support for Visual Studio 2022 (use 1.x version for older versions of Visual Studio)
+## 2.0
+- [x] Support for Visual Studio 2017, 2019 and 2022 
+- [x] "FixResxWriter" setting works without restart of Visual Studio
 
 ## 1.2
 - [x] BugFix: Reload settings now work as advertised (cf. issue #4)
