@@ -16,7 +16,7 @@ These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
 ## 2.0
-- [x] Support for Visual Studio 2017, 2019 and 2022 
+- [x] Support for Visual Studio 2017, 2019 and **2022** 
 - [x] "FixResxWriter" setting works without restart of Visual Studio
 
 ## 1.2
