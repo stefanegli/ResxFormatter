@@ -32,6 +32,7 @@
         [DisplayName("Fix Resx Writer")]
         [Description("ATTENTION: Unwanted side effects possible: If enabled the ResXResourceWriter is tricked into not writing the 'documentation' comment. This is achived by modifying a static string field through reflection.")]
         [ReadOnly(false)]
+        [DefaultValue(false)]
         public bool FixResxWriter
         {
             get => this.Settings.FixResxWriter;
@@ -42,6 +43,7 @@
         [DisplayName("Reload file after saving")]
         [Description("Determines whether or not file is closed and re-opened if changes were my made by the extension so that they become immediately visible.")]
         [ReadOnly(false)]
+        [DefaultValue(ReloadMode.AfterModification)]
         public ReloadMode ReloadFile
         {
             get => this.Settings.ReloadFile;
@@ -52,6 +54,7 @@
         [DisplayName("Remove documentation comment")]
         [Description("Determines whether or not the resx 'documentation' is removed.")]
         [ReadOnly(false)]
+        [DefaultValue(true)]
         public bool RemoveDocumentationComment
         {
             get => this.Settings.RemoveDocumentationComment;
@@ -62,6 +65,7 @@
         [DisplayName("Sort resource entries")]
         [Description("Determines whether or not resource entries are sorted alphabetically.")]
         [ReadOnly(false)]
+        [DefaultValue(true)]
         public bool SortEntries
         {
             get => this.Settings.SortEntries;
