@@ -8,7 +8,7 @@
 
     public class ResxFormatter
     {
-        public ResxFormatter(ISettings settings, ILog log)
+        public ResxFormatter(IFormatSettings settings, ILog log)
         {
             this.Log = log;
             this.Settings = settings;
@@ -17,7 +17,7 @@
         public bool IsFileChanged { get; private set; }
 
         private ILog Log { get; }
-        private ISettings Settings { get; }
+        private IFormatSettings Settings { get; }
 
         /// <summary>
         /// Returns true if the given file was modified.
@@ -80,8 +80,6 @@
                 var reason = isResx ? "No modifications" : "Not a .resx file";
                 this.Log.WriteLine($"Update was not required: {reason}.");
             }
-
-
         }
     }
 }

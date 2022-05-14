@@ -16,7 +16,7 @@
     {
         [Theory]
         [ClassData(typeof(ResxTestData))]
-        public void Files_are_processed_correctly(string message, string fileName, string culture, ISettings settings)
+        public void Files_are_processed_correctly(string message, string fileName, string culture, IFormatSettings settings)
         {
             // Arrange
             var baseFileName = Path.GetFileNameWithoutExtension(fileName);
@@ -39,9 +39,9 @@
             Check.WithCustomMessage(message).That(actual).Equals(expected);
         }
 
-        internal class ResxTestData : TheoryDataBase<string, string, string, ISettings>
+        internal class ResxTestData : TheoryDataBase<string, string, string, IFormatSettings>
         {
-            public override IEnumerable<(string, string, string, ISettings)> Create()
+            public override IEnumerable<(string, string, string, IFormatSettings)> Create()
             {
                 var sortAndRemoveDocumentation = new FakeSettings
                 {
@@ -80,11 +80,8 @@
                 });
             }
 
-            private class FakeSettings : ISettings
+            private class FakeSettings : IFormatSettings
             {
-                public ConfigurationSource ConfigurationSource => ConfigurationSource.VisualStudio;
-                public bool FixResxWriter => false;
-                public ReloadMode ReloadFile => ReloadMode.Off;
                 public bool RemoveDocumentationComment { get; set; }
                 public bool SortEntries { get; set; }
             }

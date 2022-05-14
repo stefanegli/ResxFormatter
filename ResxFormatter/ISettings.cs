@@ -13,12 +13,16 @@
         Always
     }
 
-    public interface ISettings
+    public interface IFormatSettings
+    {
+        bool RemoveDocumentationComment { get; }
+        bool SortEntries { get; }
+    }
+
+    public interface ISettings : IFormatSettings
     {
         ConfigurationSource ConfigurationSource { get; }
         bool FixResxWriter { get; }
         ReloadMode ReloadFile { get; }
-        bool RemoveDocumentationComment { get; }
-        bool SortEntries { get; }
     }
 }
