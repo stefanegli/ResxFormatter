@@ -2,8 +2,6 @@
 
 - [ ] Settings / Options:
   - [ ] List of file extensions that should be processed
-  - [ ] Formatting rules can only be configured by EditorConfig file (no EditorConfig == no effect)
-  - [ ] Support different EditorConfig settings for sub folders of solution
 
 
 Features that have a checkmark are complete and available for
@@ -15,7 +13,9 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
-## 2.1 PREVIEW
+## 3.0 PREVIEW
+- [ ] Formatting rules can only be configured by EditorConfig file (no EditorConfig == no effect)
+- [ ] Support different EditorConfig settings for sub folders of solution
 - [x] Changes to default settings are now visible (bold font)
 
 ## 2.0
