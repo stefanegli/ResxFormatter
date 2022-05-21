@@ -4,7 +4,7 @@ using System.Resources;
 
 namespace ResxFormatter
 {
-    public class ResxWriterFix
+    public class ResxWriterFix : IDisposable
     {
         private bool isActive;
 
@@ -25,6 +25,11 @@ namespace ResxFormatter
         }
 
         private string OriginalSchema { get; set; }
+
+        public void Dispose()
+        {
+            this.IsActive = false;
+        }
 
         private void FixResxWriter(bool fixIt)
         {
