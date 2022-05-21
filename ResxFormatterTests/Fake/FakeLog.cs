@@ -1,4 +1,4 @@
-﻿namespace ResxFormatterTests
+﻿namespace ResxFormatterTests.Fake
 {
     using ResxFormatter;
 

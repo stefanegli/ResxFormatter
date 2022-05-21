@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FakeLog.cs" />
-    <Compile Include="FakeSettings.cs" />
+    <Compile Include="Fake\FakeLog.cs" />
+    <Compile Include="Fake\FakeSettings.cs" />
     <Compile Include="FormattingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResxWriterFixTests.cs" />

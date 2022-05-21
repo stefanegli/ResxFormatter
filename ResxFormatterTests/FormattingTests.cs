@@ -4,6 +4,7 @@
 
     using ResxFormatter;
 
+    using ResxFormatterTests.Fake;
     using ResxFormatterTests.TestFoundation;
 
     using System.Collections.Generic;
@@ -12,7 +13,7 @@
 
     using Xunit;
 
-    public partial class FormattingTests
+    public class FormattingTests
     {
         [Fact]
         public void EditorConfig_files_can_be_specified_per_folder()
