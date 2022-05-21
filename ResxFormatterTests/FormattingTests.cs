@@ -12,7 +12,7 @@
 
     using Xunit;
 
-    public class FormattingTests
+    public partial class FormattingTests
     {
         [Fact]
         public void EditorConfig_files_can_be_specified_per_folder()
@@ -119,12 +119,6 @@
                     RemoveDocumentationComment = false
                 });
             }
-        }
-
-        private class FakeSettings : IFormatSettings
-        {
-            public bool RemoveDocumentationComment { get; set; }
-            public bool SortEntries { get; set; }
         }
     }
 }
