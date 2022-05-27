@@ -7,6 +7,7 @@ namespace ResxFormatter
     public class ResxWriterFix : IDisposable
     {
         private bool isActive;
+        public static string OriginalSchema { get; } = ResXResourceWriter.ResourceSchema;
 
         public bool IsActive
         {
@@ -24,8 +25,6 @@ namespace ResxFormatter
             }
         }
 
-        private string OriginalSchema { get; set; }
-
         public void Dispose()
         {
             this.IsActive = false;
@@ -41,11 +40,6 @@ namespace ResxFormatter
                     // remove the comment from the schema as it only bloats the resource files
                     if (field.GetValue(null) is string schema)
                     {
-                        if (this.OriginalSchema is null)
-                        {
-                            this.OriginalSchema = schema;
-                        }
-
                         var endOfComment = schema.IndexOf("-->", StringComparison.Ordinal);
                         if (endOfComment > 0)
                         {
@@ -56,7 +50,7 @@ namespace ResxFormatter
                 }
                 else
                 {
-                    field.SetValue(null, this.OriginalSchema);
+                    field.SetValue(null, OriginalSchema);
                 }
             }
         }
