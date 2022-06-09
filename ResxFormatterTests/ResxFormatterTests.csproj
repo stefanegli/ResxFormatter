@@ -49,6 +49,12 @@
     <Compile Include="ResxWriterFixTests.cs" />
     <Compile Include="SettingsTests.cs" />
     <Compile Include="TestFoundation\TheoryDataBase.cs" />
+    <Compile Include="_files\WithDesignerFile.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WithDesignerFile.resx</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="_editor\config1\.editorconfig">
@@ -219,6 +225,16 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="_files\WithDesignerFile-expected.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="_files\WithDesignerFile.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>WithDesignerFile.Designer.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
