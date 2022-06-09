@@ -24,7 +24,11 @@
         /// </summary>
         public void Run(string resxPath)
         {
-            this.IsFileChanged = false;
+            this.IsFileChanged = this.FormatResx(resxPath);
+        }
+
+        private bool FormatResx(string resxPath)
+        {
             var isResx = false;
             var hasCommentRemoved = false;
             var toSave = new List<XNode>();
@@ -73,12 +77,13 @@
                 document.Root.ReplaceNodes(toSave);
                 this.Log.WriteLine($"Updating {resxPath}");
                 document.Save(resxPath);
-                this.IsFileChanged = true;
+                return true;
             }
             else
             {
                 var reason = isResx ? "No modifications" : "Not a .resx file";
                 this.Log.WriteLine($"Update was not required: {reason}.");
+                return false;
             }
         }
     }
