@@ -173,8 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="_files\Sort.resx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>      
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -205,8 +204,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="_editor\config1\Sort.resx">
-      <SubType>Designer</SubType>
+    <None Include="_editor\config1\Sort.resx">      
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -221,8 +219,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="_editor\config2\Sort.resx">
-      <SubType>Designer</SubType>
+    <None Include="_editor\config2\Sort.resx">      
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -235,6 +232,11 @@
       <LastGenOutput>WithDesignerFile.Designer.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_files\WithDesignerFile.Designer.cs">      
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
