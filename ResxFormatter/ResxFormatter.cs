@@ -26,7 +26,7 @@
         public void Run(string resxPath)
         {
             this.IsFileChanged = this.FormatResx(resxPath);
-            if (this.IsFileChanged)
+            if (this.IsFileChanged && this.Settings.RemoveDesignerComments)
             {
                 var designerFile = Path.ChangeExtension(resxPath, ".Designer.cs");
                 if (File.Exists(designerFile))

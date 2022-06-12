@@ -11,16 +11,22 @@ namespace ResxFormatter
             {
                 var parser = new EditorConfig.Core.EditorConfigParser();
                 var settings = parser.Parse(targetFile).Properties;
-                if (settings.TryGetValue("resx_formatter_sort_entries", out string sortEntries))
+                if (settings.TryGetValue("resx_formatter_sort_entries", out var sortEntries))
                 {
                     isActive = true;
                     this.SortEntries = IsEnabled(sortEntries);
                 }
 
-                if (settings.TryGetValue("resx_formatter_remove_documentation_comment", out string removeComment))
+                if (settings.TryGetValue("resx_formatter_remove_documentation_comment", out var removeComment))
                 {
                     isActive = true;
                     this.RemoveDocumentationComment = IsEnabled(removeComment);
+                }
+
+                if (settings.TryGetValue("resx_formatter_remove_designer_comments", out var removeDesignerComment))
+                {
+                    isActive = true;
+                    this.RemoveDesignerComments = IsEnabled(removeDesignerComment);
                 }
             }
             catch (Exception ex)
@@ -34,6 +40,7 @@ namespace ResxFormatter
         }
 
         public bool IsActive { get; }
+        public bool RemoveDesignerComments { get; }
         public bool RemoveDocumentationComment { get; }
         public bool SortEntries { get; }
     }

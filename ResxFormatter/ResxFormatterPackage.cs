@@ -21,9 +21,8 @@
     public sealed class ResxFormatterPackage : AsyncPackage
     {
         private static EnvDTE80.DTE2 applicationObject;
-        private static OptionPageGrid settings;
         private static VsDocumentEvents documentEvents;
-
+        private static OptionPageGrid settings;
 
         private ISettings Settings
         {
@@ -46,6 +45,7 @@
             {
                 currentSettings.ConfigurationSource = ConfigurationSource.EditorConfig;
                 currentSettings.SortEntries = editorConfig.SortEntries;
+                currentSettings.RemoveDesignerComments = editorConfig.RemoveDesignerComments;
                 currentSettings.RemoveDocumentationComment = editorConfig.RemoveDocumentationComment;
             }
             else

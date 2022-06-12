@@ -23,6 +23,7 @@
             {
                 SortEntries = true,
                 RemoveDocumentationComment = true,
+                RemoveDesignerComments = true,
             };
 
             (var actualFile, var expectedFile) = prepareFile(@"_files", "WithDesignerFile");

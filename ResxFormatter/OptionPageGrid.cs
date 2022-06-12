@@ -51,6 +51,17 @@
         }
 
         [Category(FormattingCategory)]
+        [DisplayName("Remove designer comment")]
+        [Description("Determines whether or not comments from the generated csharp file are removed.")]
+        [ReadOnly(false)]
+        [DefaultValue(true)]
+        public bool RemoveDesignerComments
+        {
+            get => this.Settings.RemoveDesignerComments;
+            set => this.Settings.RemoveDesignerComments = value;
+        }
+
+        [Category(FormattingCategory)]
         [DisplayName("Remove documentation comment")]
         [Description("Determines whether or not the resx 'documentation' is removed.")]
         [ReadOnly(false)]

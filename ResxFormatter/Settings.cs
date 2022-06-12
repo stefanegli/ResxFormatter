@@ -56,6 +56,8 @@
 
         public ReloadMode ReloadFile { get; set; } = ReloadMode.AfterModification;
 
+        public bool RemoveDesignerComments { get; set; } = true;
+
         public bool RemoveDocumentationComment
         {
             get => this.removeDocumentationComment; set
