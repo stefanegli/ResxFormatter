@@ -26,6 +26,7 @@
             };
 
             (var actualFile, var expectedFile) = prepareFile(@"_files", "WithDesignerFile");
+            (var actualDesignerFile, var expectedDesignerFile) = prepareFile(@"_files", "WithDesignerFile", "Designer.cs");
 
             var formatter = new ResxFormatter(settings, new FakeLog());
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-Us");
@@ -37,6 +38,10 @@
             var actual1 = File.ReadAllText(actualFile);
             var expected1 = File.ReadAllText(expectedFile);
             Check.WithCustomMessage("resx is updated as expected").That(actual1).Equals(expected1);
+
+            var actualDesigner = File.ReadAllText(actualDesignerFile);
+            var expectedDesigner = File.ReadAllText(expectedDesignerFile);
+            Check.WithCustomMessage("designer is updated as expected").That(actualDesigner).Equals(expectedDesigner);
         }
 
         [Fact]
@@ -94,11 +99,11 @@
             Check.WithCustomMessage(message).That(actual).Equals(expected);
         }
 
-        private static (string actual, string expected) prepareFile(string folder, string baseFileName)
+        private static (string actual, string expected) prepareFile(string folder, string baseFileName, string extension = "resx")
         {
-            var file = Path.Combine(folder, $"{baseFileName}.resx");
-            var actualFile = Path.Combine(folder, $"{baseFileName}-actual.resx");
-            var expectedFile = Path.Combine(folder, $"{baseFileName}-expected.resx");
+            var file = Path.Combine(folder, $"{baseFileName}.{extension}");
+            var actualFile = Path.Combine(folder, $"{baseFileName}-actual.{extension}");
+            var expectedFile = Path.Combine(folder, $"{baseFileName}-expected.{extension}");
 
             File.Copy(file, actualFile, true);
             return (actualFile, expectedFile);
