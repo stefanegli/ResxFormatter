@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Xml;
     using System.Xml.Linq;
@@ -26,16 +25,6 @@
         public void Run(string resxPath)
         {
             this.IsFileChanged = this.FormatResx(resxPath);
-            if (this.IsFileChanged && this.Settings.RemoveDesignerComments)
-            {
-                var designerFile = Path.ChangeExtension(resxPath, ".Designer.cs");
-                if (File.Exists(designerFile))
-                {
-                    var lines = File.ReadAllLines(designerFile);
-                    var revised = lines.Where(l => !l.TrimStart().StartsWith("/"));
-                    File.WriteAllLines(designerFile, revised);
-                }
-            }
         }
 
         private bool FormatResx(string resxPath)

@@ -21,7 +21,6 @@
                 {
                     var isEditorConfig = value == ConfigurationSource.EditorConfig;
                     this.SettingsHost.SetReadOnly(nameof(this.SortEntries), isEditorConfig);
-                    this.SettingsHost.SetReadOnly(nameof(this.RemoveDesignerComments), isEditorConfig);
                     this.SettingsHost.SetReadOnly(nameof(this.RemoveDocumentationComment), isEditorConfig);
                     this.SettingsHost.SetReadOnly(nameof(this.FixResxWriter), isEditorConfig && !this.RemoveDocumentationComment);
 
@@ -56,8 +55,6 @@
         }
 
         public ReloadMode ReloadFile { get; set; } = ReloadMode.AfterModification;
-
-        public bool RemoveDesignerComments { get; set; } = true;
 
         public bool RemoveDocumentationComment
         {

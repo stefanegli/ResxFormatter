@@ -45,7 +45,6 @@
             {
                 currentSettings.ConfigurationSource = ConfigurationSource.EditorConfig;
                 currentSettings.SortEntries = editorConfig.SortEntries;
-                currentSettings.RemoveDesignerComments = editorConfig.RemoveDesignerComments;
                 currentSettings.RemoveDocumentationComment = editorConfig.RemoveDocumentationComment;
             }
             else

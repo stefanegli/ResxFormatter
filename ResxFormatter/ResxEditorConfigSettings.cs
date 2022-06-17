@@ -22,12 +22,6 @@ namespace ResxFormatter
                     isActive = true;
                     this.RemoveDocumentationComment = IsEnabled(removeComment);
                 }
-
-                if (settings.TryGetValue("resx_formatter_remove_designer_comments", out var removeDesignerComment))
-                {
-                    isActive = true;
-                    this.RemoveDesignerComments = IsEnabled(removeDesignerComment);
-                }
             }
             catch (Exception ex)
             {
@@ -40,7 +34,7 @@ namespace ResxFormatter
         }
 
         public bool IsActive { get; }
-        public bool RemoveDesignerComments { get; }
+
         public bool RemoveDocumentationComment { get; }
         public bool SortEntries { get; }
     }

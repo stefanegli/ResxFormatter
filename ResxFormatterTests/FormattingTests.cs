@@ -16,36 +16,6 @@
     public class FormattingTests
     {
         [Fact]
-        public void Designer_files_are_updated_too()
-        {
-            // Arrange
-            var settings = new FakeSettings()
-            {
-                SortEntries = true,
-                RemoveDocumentationComment = true,
-                RemoveDesignerComments = true,
-            };
-
-            (var actualFile, var expectedFile) = prepareFile(@"_files", "WithDesignerFile");
-            (var actualDesignerFile, var expectedDesignerFile) = prepareFile(@"_files", "WithDesignerFile", "Designer.cs");
-
-            var formatter = new ResxFormatter(settings, new FakeLog());
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-Us");
-
-            // Act
-            formatter.Run(actualFile);
-
-            // Assert
-            var actual1 = File.ReadAllText(actualFile);
-            var expected1 = File.ReadAllText(expectedFile);
-            Check.WithCustomMessage("resx is updated as expected").That(actual1).Equals(expected1);
-
-            var actualDesigner = File.ReadAllText(actualDesignerFile);
-            var expectedDesigner = File.ReadAllText(expectedDesignerFile);
-            Check.WithCustomMessage("designer is updated as expected").That(actualDesigner).Equals(expectedDesigner);
-        }
-
-        [Fact]
         public void EditorConfig_files_can_be_specified_per_folder()
         {
             // Arrange

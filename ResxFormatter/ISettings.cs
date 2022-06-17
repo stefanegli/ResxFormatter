@@ -15,7 +15,6 @@
 
     public interface IFormatSettings
     {
-        bool RemoveDesignerComments { get; }
         bool RemoveDocumentationComment { get; }
         bool SortEntries { get; }
     }
