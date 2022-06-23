@@ -19,16 +19,10 @@
         public void EditorConfig_files_can_be_specified_per_folder()
         {
             // Arrange
-            var settings = new FakeSettings()
-            {
-                SortEntries = false,
-                RemoveDocumentationComment = false,
-            };
-
             (var actualFile1, var expectedFile1) = prepareFile(@"_editor\config1", "Sort");
             (var actualFile2, var expectedFile2) = prepareFile(@"_editor\config2", "Sort");
 
-            var formatter = new ResxFormatter(settings, new FakeLog());
+            var formatter = new AdaptingResxFormatter(new FakeLog());
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-Us");
 
             // Act
@@ -38,11 +32,11 @@
             // Assert
             var actual1 = File.ReadAllText(actualFile1);
             var expected1 = File.ReadAllText(expectedFile1);
-            // Check.WithCustomMessage("config1 is applied correctly").That(actual1).Equals(expected1);
+            Check.WithCustomMessage("config1 is applied correctly").That(actual1).Equals(expected1);
 
             var actual2 = File.ReadAllText(actualFile2);
             var expected2 = File.ReadAllText(expectedFile2);
-            // Check.WithCustomMessage("config2 is applied correctly").That(actual2).Equals(expected2);
+            Check.WithCustomMessage("config2 is applied correctly").That(actual2).Equals(expected2);
         }
 
         [Theory]

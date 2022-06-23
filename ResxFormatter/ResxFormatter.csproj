@@ -46,6 +46,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AdaptingResxFormatter.cs" />
     <Compile Include="ILog.cs" />
     <Compile Include="ISettingsHost.cs" />
     <Compile Include="ISettings.cs" />

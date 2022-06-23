@@ -2,7 +2,7 @@
 
 namespace ResxFormatter
 {
-    internal class ResxEditorConfigSettings
+    internal class ResxEditorConfigSettings : IFormatSettings
     {
         public ResxEditorConfigSettings(string targetFile = "dummy.resx")
         {
@@ -34,7 +34,6 @@ namespace ResxFormatter
         }
 
         public bool IsActive { get; }
-
         public bool RemoveDocumentationComment { get; }
         public bool SortEntries { get; }
     }
