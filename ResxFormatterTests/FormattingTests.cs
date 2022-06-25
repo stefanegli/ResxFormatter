@@ -22,7 +22,7 @@
             (var actualFile1, var expectedFile1) = prepareFile(@"_editor\config1", "Sort");
             (var actualFile2, var expectedFile2) = prepareFile(@"_editor\config2", "Sort");
 
-            var formatter = new AdaptingResxFormatter(new FakeLog());
+            var formatter = new ConfigurableResxFormatter(new FakeLog());
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-Us");
 
             // Act

@@ -1,8 +1,8 @@
 ﻿namespace ResxFormatter
 {
-    public class AdaptingResxFormatter
+    public class ConfigurableResxFormatter
     {
-        public AdaptingResxFormatter(ILog log)
+        public ConfigurableResxFormatter(ILog log)
         {
             this.Log = log;
         }
