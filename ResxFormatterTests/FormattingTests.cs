@@ -15,30 +15,6 @@
 
     public class FormattingTests
     {
-        [Fact]
-        public void EditorConfig_files_can_be_specified_per_folder()
-        {
-            // Arrange
-            (var actualFile1, var expectedFile1) = prepareFile(@"_editor\config1", "Sort");
-            (var actualFile2, var expectedFile2) = prepareFile(@"_editor\config2", "Sort");
-
-            var formatter = new ConfigurableResxFormatter(new FakeLog());
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-Us");
-
-            // Act
-            formatter.Run(actualFile1);
-            formatter.Run(actualFile2);
-
-            // Assert
-            var actual1 = File.ReadAllText(actualFile1);
-            var expected1 = File.ReadAllText(expectedFile1);
-            Check.WithCustomMessage("config1 is applied correctly").That(actual1).Equals(expected1);
-
-            var actual2 = File.ReadAllText(actualFile2);
-            var expected2 = File.ReadAllText(expectedFile2);
-            Check.WithCustomMessage("config2 is applied correctly").That(actual2).Equals(expected2);
-        }
-
         [Theory]
         [ClassData(typeof(ResxTestData))]
         public void Files_are_processed_correctly(string message, string fileName, string culture, IFormatSettings settings)
@@ -64,7 +40,7 @@
             Check.WithCustomMessage(message).That(actual).Equals(expected);
         }
 
-        private static (string actual, string expected) prepareFile(string folder, string baseFileName, string extension = "resx")
+        internal static (string actual, string expected) prepareFile(string folder, string baseFileName, string extension = "resx")
         {
             var file = Path.Combine(folder, $"{baseFileName}.{extension}");
             var actualFile = Path.Combine(folder, $"{baseFileName}-actual.{extension}");

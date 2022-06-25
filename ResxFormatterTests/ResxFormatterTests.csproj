@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurableResxFormatterTests.cs" />
     <Compile Include="Fake\FakeLog.cs" />
     <Compile Include="Fake\FakeSettings.cs" />
     <Compile Include="FormattingTests.cs" />
@@ -51,6 +52,12 @@
     <Compile Include="TestFoundation\TheoryDataBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="_editor\.editorconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="_editor\filetype\.editorconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="_editor\config1\.editorconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -215,6 +222,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="_editor\config2\Sort.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_editor\filetype\Sort-expected.abc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_editor\filetype\Sort.abc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
