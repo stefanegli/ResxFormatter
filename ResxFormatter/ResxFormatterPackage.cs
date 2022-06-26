@@ -82,7 +82,7 @@
             if (document.IsResx)
             {
                 Log.Current.WriteLine("Save event for xml document received: " + document.Path);
-                var formatter = new ResxFormatter(settings, Log.Current);
+                var formatter = new ConfigurableResxFormatter(Log.Current);
                 formatter.Run(document.Path);
                 if ((formatter.IsFileChanged && settings.ReloadFile == ReloadMode.AfterModification)
                     || settings.ReloadFile == ReloadMode.Always)
