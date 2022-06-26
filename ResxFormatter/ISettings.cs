@@ -1,11 +1,5 @@
 ﻿namespace ResxFormatter
 {
-    public enum ConfigurationSource
-    {
-        VisualStudio,
-        EditorConfig
-    }
-
     public enum ReloadMode
     {
         Off,
@@ -21,7 +15,6 @@
 
     public interface ISettings : IFormatSettings
     {
-        ConfigurationSource ConfigurationSource { get; }
         bool FixResxWriter { get; }
         ReloadMode ReloadFile { get; }
     }

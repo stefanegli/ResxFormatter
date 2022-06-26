@@ -43,13 +43,8 @@
             var editorConfig = new ResxEditorConfigSettings(createResxFilePathForSettings());
             if (editorConfig.IsActive)
             {
-                currentSettings.ConfigurationSource = ConfigurationSource.EditorConfig;
                 currentSettings.SortEntries = editorConfig.SortEntries;
                 currentSettings.RemoveDocumentationComment = editorConfig.RemoveDocumentationComment;
-            }
-            else
-            {
-                currentSettings.ConfigurationSource = ConfigurationSource.VisualStudio;
             }
 
             string createResxFilePathForSettings()

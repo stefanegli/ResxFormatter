@@ -2,12 +2,10 @@
 {
     using Microsoft.VisualStudio.Shell;
 
-    using System;
     using System.ComponentModel;
-    using System.Reflection;
     using System.Windows.Forms;
 
-    internal class OptionPageGrid : DialogPage, ISettings, ISettingsHost
+    internal class OptionPageGrid : DialogPage, ISettings
     {
         internal const string ExperimentalCategory = "Experimental";
         internal const string FormattingCategory = "Formatting";
@@ -15,17 +13,7 @@
 
         public OptionPageGrid()
         {
-            this.Settings = new Settings(this);
-        }
-
-        [Category(FormattingCategory)]
-        [DisplayName("Configured by")]
-        [Description("Indicates how the formatting settings are controlled: By this dialog or an EditorConfig file.")]
-        [ReadOnly(true)]
-        public ConfigurationSource ConfigurationSource
-        {
-            get => this.Settings.ConfigurationSource;
-            set => this.Settings.ConfigurationSource = value;
+            this.Settings = new Settings();
         }
 
         [Category(ExperimentalCategory)]
@@ -74,36 +62,8 @@
 
         private Settings Settings { get; }
 
-        void ISettingsHost.SetReadOnly(string setting, bool value)
-        {
-            try
-            {
-                var properties = TypeDescriptor.GetProperties(this);
-                foreach (var p in properties)
-                {
-                    if (p is PropertyDescriptor property)
-                    {
-                        if (property.Name == setting)
-                        {
-                            var readOnly = property.Attributes[typeof(ReadOnlyAttribute)];
-                            if (readOnly is object)
-                            {
-                                var flags = BindingFlags.NonPublic | BindingFlags.Instance;
-                                var field = readOnly.GetType().GetField("isReadOnly", flags);
-                                field?.SetValue(readOnly, value, flags, null, null);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Current.Write(ex);
-            }
-        }
-
         public override string ToString() =>
-            $"{this.ConfigurationSource}: {nameof(this.SortEntries)}={this.SortEntries}, {nameof(this.RemoveDocumentationComment)}={this.RemoveDocumentationComment}, {nameof(this.FixResxWriter)}={this.FixResxWriter}";
+            $"{nameof(this.SortEntries)}={this.SortEntries}, {nameof(this.RemoveDocumentationComment)}={this.RemoveDocumentationComment}, {nameof(this.FixResxWriter)}={this.FixResxWriter}";
 
         protected override void OnActivate(CancelEventArgs e)
         {
