@@ -1,8 +1,9 @@
 # Road map
 
-- [ ] Settings / Options:
-  - [ ] List of file extensions that should be processed
-
+- [ ] Context Menus:
+  - [ ] Format current file
+  - [ ] Format all files in current folder
+  - [ ] Format all files in solution
 
 Features that have a checkmark are complete and available for
 download in the
@@ -14,9 +15,11 @@ These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
 ## 3.0 PREVIEW
-- [ ] Formatting rules can only be configured by EditorConfig file (no EditorConfig == no effect)
-- [ ] Support different EditorConfig settings for sub folders of solution
+- [x] Formatting rules can only be configured by [EditorConfig](https://editorconfig.org/) file (no configuration == no effect)
+- [x] Support different EditorConfig settings for sub folders of solution
+- [ ] Support different file extensions (standard [EditorConfig](https://editorconfig.org/) functionality)
 - [x] Changes to default settings are now visible (bold font)
+
 
 ## 2.0
 - [x] Support for Visual Studio 2017, 2019 and **2022** 
