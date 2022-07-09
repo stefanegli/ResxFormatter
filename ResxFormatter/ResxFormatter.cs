@@ -19,6 +19,21 @@
         private ILog Log { get; }
         private IFormatSettings Settings { get; }
 
+        public static bool HasDocumentationComment(XDocument document)
+        {
+            var firstComment = document.Root.Nodes().FirstOrDefault(n => n.NodeType == XmlNodeType.Comment) as XComment;
+            if (firstComment == null)
+            {
+                return false;
+            }
+
+            var value = RemoveWhiteSpace(firstComment.ToString());
+            var schema = RemoveWhiteSpace(ResxWriterFix.OriginalComment);
+            return value == schema;
+
+            string RemoveWhiteSpace(string text) => string.Join("", text.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+        }
+
         /// <summary>
         /// Returns true if the given file was modified.
         /// </summary>
@@ -70,8 +85,15 @@
                     .ToList()
                 : toSort;
 
+            var hasCommentAdded = false;
+            if (!this.Settings.RemoveDocumentationComment && !HasDocumentationComment(document))
+            {
+                toSave.Insert(0, new XComment(ResxWriterFix.OriginalCommentContent));
+                hasCommentAdded = true;
+            }
+
             var requiresSorting = this.Settings.SortEntries && !toSort.SequenceEqual(sorted);
-            if (isResx && (hasCommentRemoved || requiresSorting))
+            if (isResx && (hasCommentRemoved || hasCommentAdded || requiresSorting))
             {
                 toSave.AddRange(sorted);
                 document.Root.ReplaceNodes(toSave);

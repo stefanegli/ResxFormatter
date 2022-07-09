@@ -13,6 +13,11 @@
 
     public class ConfigurableResxFormatterTests
     {
+        public ConfigurableResxFormatterTests()
+        {
+            Log.Current.IsActive = false;
+        }
+
         [Fact]
         public void Different_file_extensions_can_be_processed()
         {
@@ -53,6 +58,24 @@
             var actual2 = File.ReadAllText(actualFile2);
             var expected2 = File.ReadAllText(expectedFile2);
             Check.WithCustomMessage("config2 is applied correctly").That(actual2).Equals(expected2);
+        }
+
+        [Fact]
+        public void Resx_comment_is_inserted_if_necessary()
+        {
+            // Arrange
+            (var actualFile2, var expectedFile2) = FormattingTests.prepareFile(@"_editor\insertComment", "Sort");
+
+            var formatter = new ConfigurableResxFormatter(new FakeLog());
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-Us");
+
+            // Act
+            formatter.Run(actualFile2);
+
+            // Assert
+            var actual1 = File.ReadAllText(actualFile2);
+            var expected1 = File.ReadAllText(expectedFile2);
+            Check.WithCustomMessage("config1 is applied correctly").That(actual1).Equals(expected1);
         }
     }
 }
