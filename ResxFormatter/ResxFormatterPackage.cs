@@ -66,7 +66,6 @@
 
             documentEvents = new VsDocumentEvents();
             documentEvents.Saved += this.OnDocumentSaved;
-            Log.Current.WriteLine(this.Settings.ToString());
         }
 
         private void OnDocumentSaved(object sender, VsDocument document)
