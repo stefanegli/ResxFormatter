@@ -46,6 +46,9 @@
 
             documentEvents = new VsDocumentEvents();
             documentEvents.Saved += this.OnDocumentSaved;
+
+            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            Log.Current.WriteLine(this.Settings.ToString());
         }
 
         private void OnDocumentSaved(object sender, VsDocument document)
