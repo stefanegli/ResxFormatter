@@ -7,7 +7,6 @@
     using Microsoft.VisualStudio.Shell.Interop;
 
     using System;
-    using System.IO;
     using System.Runtime.InteropServices;
     using System.Threading;
 
@@ -33,26 +32,7 @@
                     settings = (OptionPageGrid)this.GetDialogPage(typeof(OptionPageGrid));
                 }
 
-                ApplyEditorConfigSettings(settings);
                 return settings;
-            }
-        }
-
-        internal static void ApplyEditorConfigSettings(OptionPageGrid currentSettings)
-        {
-            var editorConfig = new ResxEditorConfigSettings(createResxFilePathForSettings());
-            if (editorConfig.IsActive)
-            {
-                currentSettings.SortEntries = editorConfig.SortEntries;
-                currentSettings.RemoveDocumentationComment = editorConfig.RemoveDocumentationComment;
-            }
-
-            string createResxFilePathForSettings()
-            {
-                var fileName = "dummy.resx";
-                var solutionPath = "";//applicationObject?.Solution?.FullName;
-                var solutionDir = string.IsNullOrWhiteSpace(solutionPath) ? null : Path.GetDirectoryName(solutionPath);
-                return string.IsNullOrWhiteSpace(solutionDir) ? fileName : Path.Combine(solutionDir, fileName);
             }
         }
 
@@ -72,7 +52,6 @@
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            var settings = this.Settings;
             if (document.IsResx)
             {
                 Log.Current.WriteLine("Save event for xml document received: " + document.Path);

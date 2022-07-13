@@ -38,38 +38,14 @@
             set => this.Settings.ReloadFile = value;
         }
 
-        [Category(FormattingCategory)]
-        [DisplayName("Remove documentation comment")]
-        [Description("Determines whether or not the resx 'documentation' is removed.")]
-        [ReadOnly(false)]
-        [DefaultValue(true)]
-        public bool RemoveDocumentationComment
-        {
-            get => this.Settings.RemoveDocumentationComment;
-            set => this.Settings.RemoveDocumentationComment = value;
-        }
-
-        [Category(FormattingCategory)]
-        [DisplayName("Sort resource entries")]
-        [Description("Determines whether or not resource entries are sorted alphabetically.")]
-        [ReadOnly(false)]
-        [DefaultValue(true)]
-        public bool SortEntries
-        {
-            get => this.Settings.SortEntries;
-            set => this.Settings.SortEntries = value;
-        }
-
         private Settings Settings { get; }
 
-        public override string ToString() =>
-            $"{nameof(this.SortEntries)}={this.SortEntries}, {nameof(this.RemoveDocumentationComment)}={this.RemoveDocumentationComment}, {nameof(this.FixResxWriter)}={this.FixResxWriter}";
+        public override string ToString() => $"{nameof(this.FixResxWriter)}={this.FixResxWriter}";
 
         protected override void OnActivate(CancelEventArgs e)
         {
             if (this.Window is PropertyGrid grid)
             {
-                ResxFormatterPackage.ApplyEditorConfigSettings(this);
                 grid.Refresh();
             }
         }

@@ -13,7 +13,7 @@
         bool SortEntries { get; }
     }
 
-    public interface ISettings : IFormatSettings
+    public interface ISettings
     {
         bool FixResxWriter { get; }
         ReloadMode ReloadFile { get; }
