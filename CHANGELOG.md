@@ -17,8 +17,9 @@ on the official Visual Studio extension gallery.
 ## 3.0 PREVIEW
 - [x] Formatting rules can only be configured by [EditorConfig](https://editorconfig.org/) file (no configuration == no effect)
 - [x] Support different EditorConfig settings for sub folders of solution
-- [ ] Support different file extensions (standard [EditorConfig](https://editorconfig.org/) functionality)
+- [x] Support different file extensions (standard [EditorConfig](https://editorconfig.org/) functionality)
 - [x] Changes to default settings are now visible (bold font)
+- [x] BugFix: Extension does not load with VS 2017 (cf. issue #7)
 
 
 ## 2.0

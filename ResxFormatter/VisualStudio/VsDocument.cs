@@ -1,9 +1,9 @@
 ﻿namespace ResxFormatter.VisualStudio
-{ 
+{
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
 
-    public  class VsDocument
+    public class VsDocument
     {
         public VsDocument(RunningDocumentTable documents, uint cookie, string path)
         {
@@ -13,12 +13,12 @@
         }
 
         public uint Cookie { get; }
-        public bool IsResx => this.Path.ToUpperInvariant().EndsWith(".RESX");
+
         public string Path { get; }
 
         private RunningDocumentTable Documents { get; }
 
-        public void Close() 
+        public void Close()
         {
             this.Documents.CloseDocument(__FRAMECLOSE.FRAMECLOSE_NoSave, this.Cookie);
         }

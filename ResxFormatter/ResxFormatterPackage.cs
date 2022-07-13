@@ -55,24 +55,21 @@
         {
             ThreadHelper.ThrowIfNotOnUIThread();
 
-            if (document.IsResx)
+            Log.Current.WriteLine("Save event received: " + document.Path);
+            var formatter = new ConfigurableResxFormatter(Log.Current);
+            formatter.Run(document.Path);
+            if ((formatter.IsFileChanged && settings.ReloadFile == ReloadMode.AfterModification)
+                || settings.ReloadFile == ReloadMode.Always)
+
             {
-                Log.Current.WriteLine("Save event for xml document received: " + document.Path);
-                var formatter = new ConfigurableResxFormatter(Log.Current);
-                formatter.Run(document.Path);
-                if ((formatter.IsFileChanged && settings.ReloadFile == ReloadMode.AfterModification)
-                    || settings.ReloadFile == ReloadMode.Always)
+                Log.Current.WriteLine("Reloading file.");
+                document.Close();
 
+                Task.Run(async () =>
                 {
-                    Log.Current.WriteLine("Reloading file.");
-                    document.Close();
-
-                    Task.Run(async () =>
-                    {
-                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                        applicationObject.ItemOperations.OpenFile(document.Path);
-                    });
-                }
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    applicationObject.ItemOperations.OpenFile(document.Path);
+                });
             }
         }
     }
