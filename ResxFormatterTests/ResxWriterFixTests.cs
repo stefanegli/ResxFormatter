@@ -18,6 +18,30 @@
         }
 
         [Fact]
+        public void Comment__returns_string_as_expected()
+        {
+            // Arrange
+            var text = "  \n<!-- abc  -->\n efg";
+            // Act
+            var result = ResxWriterFix.Comment(text);
+
+            // Assert
+            Check.That(result).Equals("  \n<!-- abc  -->");
+        }
+
+        [Fact]
+        public void CommentContent__returns_string_as_expected()
+        {
+            // Arrange
+            var text = "  \n<!-- abc  -->\n efg12";
+            // Act
+            var result = ResxWriterFix.CommentContent(text);
+
+            // Assert
+            Check.That(result).Equals(" abc  ");
+        }
+
+        [Fact]
         public void The_fix_can_be_turned_on_and_off_again()
         {
             using var fix = new ResxWriterFix();

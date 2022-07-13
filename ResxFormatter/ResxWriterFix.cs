@@ -27,12 +27,7 @@ namespace ResxFormatter
             }
         }
 
-        public void Dispose()
-        {
-            this.IsActive = false;
-        }
-
-        private static string Comment(string text)
+        public static string Comment(string text)
         {
             var endOfComment = text.IndexOf("-->", StringComparison.Ordinal);
             if (endOfComment > 0)
@@ -43,7 +38,7 @@ namespace ResxFormatter
             return text;
         }
 
-        private static string CommentContent(string text)
+        public static string CommentContent(string text)
         {
             var startOfComment = text.IndexOf("<!--", StringComparison.Ordinal);
             var endOfComment = text.IndexOf("-->", StringComparison.Ordinal);
@@ -53,6 +48,11 @@ namespace ResxFormatter
             }
 
             return text;
+        }
+
+        public void Dispose()
+        {
+            this.IsActive = false;
         }
 
         private void FixResxWriter(bool fixIt)
