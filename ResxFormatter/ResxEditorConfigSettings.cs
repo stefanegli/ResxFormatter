@@ -41,6 +41,8 @@ namespace ResxFormatter
             {
                 switch (comparerString)
                 {
+                    case nameof(StringComparer.InvariantCulture): return StringComparer.InvariantCulture;
+                    case nameof(StringComparer.InvariantCultureIgnoreCase): return StringComparer.InvariantCultureIgnoreCase;
                     case nameof(StringComparer.OrdinalIgnoreCase): return StringComparer.OrdinalIgnoreCase;
                     default: return StringComparer.Ordinal;
                 }
