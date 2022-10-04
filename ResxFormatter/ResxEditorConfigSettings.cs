@@ -22,6 +22,11 @@ namespace ResxFormatter
                     isActive = true;
                     this.RemoveDocumentationComment = IsEnabled(removeComment);
                 }
+
+                if (this.SortEntries && settings.TryGetValue("resx_formatter_sort_comparer", out var comparerString))
+                {
+                    this.Comparer = Comparer(comparerString);
+                }
             }
             catch (Exception ex)
             {
@@ -31,8 +36,18 @@ namespace ResxFormatter
             this.IsActive = isActive;
 
             bool IsEnabled(string setting) => "true" == setting;
+
+            StringComparer Comparer(string comparerString)
+            {
+                switch (comparerString)
+                {
+                    case nameof(StringComparer.OrdinalIgnoreCase): return StringComparer.OrdinalIgnoreCase;
+                    default: return StringComparer.Ordinal;
+                }
+            }
         }
 
+        public StringComparer Comparer { get; private set; } = StringComparer.Ordinal;
         public bool IsActive { get; }
         public bool RemoveDocumentationComment { get; }
         public bool SortEntries { get; }

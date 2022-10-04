@@ -1,5 +1,7 @@
 ﻿namespace ResxFormatter
 {
+    using System;
+
     public enum ReloadMode
     {
         Off,
@@ -9,6 +11,7 @@
 
     public interface IFormatSettings
     {
+        StringComparer Comparer { get; }
         bool RemoveDocumentationComment { get; }
         bool SortEntries { get; }
     }

@@ -80,8 +80,8 @@
             }
 
             var sorted = this.Settings.SortEntries
-                ? toSort.OrderBy(e => e.Attribute("name").Value, StringComparer.Ordinal)
-                    .OrderBy(e => e.Name.ToString(), StringComparer.Ordinal)
+                ? toSort.OrderBy(e => e.Attribute("name").Value, this.Settings.Comparer)
+                    .OrderBy(e => e.Name.ToString(), this.Settings.Comparer)
                     .ToList()
                 : toSort;
 

@@ -19,6 +19,24 @@
         }
 
         [Fact]
+        public void Alternate_sort_method_can_be_configured()
+        {
+            // Arrange
+            (var actualFile2, var expectedFile2) = FormattingTests.prepareFile(@"_editor\sort", "Sort");
+
+            var formatter = new ConfigurableResxFormatter(new FakeLog());
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-Us");
+
+            // Act
+            formatter.Run(actualFile2);
+
+            // Assert
+            var actual1 = File.ReadAllText(actualFile2);
+            var expected1 = File.ReadAllText(expectedFile2);
+            Check.WithCustomMessage("sorting applied correctly").That(actual1).Equals(expected1);
+        }
+
+        [Fact]
         public void Different_file_extensions_can_be_processed()
         {
             // Arrange
@@ -75,7 +93,7 @@
             // Assert
             var actual1 = File.ReadAllText(actualFile2);
             var expected1 = File.ReadAllText(expectedFile2);
-            Check.WithCustomMessage("config1 is applied correctly").That(actual1).Equals(expected1);
+            Check.WithCustomMessage("resx comment is inserted correctly").That(actual1).Equals(expected1);
         }
     }
 }
