@@ -17,6 +17,12 @@ namespace ResxFormatter
                     this.SortEntries = IsEnabled(sortEntries);
                 }
 
+                if (settings.TryGetValue("resx_formatter_remove_xsd_schema", out var removeSchema))
+                {
+                    isActive = true;
+                    this.RemoveXsdSchema = IsEnabled(removeSchema);
+                }
+
                 if (settings.TryGetValue("resx_formatter_remove_documentation_comment", out var removeComment))
                 {
                     isActive = true;
@@ -52,6 +58,7 @@ namespace ResxFormatter
         public StringComparer Comparer { get; private set; } = StringComparer.Ordinal;
         public bool IsActive { get; }
         public bool RemoveDocumentationComment { get; }
+        public bool RemoveXsdSchema { get; }
         public bool SortEntries { get; }
     }
 }

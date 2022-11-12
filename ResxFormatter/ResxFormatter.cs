@@ -45,6 +45,7 @@
         private bool FormatResx(string resxPath)
         {
             var isResx = false;
+            var hasSchemaRemoved = false;
             var hasCommentRemoved = false;
             var toSave = new List<XNode>();
             var toSort = new List<XElement>();
@@ -52,6 +53,15 @@
 
             foreach (var node in document.Root.Nodes())
             {
+                if (this.Settings.RemoveXsdSchema)
+                {
+                    if (!hasSchemaRemoved && node.NodeType == XmlNodeType.Element)
+                    {
+                        hasSchemaRemoved = true;
+                        continue;
+                    }
+                }
+
                 if (this.Settings.RemoveDocumentationComment)
                 {
                     if (!hasCommentRemoved && node.NodeType == XmlNodeType.Comment)
@@ -93,7 +103,7 @@
             }
 
             var requiresSorting = this.Settings.SortEntries && !toSort.SequenceEqual(sorted);
-            if (isResx && (hasCommentRemoved || hasCommentAdded || requiresSorting))
+            if (isResx && (hasSchemaRemoved || hasCommentRemoved || hasCommentAdded || requiresSorting))
             {
                 toSave.AddRange(sorted);
                 document.Root.ReplaceNodes(toSave);

@@ -95,5 +95,22 @@
             var expected1 = File.ReadAllText(expectedFile2);
             Check.WithCustomMessage("resx comment is inserted correctly").That(actual1).Equals(expected1);
         }
+
+        [Fact]
+        public void Xsd_schema_can_be_removed()
+        {
+            // Arrange
+            (var actualFile2, var expectedFile2) = FormattingTests.prepareFile(@"_editor\removeXsdSchema", "Schema");
+
+            var formatter = new ConfigurableResxFormatter(new FakeLog());
+
+            // Act
+            formatter.Run(actualFile2);
+
+            // Assert
+            var actual1 = File.ReadAllText(actualFile2);
+            var expected1 = File.ReadAllText(expectedFile2);
+            Check.WithCustomMessage("schema is removed correctly").That(actual1).Equals(expected1);
+        }
     }
 }

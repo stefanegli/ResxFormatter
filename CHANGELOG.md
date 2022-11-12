@@ -19,6 +19,7 @@ on the official Visual Studio extension gallery.
 - [x] Support different EditorConfig settings for sub folders of solution
 - [x] Support different file extensions (standard [EditorConfig](https://editorconfig.org/) functionality)
 - [x] Support different comparers (cf. issue #9)
+- [ ] XSD Schema element can be removed from resx files
 - [x] Changes to default settings are now visible (bold font)
 - [x] BugFix: Extension does not load with VS 2017 (cf. issue #7)
 
