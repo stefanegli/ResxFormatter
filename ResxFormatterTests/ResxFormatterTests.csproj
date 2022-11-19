@@ -54,6 +54,9 @@
     <None Include="_editor\.editorconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="_editor\insertCommentAndSchema\.editorconfig">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="_editor\insertComment\.editorconfig">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -270,6 +273,17 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="_editor\removeXsdSchema\Schema.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_editor\insertCommentAndSchema\Sort-expected.resx">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_editor\insertCommentAndSchema\Sort.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

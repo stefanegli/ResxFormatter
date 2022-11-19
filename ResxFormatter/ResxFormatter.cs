@@ -22,13 +22,28 @@
         public static bool HasDocumentationComment(XDocument document)
         {
             var firstComment = document.Root.Nodes().FirstOrDefault(n => n.NodeType == XmlNodeType.Comment) as XComment;
-            if (firstComment == null)
+            if (firstComment is null)
             {
                 return false;
             }
 
             var value = RemoveWhiteSpace(firstComment.ToString());
             var schema = RemoveWhiteSpace(ResxWriterFix.OriginalComment);
+            return value == schema;
+
+            string RemoveWhiteSpace(string text) => string.Join("", text.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        public static bool HasSchemaNode(XDocument document)
+        {
+            var firstElement = document.Root.Nodes().FirstOrDefault(n => n.NodeType == XmlNodeType.Element) as XElement;
+            if (firstElement is null)
+            {
+                return false;
+            }
+
+            var value = RemoveWhiteSpace(firstElement.ToString());
+            var schema = RemoveWhiteSpace(ResxWriterFix.OriginalSchema);
             return value == schema;
 
             string RemoveWhiteSpace(string text) => string.Join("", text.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
@@ -55,7 +70,7 @@
             {
                 if (this.Settings.RemoveXsdSchema)
                 {
-                    if (!hasSchemaRemoved && node.NodeType == XmlNodeType.Element)
+                    if (!hasSchemaRemoved && node is XElement e && e.Name.LocalName == "schema")
                     {
                         hasSchemaRemoved = true;
                         continue;
@@ -89,6 +104,12 @@
                 }
             }
 
+            if (!isResx)
+            {
+                this.Log.WriteLine($"Update was not required: Not a .resx file.");
+                return false;
+            }
+
             var sorted = this.Settings.SortEntries
                 ? toSort.OrderBy(e => e.Attribute("name").Value, this.Settings.Comparer)
                     .OrderBy(e => e.Name.ToString(), this.Settings.Comparer)
@@ -102,8 +123,15 @@
                 hasCommentAdded = true;
             }
 
+            var hasSchemaAdded = false;
+            if (!this.Settings.RemoveXsdSchema && !HasSchemaNode(document))
+            {
+                toSave.Insert(1, XElement.Parse(ResxWriterFix.OriginalSchema));
+                hasSchemaAdded = true;
+            }
+
             var requiresSorting = this.Settings.SortEntries && !toSort.SequenceEqual(sorted);
-            if (isResx && (hasSchemaRemoved || hasCommentRemoved || hasCommentAdded || requiresSorting))
+            if (hasSchemaRemoved || hasCommentRemoved || hasCommentAdded || hasSchemaAdded || requiresSorting)
             {
                 toSave.AddRange(sorted);
                 document.Root.ReplaceNodes(toSave);
@@ -113,8 +141,7 @@
             }
             else
             {
-                var reason = isResx ? "No modifications" : "Not a .resx file";
-                this.Log.WriteLine($"Update was not required: {reason}.");
+                this.Log.WriteLine($"Update was not required: No modifications.");
                 return false;
             }
         }

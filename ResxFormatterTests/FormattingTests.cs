@@ -57,6 +57,7 @@
                 var sortAndRemoveDocumentation = new FakeSettings
                 {
                     SortEntries = true,
+                    RemoveXsdSchema = false,
                     RemoveDocumentationComment = true
                 };
 
