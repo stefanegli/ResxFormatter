@@ -6,26 +6,26 @@ namespace ResxFormatter
 {
     public class ResxWriterFix : IDisposable
     {
-        private bool isActive;
+        private FixMode mode;
 
         public static string Original { get; } = ResXResourceWriter.ResourceSchema;
         public static string OriginalComment { get; } = Comment(ResXResourceWriter.ResourceSchema);
         public static string OriginalCommentContent { get; } = CommentContent(ResXResourceWriter.ResourceSchema);
         public static string OriginalSchema { get; } = Schema(ResXResourceWriter.ResourceSchema);
 
-        public bool IsActive
+        public FixMode Mode
         {
-            get => this.isActive;
+            get => this.mode;
             set
             {
-                if (this.isActive != value)
+                if (this.mode != value)
                 {
-                    var verb = value ? "Fixing" : "Restoring";
+                    var verb = value != FixMode.Off ? "Fixing" : "Restoring";
                     Log.Current.WriteLine($"{verb} ResXResourceWriter.");
                     this.FixResxWriter(value);
                 }
 
-                this.isActive = value;
+                this.mode = value;
             }
         }
 
@@ -48,14 +48,14 @@ namespace ResxFormatter
             return endOfComment > 0 ? text.Substring(endOfComment + 3).Trim() : text;
         }
 
-        public void Dispose() => this.IsActive = false;
+        public void Dispose() => this.Mode = FixMode.Off;
 
-        private void FixResxWriter(bool fixIt)
+        private void FixResxWriter(FixMode mode)
         {
             var field = typeof(ResXResourceWriter).GetField("ResourceSchema", BindingFlags.Static | BindingFlags.Public);
             if (field != null)
             {
-                if (fixIt)
+                if (mode == FixMode.RemoveComment)
                 {
                     // remove the comment from the schema as it only bloats the resource files
                     if (field.GetValue(null) is string schema)

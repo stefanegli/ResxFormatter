@@ -2,6 +2,13 @@
 {
     using System;
 
+    public enum FixMode
+    {
+        Off,
+        RemoveComment,
+        RemoveCommentAndSchema
+    }
+
     public enum ReloadMode
     {
         Off,
@@ -19,7 +26,7 @@
 
     public interface ISettings
     {
-        bool FixResxWriter { get; }
+        FixMode FixResxWriterMode { get; }
         ReloadMode ReloadFile { get; }
     }
 }

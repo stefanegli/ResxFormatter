@@ -4,15 +4,15 @@
     {
         private readonly ResxWriterFix resxWriterFix = new ResxWriterFix();
 
-        public bool FixResxWriter
+        public FixMode FixResxWriterMode
         {
-            get => this.resxWriterFix.IsActive;
-            set => this.resxWriterFix.IsActive = value;
+            get => this.resxWriterFix.Mode;
+            set => this.resxWriterFix.Mode = value;
         }
 
         public ReloadMode ReloadFile { get; set; } = ReloadMode.AfterModification;
 
-        public bool RemoveDocumentationComment { get; set; } = true;
+        public FixMode RemoveDocumentationComment { get; set; } = FixMode.RemoveCommentAndSchema;
 
         public bool SortEntries { get; set; } = true;
     }

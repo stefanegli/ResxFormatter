@@ -73,13 +73,13 @@
                 resx.AddResource("a", "x");
             }
 
-            fix.IsActive = true;
+            fix.Mode = FixMode.RemoveComment;
             using (var resx = new ResXResourceWriter(active))
             {
                 resx.AddResource("a", "x");
             }
 
-            fix.IsActive = false;
+            fix.Mode = FixMode.Off;
             Thread.Sleep(10);
             using (var resx = new ResXResourceWriter(inactive))
             {
@@ -91,7 +91,7 @@
             var activeLines = File.ReadAllLines(active);
             var inactiveLines = File.ReadAllLines(inactive);
 
-            Check.That(fix.IsActive).IsFalse();
+            Check.That(fix.Mode).Equals(FixMode.Off);
             Check.WithCustomMessage("active").That(activeLines).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-active-expected.resx"));
             Check.WithCustomMessage("inactive").That(inactiveLines).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-inactive-expected.resx"));
             Check.WithCustomMessage("original").That(originalLines).Equals(inactiveLines);

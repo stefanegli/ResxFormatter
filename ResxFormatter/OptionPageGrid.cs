@@ -18,13 +18,13 @@
 
         [Category(ExperimentalCategory)]
         [DisplayName("Fix Resx Writer")]
-        [Description("ATTENTION: Unwanted side effects possible: If enabled the ResXResourceWriter is tricked into not writing the 'documentation' comment. This is achived by modifying a static string field through reflection.")]
+        [Description("ATTENTION: Unwanted side effects possible: If enabled the ResXResourceWriter is tricked into not writing the 'documentation' comment and/or schema element. This is achived by modifying a static string field through reflection.")]
         [ReadOnly(false)]
-        [DefaultValue(false)]
-        public bool FixResxWriter
+        [DefaultValue(FixMode.Off)]
+        public FixMode FixResxWriterMode
         {
-            get => this.Settings.FixResxWriter;
-            set => this.Settings.FixResxWriter = value;
+            get => this.Settings.FixResxWriterMode;
+            set => this.Settings.FixResxWriterMode = value;
         }
 
         [Category(GeneralCategory)]
@@ -40,7 +40,7 @@
 
         private Settings Settings { get; }
 
-        public override string ToString() => $"{nameof(this.FixResxWriter)}={this.FixResxWriter}";
+        public override string ToString() => $"{nameof(this.FixResxWriterMode)}={this.FixResxWriterMode}";
 
         protected override void OnActivate(CancelEventArgs e)
         {
