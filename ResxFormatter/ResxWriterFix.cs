@@ -32,41 +32,23 @@ namespace ResxFormatter
         public static string Comment(string text)
         {
             var endOfComment = text.IndexOf("-->", StringComparison.Ordinal);
-            if (endOfComment > 0)
-            {
-                return text.Substring(0, endOfComment + 3);
-            }
-
-            return text;
+            return endOfComment > 0 ? text.Substring(0, endOfComment + 3) : text;
         }
 
         public static string CommentContent(string text)
         {
             var startOfComment = text.IndexOf("<!--", StringComparison.Ordinal);
             var endOfComment = text.IndexOf("-->", StringComparison.Ordinal);
-            if (startOfComment > 0 && endOfComment > 0)
-            {
-                return text.Substring(startOfComment + 4, endOfComment - startOfComment - 4);
-            }
-
-            return text;
+            return startOfComment > 0 && endOfComment > 0 ? text.Substring(startOfComment + 4, endOfComment - startOfComment - 4) : text;
         }
 
         public static string Schema(string text)
         {
             var endOfComment = text.IndexOf("-->", StringComparison.Ordinal);
-            if (endOfComment > 0)
-            {
-                return text.Substring(endOfComment + 3).Trim();
-            }
-
-            return text;
+            return endOfComment > 0 ? text.Substring(endOfComment + 3).Trim() : text;
         }
 
-        public void Dispose()
-        {
-            this.IsActive = false;
-        }
+        public void Dispose() => this.IsActive = false;
 
         private void FixResxWriter(bool fixIt)
         {
