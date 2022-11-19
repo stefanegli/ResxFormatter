@@ -208,9 +208,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="_files\ResxWriterFix-active-expected.resx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="_files\ResxWriterFix-inactive-expected.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -284,6 +281,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="_editor\insertCommentAndSchema\Sort.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="_files\ResxWriterFix-removeComment-expected.resx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="_files\ResxWriterFix-removeCommentAndSchema-expected.resx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

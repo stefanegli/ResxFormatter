@@ -20,8 +20,7 @@ namespace ResxFormatter
             {
                 if (this.mode != value)
                 {
-                    var verb = value != FixMode.Off ? "Fixing" : "Restoring";
-                    Log.Current.WriteLine($"{verb} ResXResourceWriter.");
+                    Log.Current.WriteLine($"Fixing ResXResourceWriter: {value}");
                     this.FixResxWriter(value);
                 }
 
@@ -57,7 +56,6 @@ namespace ResxFormatter
             {
                 if (mode == FixMode.RemoveComment)
                 {
-                    // remove the comment from the schema as it only bloats the resource files
                     if (field.GetValue(null) is string schema)
                     {
                         var endOfComment = schema.IndexOf("-->", StringComparison.Ordinal);
@@ -67,6 +65,10 @@ namespace ResxFormatter
                             field.SetValue(null, schema);
                         }
                     }
+                }
+                else if (mode == FixMode.RemoveCommentAndSchema)
+                {
+                    field.SetValue(null, "<schema />");
                 }
                 else
                 {

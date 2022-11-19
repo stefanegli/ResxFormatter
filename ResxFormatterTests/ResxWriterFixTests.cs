@@ -60,11 +60,13 @@
 
             // Arrange
             var original = @".\_files\ResxWriterFix-original.resx";
-            var active = @".\_files\ResxWriterFix-active.resx";
+            var removeComment = @".\_files\ResxWriterFix-removeComment.resx";
+            var removeCommentAndSchema = @".\_files\ResxWriterFix-removeCommentAndSchema.resx";
             var inactive = @".\_files\ResxWriterFix-inactive.resx";
 
             File.Delete(original);
-            File.Delete(active);
+            File.Delete(removeComment);
+            File.Delete(removeCommentAndSchema);
             File.Delete(inactive);
 
             // Act
@@ -74,7 +76,14 @@
             }
 
             fix.Mode = FixMode.RemoveComment;
-            using (var resx = new ResXResourceWriter(active))
+            using (var resx = new ResXResourceWriter(removeComment))
+            {
+                resx.AddResource("a", "x");
+            }
+
+            fix.Mode = FixMode.RemoveCommentAndSchema;
+            Thread.Sleep(10);
+            using (var resx = new ResXResourceWriter(removeCommentAndSchema))
             {
                 resx.AddResource("a", "x");
             }
@@ -88,11 +97,13 @@
 
             // Assert
             var originalLines = File.ReadAllLines(original);
-            var activeLines = File.ReadAllLines(active);
+            var removeCommentLines = File.ReadAllLines(removeComment);
+            var removeCommentAndSchemaLines = File.ReadAllLines(removeCommentAndSchema);
             var inactiveLines = File.ReadAllLines(inactive);
 
             Check.That(fix.Mode).Equals(FixMode.Off);
-            Check.WithCustomMessage("active").That(activeLines).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-active-expected.resx"));
+            Check.WithCustomMessage("removeComment").That(removeCommentLines).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-removeComment-expected.resx"));
+            Check.WithCustomMessage("removeCommentAndSchema").That(removeCommentAndSchemaLines).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-removeCommentAndSchema-expected.resx"));
             Check.WithCustomMessage("inactive").That(inactiveLines).Equals(File.ReadAllLines(@".\_files\ResxWriterFix-inactive-expected.resx"));
             Check.WithCustomMessage("original").That(originalLines).Equals(inactiveLines);
         }
