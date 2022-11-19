@@ -7,9 +7,11 @@ namespace ResxFormatter
     public class ResxWriterFix : IDisposable
     {
         private bool isActive;
+
+        public static string Original { get; } = ResXResourceWriter.ResourceSchema;
         public static string OriginalComment { get; } = Comment(ResXResourceWriter.ResourceSchema);
         public static string OriginalCommentContent { get; } = CommentContent(ResXResourceWriter.ResourceSchema);
-        public static string OriginalSchema { get; } = ResXResourceWriter.ResourceSchema;
+        public static string OriginalSchema { get; } = Schema(ResXResourceWriter.ResourceSchema);
 
         public bool IsActive
         {
@@ -50,6 +52,17 @@ namespace ResxFormatter
             return text;
         }
 
+        public static string Schema(string text)
+        {
+            var endOfComment = text.IndexOf("-->", StringComparison.Ordinal);
+            if (endOfComment > 0)
+            {
+                return text.Substring(endOfComment + 3).Trim();
+            }
+
+            return text;
+        }
+
         public void Dispose()
         {
             this.IsActive = false;
@@ -75,7 +88,7 @@ namespace ResxFormatter
                 }
                 else
                 {
-                    field.SetValue(null, OriginalSchema);
+                    field.SetValue(null, Original);
                 }
             }
         }

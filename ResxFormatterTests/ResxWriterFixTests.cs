@@ -42,6 +42,18 @@
         }
 
         [Fact]
+        public void Schema__returns_string_as_expected()
+        {
+            // Arrange
+            var text = "  \n<!-- abc  -->\n<schema /> ";
+            // Act
+            var result = ResxWriterFix.Schema(text);
+
+            // Assert
+            Check.That(result).Equals("<schema />");
+        }
+
+        [Fact]
         public void The_fix_can_be_turned_on_and_off_again()
         {
             using var fix = new ResxWriterFix();
