@@ -72,6 +72,7 @@
                 {
                     if (!hasSchemaRemoved && node is XElement e && e.Name.LocalName == "schema")
                     {
+                        toSave.Add(XElement.Parse(ResxWriterFix.FakeSchema));
                         hasSchemaRemoved = true;
                         continue;
                     }
