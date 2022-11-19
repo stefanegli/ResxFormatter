@@ -8,6 +8,7 @@ namespace ResxFormatter
     {
         private FixMode mode;
 
+        public static string FakeSchema { get; } = "<schema />";
         public static string Original { get; } = ResXResourceWriter.ResourceSchema;
         public static string OriginalComment { get; } = Comment(ResXResourceWriter.ResourceSchema);
         public static string OriginalCommentContent { get; } = CommentContent(ResXResourceWriter.ResourceSchema);
@@ -60,7 +61,7 @@ namespace ResxFormatter
                 }
                 else if (mode == FixMode.RemoveCommentAndSchema)
                 {
-                    field.SetValue(null, "<schema />");
+                    field.SetValue(null, FakeSchema);
                 }
                 else
                 {
