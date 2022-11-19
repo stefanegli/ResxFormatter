@@ -56,15 +56,7 @@ namespace ResxFormatter
             {
                 if (mode == FixMode.RemoveComment)
                 {
-                    if (field.GetValue(null) is string schema)
-                    {
-                        var endOfComment = schema.IndexOf("-->", StringComparison.Ordinal);
-                        if (endOfComment > 0)
-                        {
-                            schema = schema.Substring(endOfComment + 3);
-                            field.SetValue(null, schema);
-                        }
-                    }
+                    field.SetValue(null, OriginalSchema);
                 }
                 else if (mode == FixMode.RemoveCommentAndSchema)
                 {
