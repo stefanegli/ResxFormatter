@@ -17,6 +17,7 @@
     [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideOptionPage(typeof(OptionPageGrid), Vsix.Name, OptionPageGrid.GeneralCategory, 0, 0, true)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
     public sealed class ResxFormatterPackage : AsyncPackage
     {
         private static EnvDTE80.DTE2 applicationObject;
@@ -49,6 +50,7 @@
 
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             Log.Current.WriteLine(this.Settings.ToString());
+            await Commands.FormatAllCommand.InitializeAsync(this);
         }
 
         private void OnDocumentSaved(object sender, VsDocument document)
