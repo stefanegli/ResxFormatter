@@ -41,28 +41,16 @@
             private set;
         }
 
-        /// <summary>
-        /// Gets the service provider from the owner package.
-        /// </summary>
-        private Microsoft.VisualStudio.Shell.IAsyncServiceProvider ServiceProvider
-        {
-            get
-            {
-                return this.package;
-            }
-        }
-
         public static async Task InitializeAsync(ResxFormatterPackage package)
         {
-            // Switch to the main thread - the call to AddCommand in FormatAllCommand's constructor requires
-            // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             Instance = new FormatAllCommand(package, commandService);
-
             Environment = await package.GetServiceAsync(typeof(DTE)) as DTE2;
         }
+
+        public static bool SkipFile(string filePath) => filePath is null || filePath.Contains(@"\bin\") || filePath.Contains(@"\obj\");
 
         private void Execute(object sender, EventArgs e)
         {
@@ -73,6 +61,11 @@
                 var solutionPath = Path.GetDirectoryName(solution.FullName);
                 foreach (var file in Directory.EnumerateFiles(solutionPath, "*.resx", SearchOption.AllDirectories))
                 {
+                    if (SkipFile(file))
+                    {
+                        continue;
+                    }
+
                     var formatter = new ConfigurableResxFormatter(Log.Current);
                     formatter.Run(file);
                 }
