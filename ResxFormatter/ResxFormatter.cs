@@ -142,7 +142,7 @@
             }
             else
             {
-                this.Log.WriteLine($"Update was not required: No modifications.");
+                this.Log.WriteLine($"Skipping {resxPath}");
                 return false;
             }
         }
