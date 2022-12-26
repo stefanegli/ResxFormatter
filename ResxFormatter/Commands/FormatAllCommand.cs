@@ -71,15 +71,23 @@
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             var solution = Environment?.Solution;
-            if (solution is object)
+            if (solution is null)
             {
-                var solutionPath = Path.GetDirectoryName(solution.FullName);
-                this.package.JoinableTaskFactory.RunAsync(async () =>
-                {
-                    await Task.Run(() => { FormatAllFiles(solutionPath); });
-                    Log.Current.WriteLine("Success: All files processed.");
-                }, JoinableTaskCreationOptions.LongRunning);
+                return;
             }
+
+            var fullName = solution.FullName;
+            if (fullName is null || !File.Exists(fullName))
+            {
+                return;
+            }
+
+            var solutionPath = Path.GetDirectoryName(fullName);
+            this.package.JoinableTaskFactory.RunAsync(async () =>
+            {
+                await Task.Run(() => { FormatAllFiles(solutionPath); });
+                Log.Current.WriteLine("Success: All files processed.");
+            }, JoinableTaskCreationOptions.LongRunning);
         }
     }
 }
