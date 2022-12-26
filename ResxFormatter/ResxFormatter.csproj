@@ -113,7 +113,6 @@
       <ResourceName>Menus.ctmenu</ResourceName>
       <LastGenOutput>ResxFormatterPackage.cs</LastGenOutput>
     </VSCTCompile>
-    <Content Include="Commands\Resources\FormatAllCommand.png" />
     <Content Include="Images\Icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>

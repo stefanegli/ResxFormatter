@@ -15,10 +15,6 @@
 
     internal sealed class FormatAllCommand
     {
-        public const int CommandId = 0x0100;
-
-        public static readonly Guid CommandSet = new Guid("c7e059c9-69b5-443d-88f4-930c6a3975ca");
-
         private readonly ResxFormatterPackage package;
 
         private FormatAllCommand(ResxFormatterPackage package, OleMenuCommandService commandService)
@@ -26,7 +22,7 @@
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
-            var menuCommandID = new CommandID(CommandSet, CommandId);
+            var menuCommandID = new CommandID(PackageGuids.guidResxFormatterPackageCmdSet, PackageIds.FormatAllCommandId);
             var menuItem = new MenuCommand(this.Execute, menuCommandID);
             commandService.AddCommand(menuItem);
         }
