@@ -5,6 +5,7 @@
     using EnvDTE80;
 
     using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Threading;
 
     using System;
     using System.ComponentModel.Design;
@@ -52,6 +53,24 @@
 
         public static bool SkipFile(string filePath) => filePath is null || filePath.Contains(@"\bin\") || filePath.Contains(@"\obj\");
 
+        private static void FormatAllFiles(string solutionPath)
+        {
+            foreach (var file in Directory.EnumerateFiles(solutionPath, "*.resx", SearchOption.AllDirectories))
+            {
+                if (SkipFile(file))
+                {
+                    continue;
+                }
+
+                //                for (int i = 0; i < 20; i++)
+                //                {
+                //                    System.Threading.Thread.Sleep(200);
+                var formatter = new ConfigurableResxFormatter(Log.Current);
+                formatter.Run(file);
+            }
+            //            }
+        }
+
         private void Execute(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -59,16 +78,11 @@
             if (solution is object)
             {
                 var solutionPath = Path.GetDirectoryName(solution.FullName);
-                foreach (var file in Directory.EnumerateFiles(solutionPath, "*.resx", SearchOption.AllDirectories))
+                this.package.JoinableTaskFactory.RunAsync(async () =>
                 {
-                    if (SkipFile(file))
-                    {
-                        continue;
-                    }
-
-                    var formatter = new ConfigurableResxFormatter(Log.Current);
-                    formatter.Run(file);
-                }
+                    await Task.Run(() => { FormatAllFiles(solutionPath); });
+                    Log.Current.WriteLine("Success: All files processed.");
+                }, JoinableTaskCreationOptions.LongRunning);
             }
         }
     }
