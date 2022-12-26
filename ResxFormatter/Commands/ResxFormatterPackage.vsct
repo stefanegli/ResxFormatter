@@ -23,21 +23,18 @@
     <!--The Commands section is where commands, menus, and menu groups are defined.
       This section uses a Guid to identify the package that provides the command defined inside it. -->
     <Commands package="guidResxFormatterPackage">
-        <!-- Inside this section we have different sub-sections: one for the menus, another
-    for the menu groups, one for the buttons (the actual commands), one for the combos
-    and the last one for the bitmaps used. Each element is identified by a command id that
-    is a unique pair of guid and numeric identifier; the guid part of the identifier is usually
-    called "command set" and is used to group different command inside a logically related
-    group; your package should define its own command set in order to avoid collisions
-    with command ids defined by other packages. -->
 
-        <!-- In this section you can define new menu groups. A menu group is a container for
-         other menus or buttons (commands); from a visual point of view you can see the
-         group as the part of a menu contained between two lines. The parent of a group
-         must be a menu. -->
+        <Menus>
+            <Menu guid="guidResxFormatterPackageTopMenuCmdSet" id="ResxFormatterTopMenu" type="Menu">
+                <Strings>
+                    <ButtonText>ResxFormatter</ButtonText>
+                </Strings>
+            </Menu>
+        </Menus>
+
         <Groups>
             <Group guid="guidResxFormatterPackageCmdSet" id="ResxFormatterCommands" priority="0x0600">
-                <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+                <Parent guid="guidResxFormatterPackageTopMenuCmdSet" id="ResxFormatterTopMenu" />
             </Group>
         </Groups>
 
@@ -55,19 +52,29 @@
             <Button guid="guidResxFormatterPackageCmdSet" id="FormatAllCommandId" priority="0x0100" type="Button">
                 <Parent guid="guidResxFormatterPackageCmdSet" id="ResxFormatterCommands" />
                 <Strings>
-                    <ButtonText>Format all resx files</ButtonText>
+                    <ButtonText>Format all files in solution</ButtonText>
                 </Strings>
             </Button>
         </Buttons>
     </Commands>
 
+    <CommandPlacements>
+        <CommandPlacement guid="guidResxFormatterPackageTopMenuCmdSet" id="ResxFormatterTopMenu" priority="775">
+            <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS" />
+        </CommandPlacement>
+    </CommandPlacements>
+
     <Symbols>
         <!-- This is the package guid. -->
         <GuidSymbol name="guidResxFormatterPackage" value="{40d1f52e-e828-4cca-8279-df4ccd348f09}" />
+        <GuidSymbol name="guidResxFormatterPackageTopMenuCmdSet" value="{056b1778-6320-485b-8e99-ed6f2e1cbf30}">
+            <IDSymbol name="ResxFormatterTopMenu" value="0x1020" />
+        </GuidSymbol>
 
         <!-- This is the guid used to group the menu commands together -->
         <GuidSymbol name="guidResxFormatterPackageCmdSet" value="{c7e059c9-69b5-443d-88f4-930c6a3975ca}">
-            <IDSymbol name="ResxFormatterCommands" value="0x1020" />
+            <IDSymbol name="ResxFormatterTopMenu1" value="0x1020" />
+            <IDSymbol name="ResxFormatterCommands" value="0x1021" />
             <IDSymbol name="FormatAllCommandId" value="0x0100" />
         </GuidSymbol>
     </Symbols>
