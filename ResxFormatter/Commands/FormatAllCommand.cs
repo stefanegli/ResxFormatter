@@ -22,11 +22,11 @@
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
-            var menuCommandID = new CommandID(PackageGuids.guidResxFormatterPackageCmdSet, PackageIds.FormatAllCommandId);
-            var menuItem = new OleMenuCommand(this.Execute, menuCommandID);
-            menuItem.BeforeQueryStatus += this.OnBeforeQueryStatus;
+            var id = new CommandID(PackageGuids.guidResxFormatterPackageCmdSet, PackageIds.FormatAllCommandId);
+            var command = new OleMenuCommand(this.Execute, id);
+            command.BeforeQueryStatus += this.OnBeforeQueryStatus;
 
-            commandService.AddCommand(menuItem);
+            commandService.AddCommand(command);
         }
 
         public static DTE2 Environment { get; private set; }
