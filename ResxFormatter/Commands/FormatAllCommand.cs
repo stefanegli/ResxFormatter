@@ -44,7 +44,7 @@
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
-            OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
+            var commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             Instance = new FormatAllCommand(package, commandService);
             Environment = await package.GetServiceAsync(typeof(DTE)) as DTE2;
         }
@@ -60,13 +60,9 @@
                     continue;
                 }
 
-                //                for (int i = 0; i < 20; i++)
-                //                {
-                //                    System.Threading.Thread.Sleep(200);
                 var formatter = new ConfigurableResxFormatter(Log.Current);
                 formatter.Run(file);
             }
-            //            }
         }
 
         private bool CanExecute()
