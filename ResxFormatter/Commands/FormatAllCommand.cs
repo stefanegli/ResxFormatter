@@ -23,7 +23,9 @@
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
             var menuCommandID = new CommandID(PackageGuids.guidResxFormatterPackageCmdSet, PackageIds.FormatAllCommandId);
-            var menuItem = new MenuCommand(this.Execute, menuCommandID);
+            var menuItem = new OleMenuCommand(this.Execute, menuCommandID);
+            menuItem.BeforeQueryStatus += this.OnBeforeQueryStatus;
+
             commandService.AddCommand(menuItem);
         }
 
@@ -67,27 +69,50 @@
             //            }
         }
 
-        private void Execute(object sender, EventArgs e)
+        private bool CanExecute()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             var solution = Environment?.Solution;
             if (solution is null)
             {
-                return;
+                return false;
             }
 
             var fullName = solution.FullName;
             if (fullName is null || !File.Exists(fullName))
             {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void Execute(object sender, EventArgs e)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
+            if (!this.CanExecute())
+            {
+                Log.Current.WriteLine("No solution available.");
                 return;
             }
 
-            var solutionPath = Path.GetDirectoryName(fullName);
+            var solutionPath = Path.GetDirectoryName(Environment?.Solution?.FullName);
             this.package.JoinableTaskFactory.RunAsync(async () =>
             {
                 await Task.Run(() => { FormatAllFiles(solutionPath); });
                 Log.Current.WriteLine("Success: All files processed.");
             }, JoinableTaskCreationOptions.LongRunning);
+        }
+
+        private void OnBeforeQueryStatus(object sender, EventArgs e)
+        {
+            var command = sender as OleMenuCommand;
+            if (command is null)
+            {
+                return;
+            }
+
+            command.Enabled = this.CanExecute();
         }
     }
 }
