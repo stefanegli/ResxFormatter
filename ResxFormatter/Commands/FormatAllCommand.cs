@@ -5,7 +5,7 @@
     using EnvDTE80;
 
     using Microsoft.VisualStudio.Shell;
-    using Microsoft.VisualStudio.Threading;
+    using Microsoft.VisualStudio.TaskStatusCenter;
 
     using System;
     using System.ComponentModel.Design;
@@ -51,18 +51,29 @@
 
         public static bool SkipFile(string filePath) => filePath is null || filePath.Contains(@"\bin\") || filePath.Contains(@"\obj\");
 
-        private static void FormatAllFiles(string solutionPath)
+        private static async Task FormatAllFiles(string solutionPath, TaskProgressData data, ITaskHandler handler)
         {
-            foreach (var file in Directory.EnumerateFiles(solutionPath, "*.resx", SearchOption.AllDirectories))
+            await Task.Run(() =>
             {
-                if (SkipFile(file))
+                foreach (var file in Directory.EnumerateFiles(solutionPath, "*.resx", SearchOption.AllDirectories))
                 {
-                    continue;
+                    if (SkipFile(file))
+                    {
+                        continue;
+                    }
+
+                    var formatter = new ConfigurableResxFormatter(Log.Current);
+                    formatter.Run(file);
+
+                    data.ProgressText = $"{Path.GetFileName(file)}";
+                    handler.Progress.Report(data);
                 }
 
-                var formatter = new ConfigurableResxFormatter(Log.Current);
-                formatter.Run(file);
-            }
+                data.ProgressText = "Success: All files processed.";
+                data.PercentComplete = 100;
+                Log.Current.WriteLine(data.ProgressText);
+                handler.Progress.Report(data);
+            });
         }
 
         private bool CanExecute()
@@ -95,9 +106,21 @@
             var solutionPath = Path.GetDirectoryName(Environment?.Solution?.FullName);
             this.package.JoinableTaskFactory.RunAsync(async () =>
             {
-                await Task.Run(() => { FormatAllFiles(solutionPath); });
-                Log.Current.WriteLine("Success: All files processed.");
-            }, JoinableTaskCreationOptions.LongRunning);
+                var status = await this.package.GetServiceAsync(typeof(SVsTaskStatusCenterService)) as IVsTaskStatusCenterService;
+                var options = new TaskHandlerOptions()
+                {
+                    Title = "Formatting all resx files",
+                    ActionsAfterCompletion = CompletionActions.None
+                };
+
+                var data = new TaskProgressData()
+                {
+                    CanBeCanceled = true
+                };
+
+                var handler = status.PreRegister(options, data);
+                handler.RegisterTask(FormatAllFiles(solutionPath, data, handler));
+            });
         }
 
         private void OnBeforeQueryStatus(object sender, EventArgs e)
