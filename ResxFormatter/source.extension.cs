@@ -9,7 +9,7 @@ namespace ResxFormatter
     {
         public const string Id = "ResxFormatter.61507132-4401-47b1-9950-575e43b964c6";
         public const string Name = "ResxFormatter";
-        public const string Description = @"Formats .resx files: Sorts data entries by name and removes xml comments.";
+        public const string Description = @"Formats .resx files: Sorts data entries by name and removes schema and xml comments.";
         public const string Language = "en-US";
         public const string Version = "3.0";
         public const string Author = "Stefan Egli";

@@ -1,9 +1,6 @@
 # Road map
 
-- [ ] Context Menus:
-  - [ ] Format current file
-  - [ ] Format all files in current folder
-  - [ ] Format all files in solution
+- [ ] Drop support for VS 2017 and 2019?
 
 Features that have a checkmark are complete and available for
 download in the
@@ -14,7 +11,8 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
-## 3.0 PREVIEW
+## 3.0
+- [x] Menu / Command for formatting all files in solution (directory)
 - [x] Formatting rules can only be configured by [EditorConfig](https://editorconfig.org/) file (no configuration == no effect)
 - [x] Support different EditorConfig settings for sub folders of solution
 - [x] Support different file extensions (standard [EditorConfig](https://editorconfig.org/) functionality)
@@ -22,7 +20,6 @@ on the official Visual Studio extension gallery.
 - [x] XSD Schema element can be removed from resx files
 - [x] Changes to default settings are now visible (bold font)
 - [x] BugFix: Extension does not load with VS 2017 (cf. issue #7)
-
 
 ## 2.0
 - [x] Support for Visual Studio 2017, 2019 and **2022** 
@@ -34,9 +31,6 @@ on the official Visual Studio extension gallery.
 ## 1.1
 - [x] Formatting rules can be configured in an [EditorConfig](https://editorconfig.org/) file
 - [x] BugFix: Use "ordinal sort" to ensure consistent results regardless of regional settings (cf. issue #2)
-
-| :warning: Extension settings for formatting rules are deprecated and will be removed in a future version. Use EditorConfig files instead. |
-| ---- |
 
 ## 1.0
 - [x] Settings / Options: 

@@ -3,9 +3,10 @@
     <Metadata>
         <Identity Id="ResxFormatter.61507132-4401-47b1-9950-575e43b964c6" Version="3.0" Language="en-US" Publisher="Stefan Egli" />
         <DisplayName>ResxFormatter</DisplayName>
-        <Description xml:space="preserve">Formats .resx files: Sorts data entries by name and removes xml comments.</Description>
+        <Description xml:space="preserve">Formats .resx files: Sorts data entries by name and removes schema and xml comments.</Description>
         <MoreInfo>https://github.com/stefanegli/ResxFormatter</MoreInfo>
         <License>License.txt</License>
+        <GettingStartedGuide>https://github.com/stefanegli/ResxFormatter/blob/master/README.md</GettingStartedGuide>
         <ReleaseNotes>https://github.com/stefanegli/ResxFormatter/blob/master/CHANGELOG.md</ReleaseNotes>
         <Icon>Images\Icon.png</Icon>
         <PreviewImage>Images\Preview.png</PreviewImage>
