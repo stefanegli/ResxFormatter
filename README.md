@@ -1,7 +1,32 @@
 # ResxFormatter
-Optimizes resx files after saving: Removes schema and comments (in particular the 3KB documentation that is included in every resx file) and sorts entries alphabetically. Use only with a source control system and at your own risk.
+Optimizes resx files after saving: Removes schema and comments (in particular the 3KB documentation that is included in every resx file) and sorts entries alphabetically so that they look like this:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <schema />
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="a" xml:space="preserve">
+    <value>LESS CLUTTER</value>
+  </data>
+  <data name="b" xml:space="preserve">
+    <value>SORTED BY KEYS</value>
+  </data>
+</root>
+```
 
-See the [change log](CHANGELOG.md) for changes and road map.
+
+Use only with a source control system and at your own risk. See the [change log](CHANGELOG.md) for changes and road map.
 
 ----
 Download this extension from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=stefan-egli.ResxFormatter)
@@ -16,7 +41,7 @@ or get the [CI build](http://vsixgallery.com/extension/ResxFormatter.61507132-44
 ## EditorConfig
 Formatting rules are configured in the [EditorConfig](https://editorconfig.org/) file as follows:
 
-```
+```ini
 [*.resx]
 resx_formatter_sort_entries=true
 resx_formatter_remove_xsd_schema=true
