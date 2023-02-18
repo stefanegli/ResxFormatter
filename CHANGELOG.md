@@ -11,6 +11,9 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 3.1
+- [x] Fix problem with duplicate keys in [EditorConfig](https://editorconfig.org/) files (cf. issue #10)
+
 ## 3.0
 - [x] Menu / Command for formatting all files in solution (directory)
 - [x] Formatting rules can only be configured by [EditorConfig](https://editorconfig.org/) file (no configuration == no effect)

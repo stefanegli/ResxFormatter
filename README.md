@@ -46,9 +46,10 @@ Formatting rules are configured in the [EditorConfig](https://editorconfig.org/)
 resx_formatter_sort_entries=true
 resx_formatter_remove_xsd_schema=true
 resx_formatter_remove_documentation_comment=true
+resx_formatter_sort_comparer=OrdinalIgnoreCase
 ```
 
-If one of these keys is set then the corresponding settings in the extension cannot be modified.
+Comparer can be one of the following: _InvariantCulture, InvariantCultureIgnoreCase, OrdinalIgnoreCase, Ordinal_. The default value is _Ordinal_.
 
 | :information_source: You can format all resx files in the current solution folder via Extensions > ResxFormatter menu. |
 | ---- |
@@ -59,7 +60,8 @@ A few things can be configured and probably you want to have this done as follow
 
 ![Settings](ResxFormatter/_doc/Settings.png)
 
-> Use the experimental setting with caution since it may have undesired side effects.
+> Use the experimental setting with caution since it may have undesired side effects. It is also worth to note,
+> that the extension may insert schema or documentation comment in order to match the desired effect of your EditorConfig settings.
 
 
 # Contributing
