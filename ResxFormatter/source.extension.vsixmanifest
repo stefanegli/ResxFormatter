@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="ResxFormatter.61507132-4401-47b1-9950-575e43b964c6" Version="3.0" Language="en-US" Publisher="Stefan Egli" />
+        <Identity Id="ResxFormatter.61507132-4401-47b1-9950-575e43b964c6" Version="3.1" Language="en-US" Publisher="Stefan Egli" />
         <DisplayName>ResxFormatter</DisplayName>
         <Description xml:space="preserve">Formats .resx files: Sorts data entries by name and removes schema and xml comments.</Description>
         <MoreInfo>https://github.com/stefanegli/ResxFormatter</MoreInfo>
