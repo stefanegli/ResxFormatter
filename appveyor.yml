@@ -1,6 +1,8 @@
 image: Visual Studio 2022
 
 version: 3.1.{build}
+build: off
+test: off
 
 init:
   - git config --global core.autocrlf true
@@ -14,5 +16,5 @@ before_build:
 build_script:
   - msbuild ResxFormatter\ResxFormatter.csproj /restore /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
 
-after_test:
+after_build:
   - ps: Vsix-PushArtifacts | Vsix-PublishToGallery
