@@ -13,11 +13,6 @@
 
     public class ConfigurableResxFormatterTests
     {
-        public ConfigurableResxFormatterTests()
-        {
-            Log.Current.IsActive = false;
-        }
-
         [Fact]
         public void Alternate_sort_method_can_be_configured()
         {
