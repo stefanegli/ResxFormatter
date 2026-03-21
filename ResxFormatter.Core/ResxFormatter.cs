@@ -28,7 +28,7 @@
             }
 
             var value = RemoveWhiteSpace(firstComment.ToString());
-            var schema = RemoveWhiteSpace(ResxWriterFix.OriginalComment);
+            var schema = RemoveWhiteSpace(ResxSchemaDefaults.OriginalComment);
             return value == schema;
 
             string RemoveWhiteSpace(string text) => string.Join("", text.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
@@ -43,7 +43,7 @@
             }
 
             var value = RemoveWhiteSpace(firstElement.ToString());
-            var schema = RemoveWhiteSpace(ResxWriterFix.OriginalSchema);
+            var schema = RemoveWhiteSpace(ResxSchemaDefaults.OriginalSchema);
             return value == schema;
 
             string RemoveWhiteSpace(string text) => string.Join("", text.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
@@ -72,7 +72,7 @@
                 {
                     if (!hasSchemaRemoved && node is XElement e && e.Name.LocalName == "schema")
                     {
-                        toSave.Add(XElement.Parse(ResxWriterFix.FakeSchema));
+                        toSave.Add(XElement.Parse(ResxSchemaDefaults.FakeSchema));
                         hasSchemaRemoved = true;
                         continue;
                     }
@@ -120,14 +120,14 @@
             var hasCommentAdded = false;
             if (!this.Settings.RemoveDocumentationComment && !HasDocumentationComment(document))
             {
-                toSave.Insert(0, new XComment(ResxWriterFix.OriginalCommentContent));
+                toSave.Insert(0, new XComment(ResxSchemaDefaults.OriginalCommentContent));
                 hasCommentAdded = true;
             }
 
             var hasSchemaAdded = false;
             if (!this.Settings.RemoveXsdSchema && !HasSchemaNode(document))
             {
-                toSave.Insert(1, XElement.Parse(ResxWriterFix.OriginalSchema));
+                toSave.Insert(1, XElement.Parse(ResxSchemaDefaults.OriginalSchema));
                 hasSchemaAdded = true;
             }
 

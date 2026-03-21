@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32408.312
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxFormatter", "ResxFormatter\ResxFormatter.csproj", "{694740C5-C9C1-419F-B36A-FCE1DEA4EE41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxFormatter.Core", "ResxFormatter.Core\ResxFormatter.Core.csproj", "{2945DAE0-9110-4B8A-AE32-BA403F22BB92}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxFormatterTests", "ResxFormatterTests\ResxFormatterTests.csproj", "{210E95C9-03D5-476C-AD5D-6A253D167FA6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{9E487449-5E32-4879-8D0B-D6C097585AA1}"
@@ -35,6 +37,10 @@ Global
 		{694740C5-C9C1-419F-B36A-FCE1DEA4EE41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{694740C5-C9C1-419F-B36A-FCE1DEA4EE41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{694740C5-C9C1-419F-B36A-FCE1DEA4EE41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2945DAE0-9110-4B8A-AE32-BA403F22BB92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2945DAE0-9110-4B8A-AE32-BA403F22BB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2945DAE0-9110-4B8A-AE32-BA403F22BB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2945DAE0-9110-4B8A-AE32-BA403F22BB92}.Release|Any CPU.Build.0 = Release|Any CPU
 		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU

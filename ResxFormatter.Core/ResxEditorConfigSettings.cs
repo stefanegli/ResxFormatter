@@ -4,7 +4,7 @@ namespace ResxFormatter
 {
     internal class ResxEditorConfigSettings : IFormatSettings
     {
-        public ResxEditorConfigSettings(string targetFile = "dummy.resx")
+        public ResxEditorConfigSettings(ILog log, string targetFile = "dummy.resx")
         {
             var isActive = false;
             try
@@ -36,7 +36,7 @@ namespace ResxFormatter
             }
             catch (Exception ex)
             {
-                Log.Current.WriteLine("Failed to parse EditorConfig file:\n" + ex.ToString());
+                log?.WriteLine("Failed to parse EditorConfig file:\n" + ex.ToString());
             }
 
             this.IsActive = isActive;

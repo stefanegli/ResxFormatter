@@ -16,7 +16,7 @@
         /// </summary>
         public void Run(string resxPath)
         {
-            var settings = new ResxEditorConfigSettings(resxPath);
+            var settings = new ResxEditorConfigSettings(this.Log, resxPath);
             if (!settings.IsActive)
             {
                 return;

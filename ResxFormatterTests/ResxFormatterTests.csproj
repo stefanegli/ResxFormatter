@@ -80,6 +80,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ResxFormatter.Core\ResxFormatter.Core.csproj">
+      <Project>{2945dae0-9110-4b8a-ae32-ba403f22bb92}</Project>
+      <Name>ResxFormatter.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ResxFormatter\ResxFormatter.csproj">
       <Project>{694740c5-c9c1-419f-b36a-fce1dea4ee41}</Project>
       <Name>ResxFormatter</Name>

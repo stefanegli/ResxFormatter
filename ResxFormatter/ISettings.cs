@@ -1,7 +1,5 @@
-﻿namespace ResxFormatter
+namespace ResxFormatter
 {
-    using System;
-
     public enum FixMode
     {
         Off,
@@ -14,14 +12,6 @@
         Off,
         AfterModification,
         Always
-    }
-
-    public interface IFormatSettings
-    {
-        StringComparer Comparer { get; }
-        bool RemoveDocumentationComment { get; }
-        bool RemoveXsdSchema { get; }
-        bool SortEntries { get; }
     }
 
     public interface ISettings
