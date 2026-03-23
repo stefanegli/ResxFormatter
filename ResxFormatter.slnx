@@ -13,6 +13,6 @@
   </Folder>
   <Project Path="ResxFormatter.Cli/ResxFormatter.Cli.csproj" />
   <Project Path="ResxFormatter.Core/ResxFormatter.Core.csproj" />
-  <Project Path="ResxFormatter/ResxFormatter.csproj" />
+  <Project Path="ResxFormatter/ResxFormatter.csproj" Id="694740c5-c9c1-419f-b36a-fce1dea4ee41" />
   <Project Path="ResxFormatterTests/ResxFormatterTests.csproj" />
 </Solution>
