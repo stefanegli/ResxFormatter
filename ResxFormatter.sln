@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxFormatter", "ResxFormat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxFormatter.Core", "ResxFormatter.Core\ResxFormatter.Core.csproj", "{2945DAE0-9110-4B8A-AE32-BA403F22BB92}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxFormatter.Cli", "ResxFormatter.Cli\ResxFormatter.Cli.csproj", "{F4DDFD75-5415-475D-9408-6A58815A9535}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResxFormatterTests", "ResxFormatterTests\ResxFormatterTests.csproj", "{210E95C9-03D5-476C-AD5D-6A253D167FA6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{9E487449-5E32-4879-8D0B-D6C097585AA1}"
@@ -41,6 +43,10 @@ Global
 		{2945DAE0-9110-4B8A-AE32-BA403F22BB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2945DAE0-9110-4B8A-AE32-BA403F22BB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2945DAE0-9110-4B8A-AE32-BA403F22BB92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4DDFD75-5415-475D-9408-6A58815A9535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4DDFD75-5415-475D-9408-6A58815A9535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4DDFD75-5415-475D-9408-6A58815A9535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4DDFD75-5415-475D-9408-6A58815A9535}.Release|Any CPU.Build.0 = Release|Any CPU
 		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{210E95C9-03D5-476C-AD5D-6A253D167FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU

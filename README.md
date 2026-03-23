@@ -63,6 +63,37 @@ A few things can be configured and probably you want to have this done as follow
 > Use the experimental setting with caution since it may have undesired side effects. It is also worth to note,
 > that the extension may insert schema or documentation comment in order to match the desired effect of your EditorConfig settings.
 
+# CLI
+The repository includes a console app named `resxfmt` that applies the same formatting rules as the VS extension.
+It targets .NET 10.
+
+Publish:
+```
+dotnet publish ResxFormatter.Cli/ResxFormatter.Cli.csproj -c Release -o ./artifacts/tools/resxfmt --nologo
+```
+
+Publish output:
+- `artifacts/tools/resxfmt/resxfmt.exe`
+
+Usage:
+```
+resxfmt [options] [<path> ...]
+```
+
+Options:
+- `-r`, `--recursive` Recurse into subdirectories when a path is a directory.
+- `-v`, `--verbose` Show per-file status and errors.
+- `-n`, `--dry-run` Show what would change without writing files.
+- `--check` Exit with code 1 if any file would change (implies `--dry-run`).
+
+Output:
+- Prints one line per file with a status (`updated`, `unchanged`, `skipped`).
+- Paths are shown relative to the current working directory.
+- `skipped` means formatting is disabled by EditorConfig for that file.
+
+Default path behavior:
+- If no path is provided, the current directory is processed.
+
 
 # Contributing
 Please use the [issue tracker](https://github.com/stefanegli/ResxFormatter/issues) for submitting bug reports or feature requests.

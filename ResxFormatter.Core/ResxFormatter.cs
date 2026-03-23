@@ -54,10 +54,15 @@
         /// </summary>
         public void Run(string resxPath)
         {
-            this.IsFileChanged = this.FormatResx(resxPath);
+            this.Run(resxPath, true);
         }
 
-        private bool FormatResx(string resxPath)
+        public void Run(string resxPath, bool writeChanges)
+        {
+            this.IsFileChanged = this.FormatResx(resxPath, writeChanges);
+        }
+
+        private bool FormatResx(string resxPath, bool writeChanges)
         {
             var isResx = false;
             var hasSchemaRemoved = false;
@@ -136,8 +141,13 @@
             {
                 toSave.AddRange(sorted);
                 document.Root.ReplaceNodes(toSave);
-                this.Log.WriteLine($"Updating {resxPath}");
-                document.Save(resxPath);
+                var action = writeChanges ? "Updating" : "Would update";
+                this.Log.WriteLine($"{action} {resxPath}");
+                if (writeChanges)
+                {
+                    document.Save(resxPath);
+                }
+
                 return true;
             }
             else

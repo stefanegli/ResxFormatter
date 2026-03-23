@@ -125,5 +125,41 @@
             var expected1 = File.ReadAllText(expectedFile2);
             Check.WithCustomMessage("schema is removed correctly").That(actual1).Equals(expected1);
         }
+
+        [Fact]
+        public void Formatter_reports_inactive_if_EditorConfig_does_not_enable_it()
+        {
+            // Arrange
+            (var actualFile, var expectedFile) = FormattingTests.prepareFile(@"_editor\inactive", "Sort");
+            var formatter = new ConfigurableResxFormatter(new FakeLog());
+
+            // Act
+            formatter.Run(actualFile);
+
+            // Assert
+            var actual = File.ReadAllText(actualFile);
+            var expected = File.ReadAllText(expectedFile);
+            Check.WithCustomMessage("file should remain unchanged when formatter is inactive").That(actual).Equals(expected);
+            Check.WithCustomMessage("formatter should report inactive").That(formatter.IsActive).IsFalse();
+            Check.WithCustomMessage("inactive formatter should not report file changes").That(formatter.IsFileChanged).IsFalse();
+        }
+
+        [Fact]
+        public void Dry_run_detects_changes_without_writing_the_file()
+        {
+            // Arrange
+            (var actualFile, var expectedFile) = FormattingTests.prepareFile(@"_editor\sort", "Sort");
+            var formatter = new ConfigurableResxFormatter(new FakeLog());
+
+            // Act
+            formatter.Run(actualFile, false);
+
+            // Assert
+            var actual = File.ReadAllText(actualFile);
+            var expected = File.ReadAllText(expectedFile);
+            Check.WithCustomMessage("dry-run should not write changes to disk").That(actual).IsNotEqualTo(expected);
+            Check.WithCustomMessage("formatter should report active for configured files").That(formatter.IsActive).IsTrue();
+            Check.WithCustomMessage("dry-run should still detect pending updates").That(formatter.IsFileChanged).IsTrue();
+        }
     }
 }
