@@ -69,11 +69,11 @@ It targets .NET 10.
 
 Publish:
 ```
-dotnet publish ResxFormatter.Cli/ResxFormatter.Cli.csproj -c Release -o ./artifacts/tools/resxfmt --nologo
+dotnet publish ResxFormatter.Cli/ResxFormatter.Cli.csproj -c Release --nologo
 ```
 
 Publish output:
-- `artifacts/tools/resxfmt/resxfmt.exe`
+- `artifacts/publish/ResxFormatter.Cli/release/resxfmt.exe`
 
 Usage:
 ```
