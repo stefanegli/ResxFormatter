@@ -25,6 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="_editor\**\*" />
+    <EmbeddedResource Remove="_files\**\*" />
     <Content Include="_editor\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
