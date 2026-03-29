@@ -2,17 +2,30 @@ image: Visual Studio 2022
 
 version: 4.0.{build}
 
+environment:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: 1
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+
 init:
   - git config --global core.autocrlf true
 
 install:
   - ps: (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
+  - ps: $script = Join-Path $env:TEMP 'dotnet-install.ps1'; Invoke-WebRequest https://dot.net/v1/dotnet-install.ps1 -OutFile $script; & $script -Channel 10.0 -InstallDir "$env:ProgramFiles\dotnet"
+  - set PATH=%ProgramFiles%\dotnet;%PATH%
 
 before_build:
   - ps: Vsix-IncrementVsixVersion | Vsix-UpdateBuildVersion
 
 build_script:
-  - msbuild ResxFormatter.slnx /restore /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+  - msbuild ResxFormatter\ResxFormatter.csproj /restore /t:Build /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+  - dotnet --info
+  - dotnet build ResxFormatter.Cli\ResxFormatter.Cli.csproj -c Release
+  - dotnet build ResxFormatterTests\ResxFormatterTests.csproj -c Release
+
+test_script:
+  - dotnet test ResxFormatterTests\ResxFormatterTests.csproj -c Release --no-build
 
 after_test:
   - ps: Vsix-PushArtifacts | Vsix-PublishToGallery
