@@ -26,8 +26,8 @@
             formatter.Run(actualFile2);
 
             // Assert
-            var actual1 = File.ReadAllText(actualFile2);
-            var expected1 = File.ReadAllText(expectedFile2);
+            var actual1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(actualFile2));
+            var expected1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(expectedFile2));
             Check.WithCustomMessage("sorting applied correctly").That(actual1).Equals(expected1);
         }
 
@@ -44,8 +44,8 @@
             formatter.Run(actualFile1);
 
             // Assert
-            var actual1 = File.ReadAllText(actualFile1);
-            var expected1 = File.ReadAllText(expectedFile1);
+            var actual1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(actualFile1));
+            var expected1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(expectedFile1));
             Check.WithCustomMessage("config1 is applied correctly").That(actual1).Equals(expected1);
         }
 
@@ -64,12 +64,12 @@
             formatter.Run(actualFile2);
 
             // Assert
-            var actual1 = File.ReadAllText(actualFile1);
-            var expected1 = File.ReadAllText(expectedFile1);
+            var actual1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(actualFile1));
+            var expected1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(expectedFile1));
             Check.WithCustomMessage("config1 is applied correctly").That(actual1).Equals(expected1);
 
-            var actual2 = File.ReadAllText(actualFile2);
-            var expected2 = File.ReadAllText(expectedFile2);
+            var actual2 = FormattingTests.NormalizeLineEndings(File.ReadAllText(actualFile2));
+            var expected2 = FormattingTests.NormalizeLineEndings(File.ReadAllText(expectedFile2));
             Check.WithCustomMessage("config2 is applied correctly").That(actual2).Equals(expected2);
         }
 
@@ -86,8 +86,8 @@
             formatter.Run(actualFile2);
 
             // Assert
-            var actual1 = File.ReadAllText(actualFile2);
-            var expected1 = File.ReadAllText(expectedFile2);
+            var actual1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(actualFile2));
+            var expected1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(expectedFile2));
             Check.WithCustomMessage("resx comment is inserted correctly").That(actual1).Equals(expected1);
         }
 
@@ -104,8 +104,8 @@
             formatter.Run(actualFile2);
 
             // Assert
-            var actual1 = File.ReadAllText(actualFile2);
-            var expected1 = File.ReadAllText(expectedFile2);
+            var actual1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(actualFile2));
+            var expected1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(expectedFile2));
             Check.WithCustomMessage("resx comment is inserted correctly").That(actual1).Equals(expected1);
         }
 
@@ -121,8 +121,8 @@
             formatter.Run(actualFile2);
 
             // Assert
-            var actual1 = File.ReadAllText(actualFile2);
-            var expected1 = File.ReadAllText(expectedFile2);
+            var actual1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(actualFile2));
+            var expected1 = FormattingTests.NormalizeLineEndings(File.ReadAllText(expectedFile2));
             Check.WithCustomMessage("schema is removed correctly").That(actual1).Equals(expected1);
         }
 
@@ -137,8 +137,8 @@
             formatter.Run(actualFile);
 
             // Assert
-            var actual = File.ReadAllText(actualFile);
-            var expected = File.ReadAllText(expectedFile);
+            var actual = FormattingTests.NormalizeLineEndings(File.ReadAllText(actualFile));
+            var expected = FormattingTests.NormalizeLineEndings(File.ReadAllText(expectedFile));
             Check.WithCustomMessage("file should remain unchanged when formatter is inactive").That(actual).Equals(expected);
             Check.WithCustomMessage("formatter should report inactive").That(formatter.IsActive).IsFalse();
             Check.WithCustomMessage("inactive formatter should not report file changes").That(formatter.IsFileChanged).IsFalse();
