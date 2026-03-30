@@ -35,8 +35,8 @@
             formatter.Run(actualFile);
 
             // Assert
-            var actual = NormalizeLineEndings(File.ReadAllText(actualFile));
-            var expected = NormalizeLineEndings(File.ReadAllText(expectedFile));
+            var actual = TextNormalization.NormalizeLineEndings(File.ReadAllText(actualFile));
+            var expected = TextNormalization.NormalizeLineEndings(File.ReadAllText(expectedFile));
             Check.WithCustomMessage(message).That(actual).Equals(expected);
         }
 
@@ -49,12 +49,6 @@
             File.Copy(file, actualFile, true);
             return (actualFile, expectedFile);
         }
-
-        internal static string NormalizeLineEndings(string text)
-        {
-            return text.Replace("\r\n", "\n").Replace("\r", "\n");
-        }
-
         internal class ResxTestData : TheoryDataBase<string, string, string, IFormatSettings>
         {
             public override IEnumerable<(string, string, string, IFormatSettings)> Create()
