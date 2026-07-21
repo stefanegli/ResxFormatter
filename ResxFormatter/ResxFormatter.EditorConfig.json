@@ -1,0 +1,41 @@
+{
+  "properties": [
+    {
+      "name": "resx_formatter_sort_entries",
+      "description": "Sorts resource entries alphabetically by name.",
+      "values": [true, false],
+      "defaultValue": [false],
+      "severity": false,
+      "documentationLink": "https://github.com/stefanegli/ResxFormatter#editorconfig"
+    },
+    {
+      "name": "resx_formatter_remove_xsd_schema",
+      "description": "Removes the embedded XSD schema from .resx files.",
+      "values": [true, false],
+      "defaultValue": [false],
+      "severity": false,
+      "documentationLink": "https://github.com/stefanegli/ResxFormatter#editorconfig"
+    },
+    {
+      "name": "resx_formatter_remove_documentation_comment",
+      "description": "Removes the standard documentation comment from .resx files.",
+      "values": [true, false],
+      "defaultValue": [false],
+      "severity": false,
+      "documentationLink": "https://github.com/stefanegli/ResxFormatter#editorconfig"
+    },
+    {
+      "name": "resx_formatter_sort_comparer",
+      "description": "Selects the string comparer used to sort resource entry names.",
+      "values": [
+        "Ordinal",
+        "OrdinalIgnoreCase",
+        "InvariantCulture",
+        "InvariantCultureIgnoreCase"
+      ],
+      "defaultValue": ["Ordinal"],
+      "severity": false,
+      "documentationLink": "https://github.com/stefanegli/ResxFormatter#editorconfig"
+    }
+  ]
+}

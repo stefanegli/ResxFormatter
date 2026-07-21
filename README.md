@@ -51,6 +51,8 @@ resx_formatter_sort_comparer=OrdinalIgnoreCase
 
 Comparer can be one of the following: _InvariantCulture, InvariantCultureIgnoreCase, OrdinalIgnoreCase, Ordinal_. The default value is _Ordinal_.
 
+When the [EditorConfig Language Service](https://github.com/madskristensen/EditorConfigLanguage) version 1.18.35 or newer is installed, the ResxFormatter VSIX contributes these properties to its IntelliSense and validation. Restart Visual Studio after installing or updating either extension so that the custom schema is loaded.
+
 | :information_source: You can format all resx files in the current solution folder via Extensions > ResxFormatter menu. |
 | ---- |
 

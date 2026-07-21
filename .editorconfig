@@ -113,5 +113,4 @@ csharp_style_prefer_top_level_statements = true:silent
 
 [*.resx]
 resx_formatter_sort_entries=true
-resx_formatter_remove_designer_comments=true
 resx_formatter_remove_documentation_comment=true
