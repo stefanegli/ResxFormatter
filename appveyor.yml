@@ -2,6 +2,9 @@ image: Visual Studio 2026
 
 version: 4.0.{build}
 
+# Required for non-PR Gallery publication; configure
+# VSIX_GALLERY_MANAGE_TOKEN as a secure project environment variable.
+
 build: off
 test: off
 
@@ -10,3 +13,7 @@ init:
 
 build_script:
   - appveyor-build.cmd
+
+artifacts:
+  - path: ResxFormatter\bin\Release\net472\ResxFormatter.vsix
+    name: ResxFormatter.vsix
