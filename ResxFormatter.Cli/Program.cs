@@ -146,7 +146,7 @@ namespace ResxFormatter.Cli
                     $"Processed {files.Count} file(s). {changeLabel} {changed}, unchanged {unchanged}, skipped {skipped}, failed {failed}.");
             }
 
-            if (failed > 0)
+            if (failed > 0 || pathErrors.Count > 0)
             {
                 return 2;
             }
@@ -208,32 +208,39 @@ namespace ResxFormatter.Cli
                     continue;
                 }
 
-                var fullPath = Path.GetFullPath(rawPath);
-                if (File.Exists(fullPath))
+                try
                 {
-                    if (IsResx(fullPath))
+                    var fullPath = Path.GetFullPath(rawPath);
+                    if (File.Exists(fullPath))
                     {
-                        results.Add(fullPath);
-                    }
-                    else
-                    {
-                        errors.Add($"Path is not a .resx file: {fullPath}");
+                        if (IsResx(fullPath))
+                        {
+                            results.Add(fullPath);
+                        }
+                        else
+                        {
+                            errors.Add($"Path is not a .resx file: {fullPath}");
+                        }
+
+                        continue;
                     }
 
-                    continue;
+                    if (Directory.Exists(fullPath))
+                    {
+                        foreach (var file in Directory.EnumerateFiles(fullPath, "*.resx", searchOption))
+                        {
+                            results.Add(Path.GetFullPath(file));
+                        }
+
+                        continue;
+                    }
+
+                    errors.Add($"Path not found: {fullPath}");
                 }
-
-                if (Directory.Exists(fullPath))
+                catch (Exception ex) when (IsPathException(ex))
                 {
-                    foreach (var file in Directory.EnumerateFiles(fullPath, "*.resx", searchOption))
-                    {
-                        results.Add(Path.GetFullPath(file));
-                    }
-
-                    continue;
+                    errors.Add($"Unable to access path '{rawPath}': {ex.Message}");
                 }
-
-                errors.Add($"Path not found: {fullPath}");
             }
 
             return results.OrderBy(x => x, StringComparer.OrdinalIgnoreCase).ToList();
@@ -242,6 +249,14 @@ namespace ResxFormatter.Cli
         private static bool IsResx(string path)
         {
             return string.Equals(Path.GetExtension(path), ".resx", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsPathException(Exception exception)
+        {
+            return exception is ArgumentException
+                || exception is IOException
+                || exception is NotSupportedException
+                || exception is UnauthorizedAccessException;
         }
 
         private static void WriteStatus(string status, string file, string workingDirectory)

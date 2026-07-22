@@ -183,10 +183,17 @@ function Invoke-Build {
     )
 
     Invoke-NativeCommand 'dotnet' @('build', 'ResxFormatter.Cli\ResxFormatter.Cli.csproj', '-c', 'Release')
+    Invoke-NativeCommand 'dotnet' @('build', 'ResxFormatter.Cli.Tests\ResxFormatter.Cli.Tests.csproj', '-c', 'Release')
     Invoke-NativeCommand 'dotnet' @('build', 'ResxFormatterTests\ResxFormatterTests.csproj', '-c', 'Release')
     Invoke-NativeCommand 'dotnet' @(
         'test',
         'ResxFormatterTests\ResxFormatterTests.csproj',
+        '-c', 'Release',
+        '--no-build'
+    )
+    Invoke-NativeCommand 'dotnet' @(
+        'test',
+        'ResxFormatter.Cli.Tests\ResxFormatter.Cli.Tests.csproj',
         '-c', 'Release',
         '--no-build'
     )

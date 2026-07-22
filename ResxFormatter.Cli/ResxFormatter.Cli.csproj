@@ -10,4 +10,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ResxFormatter.Core\ResxFormatter.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ResxFormatter.Cli.Tests" />
+  </ItemGroup>
 </Project>
