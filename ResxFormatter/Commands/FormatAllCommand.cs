@@ -6,6 +6,7 @@
 
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.TaskStatusCenter;
+    using Microsoft.VisualStudio.Threading;
 
     using System;
     using System.ComponentModel.Design;
@@ -45,18 +46,28 @@
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             var commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
+            if (commandService is null)
+            {
+                throw new InvalidOperationException("Failed to get the menu command service.");
+            }
+
             Instance = new FormatAllCommand(package, commandService);
             Environment = await package.GetServiceAsync(typeof(DTE)) as DTE2;
+            if (Environment is null)
+            {
+                throw new InvalidOperationException("Failed to get the Visual Studio automation service.");
+            }
         }
 
         public static bool SkipFile(string filePath) => filePath is null || filePath.Contains(@"\bin\") || filePath.Contains(@"\obj\");
 
-        private static async Task FormatAllFiles(string solutionPath, TaskProgressData data, ITaskHandler handler)
+        private static async Task FormatAllFilesAsync(string solutionPath, TaskProgressData data, ITaskHandler handler)
         {
             await Task.Run(() =>
             {
                 foreach (var file in Directory.EnumerateFiles(solutionPath, "*.resx", SearchOption.AllDirectories))
                 {
+                    handler.UserCancellation.ThrowIfCancellationRequested();
                     if (SkipFile(file))
                     {
                         continue;
@@ -73,7 +84,7 @@
                 data.PercentComplete = 100;
                 Log.Current.WriteLine(data.ProgressText);
                 handler.Progress.Report(data);
-            });
+            }, handler.UserCancellation);
         }
 
         private bool CanExecute()
@@ -107,6 +118,11 @@
             this.package.JoinableTaskFactory.RunAsync(async () =>
             {
                 var status = await this.package.GetServiceAsync(typeof(SVsTaskStatusCenterService)) as IVsTaskStatusCenterService;
+                if (status is null)
+                {
+                    throw new InvalidOperationException("Failed to get the task status center service.");
+                }
+
                 var options = new TaskHandlerOptions()
                 {
                     Title = "Formatting all resx files",
@@ -119,12 +135,13 @@
                 };
 
                 var handler = status.PreRegister(options, data);
-                handler.RegisterTask(FormatAllFiles(solutionPath, data, handler));
-            });
+                handler.RegisterTask(FormatAllFilesAsync(solutionPath, data, handler));
+            }).FileAndForget("ResxFormatter/FormatAll");
         }
 
         private void OnBeforeQueryStatus(object sender, EventArgs e)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             var command = sender as OleMenuCommand;
             if (command is null)
             {

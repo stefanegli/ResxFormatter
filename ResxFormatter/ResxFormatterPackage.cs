@@ -5,6 +5,7 @@
     using Microsoft.VisualStudio;
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
+    using Microsoft.VisualStudio.Threading;
 
     using System;
     using System.Runtime.InteropServices;
@@ -39,16 +40,18 @@
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            applicationObject = (EnvDTE80.DTE2)await this.GetServiceAsync(typeof(SDTE));
-            if (applicationObject is null)
+            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+            var dte = await this.GetServiceAsync<SDTE, EnvDTE80.DTE2>(true, cancellationToken);
+            if (dte is null)
             {
                 throw new InvalidOperationException("Failed to get DTE2 instance.");
             }
 
+            applicationObject = dte;
+
             documentEvents = new VsDocumentEvents();
             documentEvents.Saved += this.OnDocumentSaved;
 
-            await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             Log.Current.WriteLine(this.Settings.ToString());
             await Commands.FormatAllCommand.InitializeAsync(this);
         }
@@ -65,13 +68,15 @@
 
             {
                 Log.Current.WriteLine("Reloading file.");
+                var documentPath = document.Path;
                 document.Close();
 
-                Task.Run(async () =>
+                this.JoinableTaskFactory.RunAsync(async () =>
                 {
-                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                    applicationObject.ItemOperations.OpenFile(document.Path);
-                });
+                    await Task.Yield();
+                    await this.JoinableTaskFactory.SwitchToMainThreadAsync();
+                    applicationObject.ItemOperations.OpenFile(documentPath);
+                }).FileAndForget("ResxFormatter/ReloadFile");
             }
         }
     }

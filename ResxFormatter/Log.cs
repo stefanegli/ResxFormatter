@@ -2,6 +2,7 @@
 {
     using Microsoft.VisualStudio.Shell;
     using Microsoft.VisualStudio.Shell.Interop;
+    using Microsoft.VisualStudio.Threading;
 
     using System;
 
@@ -31,6 +32,10 @@
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Usage",
+            "VSTHRD010:Invoke single-threaded types on Main thread",
+            Justification = "WriteLine marshals output to the UI thread before accessing Visual Studio services.")]
         public void Write(Exception ex)
         {
             this.WriteLine(ex.ToString());
@@ -43,23 +48,21 @@
                 return;
             }
 
-            if (ThreadHelper.CheckAccess())
+            ThreadHelper.JoinableTaskFactory.StartOnIdle(() =>
             {
+                ThreadHelper.ThrowIfNotOnUIThread();
                 WriteLineInternal(message);
-            }
-            else
-            {
-                ThreadHelper.JoinableTaskFactory.StartOnIdle(() =>
-                {
-                    WriteLineInternal(message);
-                });
-            }
+            }).Task.FileAndForget("ResxFormatter/Log");
         }
 
         private static IVsOutputWindowPane CreateOutputPane()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
             var outWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
+            if (outWindow is null)
+            {
+                throw new InvalidOperationException("Failed to get the Visual Studio output window service.");
+            }
 
             var guid = Guid.Parse("{4DDD4974-C22A-4D9A-B148-3594680AAC76}");
             outWindow.CreatePane(ref guid, Vsix.Name, 1, 1);
