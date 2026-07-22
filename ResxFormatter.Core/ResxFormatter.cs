@@ -11,7 +11,7 @@
         public ResxFormatter(IFormatSettings settings, ILog log)
         {
             this.Log = log;
-            this.Settings = settings;
+            this.Settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
         public bool IsFileChanged { get; private set; }
@@ -21,32 +21,27 @@
 
         public static bool HasDocumentationComment(XDocument document)
         {
-            var firstComment = document.Root.Nodes().FirstOrDefault(n => n.NodeType == XmlNodeType.Comment) as XComment;
-            if (firstComment is null)
+            if (document is null)
             {
-                return false;
+                throw new ArgumentNullException(nameof(document));
             }
 
-            var value = RemoveWhiteSpace(firstComment.ToString());
             var schema = RemoveWhiteSpace(ResxSchemaDefaults.OriginalComment);
-            return value == schema;
+            return document.Root?.Nodes()
+                .OfType<XComment>()
+                .Any(comment => RemoveWhiteSpace(comment.ToString()) == schema) == true;
 
             string RemoveWhiteSpace(string text) => string.Join("", text.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
         }
 
         public static bool HasSchemaNode(XDocument document)
         {
-            var firstElement = document.Root.Nodes().FirstOrDefault(n => n.NodeType == XmlNodeType.Element) as XElement;
-            if (firstElement is null)
+            if (document is null)
             {
-                return false;
+                throw new ArgumentNullException(nameof(document));
             }
 
-            var value = RemoveWhiteSpace(firstElement.ToString());
-            var schema = RemoveWhiteSpace(ResxSchemaDefaults.OriginalSchema);
-            return value == schema;
-
-            string RemoveWhiteSpace(string text) => string.Join("", text.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
+            return document.Root?.Elements().Any(IsXsdSchema) == true;
         }
 
         /// <summary>
@@ -59,23 +54,41 @@
 
         public void Run(string resxPath, bool writeChanges)
         {
+            this.IsFileChanged = false;
             this.IsFileChanged = this.FormatResx(resxPath, writeChanges);
         }
 
         private bool FormatResx(string resxPath, bool writeChanges)
         {
-            var isResx = false;
             var hasSchemaRemoved = false;
             var hasCommentRemoved = false;
             var toSave = new List<XNode>();
             var toSort = new List<XElement>();
-            var document = XDocument.Load(resxPath);
+            XDocument document;
+            var readerSettings = new XmlReaderSettings
+            {
+                DtdProcessing = DtdProcessing.Prohibit,
+                IgnoreWhitespace = true,
+                XmlResolver = null
+            };
 
-            foreach (var node in document.Root.Nodes())
+            using (var reader = XmlReader.Create(resxPath, readerSettings))
+            {
+                document = XDocument.Load(reader);
+            }
+
+            var root = document.Root;
+            if (!IsResx(root) || HasUnnamedResourceEntry(root))
+            {
+                this.Log?.WriteLine("Update was not required: Not a valid .resx file.");
+                return false;
+            }
+
+            foreach (var node in root.Nodes())
             {
                 if (this.Settings.RemoveXsdSchema)
                 {
-                    if (!hasSchemaRemoved && node is XElement e && e.Name.LocalName == "schema")
+                    if (!hasSchemaRemoved && node is XElement e && IsXsdSchema(e))
                     {
                         toSave.Add(XElement.Parse(ResxSchemaDefaults.FakeSchema));
                         hasSchemaRemoved = true;
@@ -85,40 +98,26 @@
 
                 if (this.Settings.RemoveDocumentationComment)
                 {
-                    if (!hasCommentRemoved && node.NodeType == XmlNodeType.Comment)
+                    if (!hasCommentRemoved && node is XComment comment && IsDocumentationComment(comment))
                     {
                         hasCommentRemoved = true;
                         continue;
                     }
                 }
 
-                if (node is XElement element && (element.Name.LocalName == "data" || element.Name.LocalName == "metadata"))
+                if (node is XElement element && IsResourceEntry(element))
                 {
                     toSort.Add(element);
                 }
                 else
                 {
                     toSave.Add(node);
-
-                    if (node is XElement e
-                        && e.Name.LocalName == "resheader"
-                        && e.Attribute("name").Value == "resmimetype"
-                        && e.FirstNode.ToString() == "<value>text/microsoft-resx</value>")
-                    {
-                        isResx = true;
-                    }
                 }
             }
 
-            if (!isResx)
-            {
-                this.Log.WriteLine($"Update was not required: Not a .resx file.");
-                return false;
-            }
-
             var sorted = this.Settings.SortEntries
-                ? toSort.OrderBy(e => e.Attribute("name").Value, this.Settings.Comparer)
-                    .OrderBy(e => e.Name.ToString(), this.Settings.Comparer)
+                ? toSort.OrderBy(e => e.Name.ToString(), this.Settings.Comparer)
+                    .ThenBy(e => e.Attribute("name").Value, this.Settings.Comparer)
                     .ToList()
                 : toSort;
 
@@ -142,7 +141,7 @@
                 toSave.AddRange(sorted);
                 document.Root.ReplaceNodes(toSave);
                 var action = writeChanges ? "Updating" : "Would update";
-                this.Log.WriteLine($"{action} {resxPath}");
+                this.Log?.WriteLine($"{action} {resxPath}");
                 if (writeChanges)
                 {
                     document.Save(resxPath);
@@ -152,9 +151,48 @@
             }
             else
             {
-                this.Log.WriteLine($"Skipping {resxPath}");
+                this.Log?.WriteLine($"Skipping {resxPath}");
                 return false;
             }
+        }
+
+        private static bool HasUnnamedResourceEntry(XElement root)
+        {
+            return root.Elements().Any(element =>
+                IsResourceEntry(element) && element.Attribute("name") is null);
+        }
+
+        private static bool IsDocumentationComment(XComment comment)
+        {
+            return RemoveWhiteSpace(comment.ToString()) == RemoveWhiteSpace(ResxSchemaDefaults.OriginalComment);
+        }
+
+        private static bool IsXsdSchema(XElement element)
+        {
+            return element.Name == XName.Get("schema", "http://www.w3.org/2001/XMLSchema");
+        }
+
+        private static bool IsResourceEntry(XElement element)
+        {
+            return element.Name.Namespace == XNamespace.None
+                && (element.Name.LocalName == "data" || element.Name.LocalName == "metadata");
+        }
+
+        private static bool IsResx(XElement root)
+        {
+            if (root?.Name != XName.Get("root"))
+            {
+                return false;
+            }
+
+            return root.Elements("resheader").Any(element =>
+                (string)element.Attribute("name") == "resmimetype"
+                && (string)element.Element("value") == "text/microsoft-resx");
+        }
+
+        private static string RemoveWhiteSpace(string text)
+        {
+            return string.Join("", text.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }
