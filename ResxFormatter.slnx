@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Build/">
     <File Path="appveyor.yml" />
+    <File Path="build-cli-skill.ps1" />
   </Folder>
   <Folder Name="/Readme/">
     <File Path="CHANGELOG.md" />

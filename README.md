@@ -77,6 +77,25 @@ dotnet publish ResxFormatter.Cli/ResxFormatter.Cli.csproj -c Release --nologo
 Publish output:
 - `artifacts/publish/ResxFormatter.Cli/release/resxfmt.exe`
 
+Build an installable Codex skill containing the complete published CLI:
+
+```powershell
+.\build-cli-skill.ps1
+```
+
+Package output:
+
+- `artifacts/packages/resxfmt-cli-<version>.zip`
+- The ZIP contains `resxfmt-cli/SKILL.md` and the CLI payload under `resxfmt-cli/assets/cli/`.
+- Extract `resxfmt-cli` into the Codex skills directory to install it.
+- Local packages use the VSIX version and normalize a missing build component to `0`. AppVeyor packages use `4.0.<build>`.
+
+Supply an explicit version when needed:
+
+```powershell
+.\build-cli-skill.ps1 -Version 4.0.123
+```
+
 Usage:
 ```
 resxfmt [options] [<path> ...]

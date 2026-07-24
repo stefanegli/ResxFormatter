@@ -76,6 +76,30 @@ function Set-VsixBuildVersion {
     return $version
 }
 
+function Get-VsixVersion {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $ManifestPath
+    )
+
+    $document = [System.Xml.XmlDocument]::new()
+    $document.Load($ManifestPath)
+
+    $namespace = [System.Xml.XmlNamespaceManager]::new($document.NameTable)
+    $namespace.AddNamespace('vsix', $document.DocumentElement.NamespaceURI)
+    $identity = $document.SelectSingleNode('//vsix:Identity', $namespace)
+    if (-not $identity) {
+        throw "The VSIX identity was not found in '$ManifestPath'."
+    }
+
+    $version = [Version]$identity.GetAttribute('Version')
+    if ($version.Build -lt 0) {
+        return [Version]::new($version.Major, $version.Minor, 0)
+    }
+
+    return $version
+}
+
 function Publish-VsixToGallery {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -167,11 +191,13 @@ function Invoke-Build {
     Install-DotNetSdk -Channel '10.0' -InstallDir (Join-Path $env:ProgramFiles 'dotnet')
     Invoke-NativeCommand 'dotnet' @('--info')
 
+    $manifestPath = Join-Path $repoRoot 'ResxFormatter\source.extension.vsixmanifest'
+    $buildVersion = Get-VsixVersion -ManifestPath $manifestPath
     if ($env:APPVEYOR_BUILD_NUMBER) {
-        Set-VsixBuildVersion `
-            -ManifestPath (Join-Path $repoRoot 'ResxFormatter\source.extension.vsixmanifest') `
+        $buildVersion = Set-VsixBuildVersion `
+            -ManifestPath $manifestPath `
             -BuildNumber ([int]$env:APPVEYOR_BUILD_NUMBER) `
-            -UpdateAppVeyor | Out-Null
+            -UpdateAppVeyor
     }
 
     Invoke-NativeCommand 'dotnet' @(
@@ -196,6 +222,15 @@ function Invoke-Build {
         'ResxFormatter.Cli.Tests\ResxFormatter.Cli.Tests.csproj',
         '-c', 'Release',
         '--no-build'
+    )
+
+    Invoke-NativeCommand 'powershell.exe' @(
+        '-NoProfile',
+        '-ExecutionPolicy', 'Bypass',
+        '-File', (Join-Path $repoRoot 'build-cli-skill.ps1'),
+        '-Version', $buildVersion.ToString(),
+        '-Configuration', 'Release',
+        '-SkipTests'
     )
 
     Publish-VsixToGallery 'ResxFormatter\bin\Release\net472\ResxFormatter.vsix'
