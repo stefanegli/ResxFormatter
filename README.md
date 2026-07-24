@@ -65,57 +65,32 @@ A few things can be configured and probably you want to have this done as follow
 > Use the experimental setting with caution since it may have undesired side effects. It is also worth to note,
 > that the extension may insert schema or documentation comment in order to match the desired effect of your EditorConfig settings.
 
-# CLI
-The repository includes a console app named `resxfmt` that applies the same formatting rules as the VS extension.
-It targets .NET 10.
+# CLI / Agent Skill
 
-Publish:
+Download `resxfmt-cli-<version>.zip` from an [AppVeyor build](https://ci.appveyor.com/project/stefanegli/resxformatter) and extract its `resxfmt-cli` directory into your Codex skills directory. The skill includes .NET 10 framework-dependent single-file executables for Windows x64 and Linux x64.
+
+Invoke the agent skill with:
+
+```text
+Use $resxfmt-cli to check and format the .resx files in this repository.
 ```
-dotnet publish ResxFormatter.Cli/ResxFormatter.Cli.csproj -c Release --nologo
-```
 
-Publish output:
-- `artifacts/publish/ResxFormatter.Cli/release/resxfmt.exe`
+Or call the packaged executable directly from the directory containing the files you want to process.
 
-Build an installable Codex skill containing the complete published CLI:
+Windows:
 
 ```powershell
-.\build-cli-skill.ps1
+& "$env:USERPROFILE\.codex\skills\resxfmt-cli\assets\cli\win-x64\resxfmt.exe" --check --recursive .
 ```
 
-Package output:
+Linux:
 
-- `artifacts/packages/resxfmt-cli-<version>.zip`
-- The ZIP contains `resxfmt-cli/SKILL.md`, `resxfmt-cli/assets/cli/win-x64/resxfmt.exe`, and `resxfmt-cli/assets/cli/linux-x64/resxfmt`.
-- Each CLI is a framework-dependent single file. The target machine must have the .NET 10 runtime.
-- Single-file publishing is runtime-specific, so Windows and Linux require separate binaries. ReadyToRun is disabled.
-- Extract `resxfmt-cli` into the Codex skills directory to install it.
-- Local packages use the VSIX version and normalize a missing build component to `0`. AppVeyor packages use `4.0.<build>`.
-
-Supply an explicit version when needed:
-
-```powershell
-.\build-cli-skill.ps1 -Version 4.0.123
+```bash
+chmod u+x "$HOME/.codex/skills/resxfmt-cli/assets/cli/linux-x64/resxfmt"
+"$HOME/.codex/skills/resxfmt-cli/assets/cli/linux-x64/resxfmt" --check --recursive .
 ```
 
-Usage:
-```
-resxfmt [options] [<path> ...]
-```
-
-Options:
-- `-r`, `--recursive` Recurse into subdirectories when a path is a directory.
-- `-v`, `--verbose` Show per-file status and errors.
-- `-n`, `--dry-run` Show what would change without writing files.
-- `--check` Exit with code 1 if any file would change (implies `--dry-run`).
-
-Output:
-- Prints one line per file with a status (`updated`, `unchanged`, `skipped`).
-- Paths are shown relative to the current working directory.
-- `skipped` means formatting is disabled by EditorConfig for that file.
-
-Default path behavior:
-- If no path is provided, the current directory is processed.
+The command syntax is `resxfmt [options] [<path> ...]`. Use `--check` to detect required changes without writing, `--dry-run` to preview, `--recursive` to include subdirectories, and `--verbose` for detailed output. Formatting follows the applicable EditorConfig settings; without a path, the current directory is processed.
 
 
 # Contributing
