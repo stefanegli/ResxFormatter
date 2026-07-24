@@ -86,7 +86,9 @@ Build an installable Codex skill containing the complete published CLI:
 Package output:
 
 - `artifacts/packages/resxfmt-cli-<version>.zip`
-- The ZIP contains `resxfmt-cli/SKILL.md` and the CLI payload under `resxfmt-cli/assets/cli/`.
+- The ZIP contains `resxfmt-cli/SKILL.md`, `resxfmt-cli/assets/cli/win-x64/resxfmt.exe`, and `resxfmt-cli/assets/cli/linux-x64/resxfmt`.
+- Each CLI is a framework-dependent single file. The target machine must have the .NET 10 runtime.
+- Single-file publishing is runtime-specific, so Windows and Linux require separate binaries. ReadyToRun is disabled.
 - Extract `resxfmt-cli` into the Codex skills directory to install it.
 - Local packages use the VSIX version and normalize a missing build component to `0`. AppVeyor packages use `4.0.<build>`.
 

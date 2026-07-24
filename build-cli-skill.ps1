@@ -95,6 +95,7 @@ $testProjectPaths = @(
     (Join-Path $repoRoot 'ResxFormatterTests\ResxFormatterTests.csproj'),
     (Join-Path $repoRoot 'ResxFormatter.Cli.Tests\ResxFormatter.Cli.Tests.csproj')
 )
+$runtimeIdentifiers = @('win-x64', 'linux-x64')
 $skillSourcePath = Join-Path $repoRoot 'skills\resxfmt-cli'
 
 if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
@@ -180,22 +181,45 @@ try {
         Copy-Item -Destination $stagedSkillPath -Recurse -Force
     New-Item -ItemType Directory -Path $cliPayloadPath -Force | Out-Null
 
-    Invoke-NativeCommand 'dotnet' @(
-        'publish',
-        $projectPath,
-        '--configuration', $Configuration,
-        '--nologo',
-        '--output', $cliPayloadPath,
-        "-p:Version=$packageVersionText",
-        "-p:AssemblyVersion=$assemblyVersion",
-        "-p:FileVersion=$assemblyVersion",
-        "-p:InformationalVersion=$informationalVersion",
-        '-p:IncludeSourceRevisionInInformationalVersion=false'
-    )
+    foreach ($runtimeIdentifier in $runtimeIdentifiers) {
+        $executableName = if ($runtimeIdentifier.StartsWith('win-', [StringComparison]::Ordinal)) {
+            'resxfmt.exe'
+        } else {
+            'resxfmt'
+        }
 
-    $executablePath = Join-Path $cliPayloadPath 'resxfmt.exe'
-    if (-not (Test-Path -LiteralPath $executablePath -PathType Leaf)) {
-        throw "Published CLI executable was not found: '$executablePath'."
+        $publishPath = Join-Path $stagingRoot "publish\$runtimeIdentifier"
+        $runtimePayloadPath = Join-Path $cliPayloadPath $runtimeIdentifier
+        New-Item -ItemType Directory -Path $publishPath -Force | Out-Null
+        New-Item -ItemType Directory -Path $runtimePayloadPath -Force | Out-Null
+
+        Invoke-NativeCommand 'dotnet' @(
+            'publish',
+            $projectPath,
+            '--configuration', $Configuration,
+            '--nologo',
+            '--runtime', $runtimeIdentifier,
+            '--self-contained', 'false',
+            '--output', $publishPath,
+            '-p:PublishSingleFile=true',
+            '-p:PublishReadyToRun=false',
+            '-p:DebugType=None',
+            '-p:DebugSymbols=false',
+            "-p:Version=$packageVersionText",
+            "-p:AssemblyVersion=$assemblyVersion",
+            "-p:FileVersion=$assemblyVersion",
+            "-p:InformationalVersion=$informationalVersion",
+            '-p:IncludeSourceRevisionInInformationalVersion=false'
+        )
+
+        $publishedExecutablePath = Join-Path $publishPath $executableName
+        if (-not (Test-Path -LiteralPath $publishedExecutablePath -PathType Leaf)) {
+            throw "Published CLI executable was not found: '$publishedExecutablePath'."
+        }
+
+        Copy-Item `
+            -LiteralPath $publishedExecutablePath `
+            -Destination (Join-Path $runtimePayloadPath $executableName)
     }
 
     Copy-Item `

@@ -1,6 +1,6 @@
 ---
 name: resxfmt-cli
-description: Use the bundled ResxFormatter `resxfmt` .NET CLI to check, preview, and format `.resx` resource files according to EditorConfig; interpret statuses and exit codes; configure formatting rules; integrate checks into CI; or diagnose skipped, unchanged, and failed files. Use when Codex needs to operate the packaged CLI, a `resxfmt` executable on PATH, the ResxFormatter source repository, or `dotnet run`.
+description: Use the bundled platform-specific, framework-dependent single-file ResxFormatter `resxfmt` .NET CLI to check, preview, and format `.resx` resource files according to EditorConfig; interpret statuses and exit codes; configure formatting rules; integrate checks into CI; or diagnose skipped, unchanged, and failed files. Use when Codex needs to operate the packaged Windows or Linux x64 CLI, a `resxfmt` executable on PATH, the ResxFormatter source repository, or `dotnet run`.
 ---
 
 # ResxFormatter CLI
@@ -11,7 +11,8 @@ Use `resxfmt` conservatively: preview first, preserve the user's EditorConfig po
 
 1. Inspect the target paths, repository status, and applicable `.editorconfig` before writing.
 2. Resolve the command:
-   - Prefer `assets/cli/resxfmt.exe` relative to this `SKILL.md` when the packaged executable exists.
+   - On Windows x64, prefer `assets/cli/win-x64/resxfmt.exe` relative to this `SKILL.md`.
+   - On Linux x64, prefer `assets/cli/linux-x64/resxfmt` relative to this `SKILL.md`; run `chmod u+x` on it first when its executable bit was not preserved during ZIP extraction.
    - Otherwise use an explicit executable or `resxfmt` already on `PATH`.
    - In the ResxFormatter source repository, use an existing repo-local artifact when appropriate.
    - Otherwise run the CLI project with `dotnet run --project ResxFormatter.Cli/ResxFormatter.Cli.csproj -- <arguments>`.
@@ -26,7 +27,9 @@ Use `resxfmt` conservatively: preview first, preserve the user's EditorConfig po
 ## Guardrails
 
 - Resolve the packaged executable to an absolute path before changing the working directory to the target repository.
-- Keep every file in `assets/cli`; the framework-dependent executable requires its adjacent DLL and runtime metadata files.
+- Require the .NET 10 runtime; the packaged single files are framework-dependent, not self-contained.
+- Do not execute a binary for the wrong operating system or architecture. Fall back to `resxfmt` on `PATH` or the source project when no matching packaged runtime identifier exists.
+- Keep `PublishReadyToRun` disabled when rebuilding the skill package.
 - Do not add or change `.editorconfig` merely to make a skipped file active unless the user requested configuration changes. Explain the missing policy instead.
 - Do not assume directory arguments recurse; recursion requires `--recursive`.
 - Use `--` before a dash-prefixed path.

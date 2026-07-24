@@ -8,13 +8,22 @@ resxfmt [options] [<path> ...]
 
 With no path, process the current directory. A directory is non-recursive unless `--recursive` is present. Accept only `.resx` file targets; deduplicate overlapping targets.
 
-The packaged skill stores the complete framework-dependent CLI payload here:
+The packaged skill stores two framework-dependent single-file executables:
 
 ```text
-<skill-directory>\assets\cli\resxfmt.exe
+<skill-directory>\assets\cli\win-x64\resxfmt.exe
+<skill-directory>/assets/cli/linux-x64/resxfmt
 ```
 
-Resolve that executable to an absolute path, then invoke it while the current working directory is the repository containing the target files. Keep the adjacent files in `assets\cli` together.
+Select the executable matching the operating system and x64 architecture. Resolve it to an absolute path, then invoke it while the current working directory is the repository containing the target files.
+
+On Linux, restore the executable bit after ZIP extraction when necessary:
+
+```bash
+chmod u+x <skill-directory>/assets/cli/linux-x64/resxfmt
+```
+
+Both executables require the .NET 10 runtime. They are single-file and framework-dependent, with ReadyToRun disabled. A single executable cannot target both Windows and Linux because .NET single-file apps are runtime-identifier-specific.
 
 When running from the ResxFormatter source repository without a directly invocable executable:
 
@@ -34,7 +43,7 @@ Known Windows repository artifacts:
 - Debug build: `artifacts/bin/ResxFormatter.Cli/debug/resxfmt.exe`
 - Release publish: `artifacts/publish/ResxFormatter.Cli/release/resxfmt.exe`
 
-Prefer the packaged executable. Prefer `dotnet run` over guessing a repository artifact path when the build configuration or platform differs.
+Prefer the matching packaged executable. Prefer `dotnet run` over guessing a repository artifact path when the operating system, architecture, build configuration, or platform differs.
 
 ## Options
 
