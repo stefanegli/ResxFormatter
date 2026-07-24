@@ -17,4 +17,3 @@ build_script:
 artifacts:
   - path: artifacts\packages\ResxFormatter-v*.vsix
   - path: artifacts\packages\resxfmt-*.zip
-          
