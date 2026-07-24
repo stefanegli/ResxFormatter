@@ -15,6 +15,5 @@ build_script:
   - appveyor-build.cmd
 
 artifacts:
-  - path: ResxFormatter\bin\Release\net472\ResxFormatter.vsix
-    name: ResxFormatter.vsix
+  - path: artifacts\packages\ResxFormatter-v*.vsix
   - path: artifacts\packages\resxfmt-*.zip

@@ -100,6 +100,28 @@ function Get-VsixVersion {
     return $version
 }
 
+function New-VsixArtifact {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $SourcePath,
+
+        [Parameter(Mandatory = $true)]
+        [Version] $Version,
+
+        [Parameter(Mandatory = $true)]
+        [string] $OutputDirectory
+    )
+
+    $resolvedSourcePath = (Resolve-Path $SourcePath).Path
+    New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
+
+    $artifactPath = Join-Path $OutputDirectory "ResxFormatter-v$Version.vsix"
+    Copy-Item -LiteralPath $resolvedSourcePath -Destination $artifactPath -Force
+
+    Write-Host "VSIX artifact: $artifactPath"
+    return $artifactPath
+}
+
 function Publish-VsixToGallery {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -233,7 +255,12 @@ function Invoke-Build {
         '-SkipTests'
     )
 
-    Publish-VsixToGallery 'ResxFormatter\bin\Release\net472\ResxFormatter.vsix'
+    $vsixArtifactPath = New-VsixArtifact `
+        -SourcePath 'ResxFormatter\bin\Release\net472\ResxFormatter.vsix' `
+        -Version $buildVersion `
+        -OutputDirectory (Join-Path $repoRoot 'artifacts\packages')
+
+    Publish-VsixToGallery $vsixArtifactPath
 }
 
 if ($MyInvocation.InvocationName -ne '.') {
