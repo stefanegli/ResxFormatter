@@ -288,8 +288,8 @@ function Invoke-Build {
         -Version $buildVersion `
         -OutputDirectory (Join-Path $repoRoot 'artifacts\packages')
 
-    Publish-AppVeyorArtifact -Path $skillArtifactPath -DeploymentName 'AgentSkill'
-    Publish-AppVeyorArtifact -Path $vsixArtifactPath -DeploymentName 'VSIX'
+    Publish-AppVeyorArtifact -Path $skillArtifactPath -DeploymentName 'CodexSkill'
+    Publish-AppVeyorArtifact -Path $vsixArtifactPath -DeploymentName 'VsixExtension'
     Publish-VsixToGallery $vsixArtifactPath
 }
 
