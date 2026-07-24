@@ -69,6 +69,9 @@ A few things can be configured and probably you want to have this done as follow
 
 Download `resxfmt-<version>.zip` from an [AppVeyor build](https://ci.appveyor.com/project/stefanegli/resxformatter) and extract its `resxfmt` directory into your Codex skills directory. The skill includes .NET 10 framework-dependent single-file executables for Windows x64 and Linux x64.
 
+> [!NOTE]
+> The packaged executables are not digitally signed.
+
 Invoke the agent skill with:
 
 ```text
