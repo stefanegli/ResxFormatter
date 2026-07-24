@@ -13,7 +13,3 @@ init:
 
 build_script:
   - appveyor-build.cmd
-
-artifacts:
-  - path: artifacts\packages\ResxFormatter-v*.vsix
-  - path: artifacts\packages\resxfmt-*.zip

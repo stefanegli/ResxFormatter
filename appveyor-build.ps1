@@ -122,6 +122,33 @@ function New-VsixArtifact {
     return $artifactPath
 }
 
+function Publish-AppVeyorArtifact {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $Path,
+
+        [Parameter(Mandatory = $true)]
+        [string] $DeploymentName
+    )
+
+    if ($env:APPVEYOR -ne 'True') {
+        Write-Host "Not running in AppVeyor; skipping artifact '$DeploymentName'."
+        return
+    }
+
+    if (-not (Get-Command 'appveyor' -ErrorAction SilentlyContinue)) {
+        throw 'The AppVeyor build worker command was not found.'
+    }
+
+    $artifactPath = (Resolve-Path $Path).Path
+    Invoke-NativeCommand 'appveyor' @(
+        'PushArtifact',
+        $artifactPath,
+        '-FileName', [IO.Path]::GetFileName($artifactPath),
+        '-DeploymentName', $DeploymentName
+    )
+}
+
 function Publish-VsixToGallery {
     [CmdletBinding(SupportsShouldProcess = $true)]
     param(
@@ -255,11 +282,14 @@ function Invoke-Build {
         '-SkipTests'
     )
 
+    $skillArtifactPath = Join-Path $repoRoot "artifacts\packages\resxfmt-$buildVersion.zip"
     $vsixArtifactPath = New-VsixArtifact `
         -SourcePath 'ResxFormatter\bin\Release\net472\ResxFormatter.vsix' `
         -Version $buildVersion `
         -OutputDirectory (Join-Path $repoRoot 'artifacts\packages')
 
+    Publish-AppVeyorArtifact -Path $skillArtifactPath -DeploymentName 'AgentSkill'
+    Publish-AppVeyorArtifact -Path $vsixArtifactPath -DeploymentName 'VSIX'
     Publish-VsixToGallery $vsixArtifactPath
 }
 
