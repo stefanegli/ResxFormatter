@@ -17,4 +17,4 @@ build_script:
 artifacts:
   - path: ResxFormatter\bin\Release\net472\ResxFormatter.vsix
     name: ResxFormatter.vsix
-  - path: artifacts\packages\resxfmt-cli-*.zip
+  - path: artifacts\packages\resxfmt-*.zip

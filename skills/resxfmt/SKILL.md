@@ -1,5 +1,5 @@
 ---
-name: resxfmt-cli
+name: resxfmt
 description: Use the bundled platform-specific, framework-dependent single-file ResxFormatter `resxfmt` .NET CLI to check, preview, and format `.resx` resource files according to EditorConfig; interpret statuses and exit codes; configure formatting rules; integrate checks into CI; or diagnose skipped, unchanged, and failed files. Use when Codex needs to operate the packaged Windows or Linux x64 CLI, a `resxfmt` executable on PATH, the ResxFormatter source repository, or `dotnet run`.
 ---
 

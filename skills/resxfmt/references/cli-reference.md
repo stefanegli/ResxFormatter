@@ -8,7 +8,7 @@ resxfmt [options] [<path> ...]
 
 With no path, process the current directory. A directory is non-recursive unless `--recursive` is present. Accept only `.resx` file targets; deduplicate overlapping targets.
 
-The packaged skill stores two framework-dependent single-file executables:
+The packaged `$resxfmt` skill stores two framework-dependent single-file executables:
 
 ```text
 <skill-directory>\assets\cli\win-x64\resxfmt.exe

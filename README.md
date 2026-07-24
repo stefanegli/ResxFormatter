@@ -65,14 +65,14 @@ A few things can be configured and probably you want to have this done as follow
 > Use the experimental setting with caution since it may have undesired side effects. It is also worth to note,
 > that the extension may insert schema or documentation comment in order to match the desired effect of your EditorConfig settings.
 
-# CLI / Agent Skill
+# Agent Skill / CLI
 
-Download `resxfmt-cli-<version>.zip` from an [AppVeyor build](https://ci.appveyor.com/project/stefanegli/resxformatter) and extract its `resxfmt-cli` directory into your Codex skills directory. The skill includes .NET 10 framework-dependent single-file executables for Windows x64 and Linux x64.
+Download `resxfmt-<version>.zip` from an [AppVeyor build](https://ci.appveyor.com/project/stefanegli/resxformatter) and extract its `resxfmt` directory into your Codex skills directory. The skill includes .NET 10 framework-dependent single-file executables for Windows x64 and Linux x64.
 
 Invoke the agent skill with:
 
 ```text
-Use $resxfmt-cli to check and format the .resx files in this repository.
+Use $resxfmt to check and format the .resx files in this repository.
 ```
 
 Or call the packaged executable directly from the directory containing the files you want to process.
@@ -80,14 +80,14 @@ Or call the packaged executable directly from the directory containing the files
 Windows:
 
 ```powershell
-& "$env:USERPROFILE\.codex\skills\resxfmt-cli\assets\cli\win-x64\resxfmt.exe" --check --recursive .
+& "$env:USERPROFILE\.codex\skills\resxfmt\assets\cli\win-x64\resxfmt.exe" --check --recursive .
 ```
 
 Linux:
 
 ```bash
-chmod u+x "$HOME/.codex/skills/resxfmt-cli/assets/cli/linux-x64/resxfmt"
-"$HOME/.codex/skills/resxfmt-cli/assets/cli/linux-x64/resxfmt" --check --recursive .
+chmod u+x "$HOME/.codex/skills/resxfmt/assets/cli/linux-x64/resxfmt"
+"$HOME/.codex/skills/resxfmt/assets/cli/linux-x64/resxfmt" --check --recursive .
 ```
 
 The command syntax is `resxfmt [options] [<path> ...]`. Use `--check` to detect required changes without writing, `--dry-run` to preview, `--recursive` to include subdirectories, and `--verbose` for detailed output. Formatting follows the applicable EditorConfig settings; without a path, the current directory is processed.

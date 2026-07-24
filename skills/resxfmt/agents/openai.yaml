@@ -1,4 +1,4 @@
 interface:
   display_name: "ResxFormatter CLI"
   short_description: "Safely check and format .resx files with resxfmt"
-  default_prompt: "Use $resxfmt-cli to check and format the .resx files in this repository."
+  default_prompt: "Use $resxfmt to check and format the .resx files in this repository."

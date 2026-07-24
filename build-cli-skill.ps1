@@ -96,7 +96,7 @@ $testProjectPaths = @(
     (Join-Path $repoRoot 'ResxFormatter.Cli.Tests\ResxFormatter.Cli.Tests.csproj')
 )
 $runtimeIdentifiers = @('win-x64', 'linux-x64')
-$skillSourcePath = Join-Path $repoRoot 'skills\resxfmt-cli'
+$skillSourcePath = Join-Path $repoRoot 'skills\resxfmt'
 
 if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
     $OutputDirectory = Join-Path $repoRoot 'artifacts\packages'
@@ -144,20 +144,20 @@ foreach ($relativePath in $requiredSkillFiles) {
 }
 
 $skillContent = Get-Content -Raw -LiteralPath (Join-Path $skillSourcePath 'SKILL.md')
-if ($skillContent -notmatch '(?s)\A---\r?\nname:\s*resxfmt-cli\r?\ndescription:\s*.+?\r?\n---') {
-    throw "The resxfmt-cli skill has invalid or unexpected frontmatter."
+if ($skillContent -notmatch '(?s)\A---\r?\nname:\s*resxfmt\r?\ndescription:\s*.+?\r?\n---') {
+    throw "The resxfmt skill has invalid or unexpected frontmatter."
 }
 
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
 
-$packageFileName = "resxfmt-cli-$packageVersionText.zip"
+$packageFileName = "resxfmt-$packageVersionText.zip"
 $packagePath = Join-Path $OutputDirectory $packageFileName
 if (Test-Path -LiteralPath $packagePath) {
     throw "Package already exists: '$packagePath'."
 }
 
 $temporaryId = [Guid]::NewGuid().ToString('N')
-$stagingRoot = Join-Path $OutputDirectory ".resxfmt-cli-$packageVersionText-$temporaryId.tmp"
+$stagingRoot = Join-Path $OutputDirectory ".resxfmt-$packageVersionText-$temporaryId.tmp"
 $temporaryPackagePath = Join-Path $OutputDirectory ".$packageFileName-$temporaryId.tmp.zip"
 Assert-PathWithinDirectory -Path $stagingRoot -Directory $OutputDirectory
 Assert-PathWithinDirectory -Path $temporaryPackagePath -Directory $OutputDirectory
@@ -174,7 +174,7 @@ try {
         }
     }
 
-    $stagedSkillPath = Join-Path $stagingRoot 'resxfmt-cli'
+    $stagedSkillPath = Join-Path $stagingRoot 'resxfmt'
     $cliPayloadPath = Join-Path $stagedSkillPath 'assets\cli'
     New-Item -ItemType Directory -Path $stagedSkillPath -Force | Out-Null
     Get-ChildItem -Force -LiteralPath $skillSourcePath |
@@ -232,7 +232,7 @@ try {
         -CompressionLevel Optimal
     Move-Item -LiteralPath $temporaryPackagePath -Destination $packagePath
 
-    Write-Host "CLI skill package: $packagePath"
+    Write-Host "ResxFormatter skill package: $packagePath"
     Write-Output $packagePath
 } finally {
     if (Test-Path -LiteralPath $stagingRoot) {
