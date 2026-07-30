@@ -1,13 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>ResxFormatter.Cli</RootNamespace>
     <AssemblyName>resxfmt</AssemblyName>
+    <Authors>Stefan Egli</Authors>
+    <Description>Format .resx resource files from the command line.</Description>
     <LangVersion>latest</LangVersion>
+    <OutputType>Exe</OutputType>
+    <PackageId>PetchNaka.ResxFormatter.Cli</PackageId>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>dotnet-tool;resx;formatter</PackageTags>
+    <PackAsTool>true</PackAsTool>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/stefanegli/ResxFormatter</RepositoryUrl>
+    <RootNamespace>ResxFormatter.Cli</RootNamespace>
+    <TargetFramework>net10.0</TargetFramework>
+    <ToolCommandName>resxfmt</ToolCommandName>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\">
+      <Link>README.md</Link>
+    </None>
     <ProjectReference Include="..\ResxFormatter.Core\ResxFormatter.Core.csproj" />
   </ItemGroup>
 

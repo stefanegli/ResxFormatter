@@ -67,10 +67,7 @@ A few things can be configured and probably you want to have this done as follow
 
 # Agent Skill / CLI
 
-Download `resxfmt-<version>.zip` from an [AppVeyor build](https://ci.appveyor.com/project/stefanegli/resxformatter) and extract its `resxfmt` directory into your Codex skills directory. The skill includes .NET 10 framework-dependent single-file executables for Windows x64 and Linux x64.
-
-> [!NOTE]
-> The packaged executables are not digitally signed.
+Download `resxfmt-<version>.zip` from an [AppVeyor build](https://ci.appveyor.com/project/stefanegli/resxformatter) and extract its `resxfmt` directory into your Codex skills directory. The skill uses the `PetchNaka.ResxFormatter.Cli` .NET global tool and does not bundle an executable.
 
 Invoke the agent skill with:
 
@@ -78,23 +75,21 @@ Invoke the agent skill with:
 Use $resxfmt to check and format the .resx files in this repository.
 ```
 
-Or call the packaged executable directly from the directory containing the files you want to process.
-
-Windows:
+The agent will detect when the tool is missing and can help install it. To install it directly, first install the .NET 10 SDK and then run:
 
 ```powershell
-& "$env:USERPROFILE\.codex\skills\resxfmt\assets\cli\win-x64\resxfmt.exe" --check --recursive .
+dotnet tool install --global PetchNaka.ResxFormatter.Cli
 ```
 
-Linux:
+Update an existing installation with:
 
-```bash
-chmod u+x "$HOME/.codex/skills/resxfmt/assets/cli/linux-x64/resxfmt"
-"$HOME/.codex/skills/resxfmt/assets/cli/linux-x64/resxfmt" --check --recursive .
+```powershell
+dotnet tool update --global PetchNaka.ResxFormatter.Cli
 ```
 
-The command syntax is `resxfmt [options] [<path> ...]`. Use `--check` to detect required changes without writing, `--dry-run` to preview, `--recursive` to include subdirectories, and `--verbose` for detailed output. Formatting follows the applicable EditorConfig settings; without a path, the current directory is processed.
+Run `resxfmt` from the directory containing the resource files you want to process. The command syntax is `resxfmt [options] [<path> ...]`. Use `--check` to detect required changes without writing, `--dry-run` to preview, `--recursive` to include subdirectories, and `--verbose` for detailed output. Formatting follows the applicable EditorConfig settings; without a path, the current directory is processed.
 
+The CLI reports `updated`, `would-update`, `unchanged`, `skipped`, or `failed` for each file. Exit code `1` means `--check` found pending changes; exit code `2` means a usage, path, access, or formatting failure.
 
 # Contributing
 Please use the [issue tracker](https://github.com/stefanegli/ResxFormatter/issues) for submitting bug reports or feature requests.

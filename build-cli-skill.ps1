@@ -90,12 +90,10 @@ function Assert-PathWithinDirectory {
 
 $repoRoot = $PSScriptRoot
 $manifestPath = Join-Path $repoRoot 'ResxFormatter\source.extension.vsixmanifest'
-$projectPath = Join-Path $repoRoot 'ResxFormatter.Cli\ResxFormatter.Cli.csproj'
 $testProjectPaths = @(
     (Join-Path $repoRoot 'ResxFormatterTests\ResxFormatterTests.csproj'),
     (Join-Path $repoRoot 'ResxFormatter.Cli.Tests\ResxFormatter.Cli.Tests.csproj')
 )
-$runtimeIdentifiers = @('win-x64', 'linux-x64')
 $skillSourcePath = Join-Path $repoRoot 'skills\resxfmt'
 
 if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
@@ -107,25 +105,6 @@ if ([string]::IsNullOrWhiteSpace($OutputDirectory)) {
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
 $packageVersion = Get-PackageVersion -RequestedVersion $Version -ManifestPath $manifestPath
 $packageVersionText = $packageVersion.ToString()
-$assemblyVersion = if ($packageVersion.Revision -lt 0) {
-    [Version]::new($packageVersion.Major, $packageVersion.Minor, $packageVersion.Build, 0)
-} else {
-    $packageVersion
-}
-
-$commit = $null
-if (Get-Command 'git' -ErrorAction SilentlyContinue) {
-    $commit = (& git -C $repoRoot rev-parse --short=8 HEAD 2>$null)
-    if ($LASTEXITCODE -ne 0) {
-        $commit = $null
-    }
-}
-
-$informationalVersion = if ([string]::IsNullOrWhiteSpace($commit)) {
-    $packageVersionText
-} else {
-    "$packageVersionText+$commit"
-}
 
 if (-not (Test-Path -LiteralPath $skillSourcePath -PathType Container)) {
     throw "Skill source directory was not found: '$skillSourcePath'."
@@ -141,6 +120,21 @@ foreach ($relativePath in $requiredSkillFiles) {
     if (-not (Test-Path -LiteralPath $requiredPath -PathType Leaf)) {
         throw "Required skill file was not found: '$requiredPath'."
     }
+}
+
+$precompiledSkillFiles = @(
+    Get-ChildItem -LiteralPath $skillSourcePath -Recurse -File |
+        Where-Object { $_.Extension -in @('.exe', '.dll', '.pdb') }
+)
+if ($precompiledSkillFiles.Count -gt 0) {
+    $skillSourcePrefixLength = $skillSourcePath.TrimEnd(
+        [IO.Path]::DirectorySeparatorChar,
+        [IO.Path]::AltDirectorySeparatorChar).Length + 1
+    $relativePaths = @(
+        $precompiledSkillFiles |
+            ForEach-Object { $_.FullName.Substring($skillSourcePrefixLength) }
+    )
+    throw "The skill must not contain precompiled files: $($relativePaths -join ', ')."
 }
 
 $skillContent = Get-Content -Raw -LiteralPath (Join-Path $skillSourcePath 'SKILL.md')
@@ -175,56 +169,9 @@ try {
     }
 
     $stagedSkillPath = Join-Path $stagingRoot 'resxfmt'
-    $cliPayloadPath = Join-Path $stagedSkillPath 'assets\cli'
     New-Item -ItemType Directory -Path $stagedSkillPath -Force | Out-Null
     Get-ChildItem -Force -LiteralPath $skillSourcePath |
         Copy-Item -Destination $stagedSkillPath -Recurse -Force
-    New-Item -ItemType Directory -Path $cliPayloadPath -Force | Out-Null
-
-    foreach ($runtimeIdentifier in $runtimeIdentifiers) {
-        $executableName = if ($runtimeIdentifier.StartsWith('win-', [StringComparison]::Ordinal)) {
-            'resxfmt.exe'
-        } else {
-            'resxfmt'
-        }
-
-        $publishPath = Join-Path $stagingRoot "publish\$runtimeIdentifier"
-        $runtimePayloadPath = Join-Path $cliPayloadPath $runtimeIdentifier
-        New-Item -ItemType Directory -Path $publishPath -Force | Out-Null
-        New-Item -ItemType Directory -Path $runtimePayloadPath -Force | Out-Null
-
-        Invoke-NativeCommand 'dotnet' @(
-            'publish',
-            $projectPath,
-            '--configuration', $Configuration,
-            '--nologo',
-            '--runtime', $runtimeIdentifier,
-            '--self-contained', 'false',
-            '--output', $publishPath,
-            '-p:PublishSingleFile=true',
-            '-p:PublishReadyToRun=false',
-            '-p:DebugType=None',
-            '-p:DebugSymbols=false',
-            "-p:Version=$packageVersionText",
-            "-p:AssemblyVersion=$assemblyVersion",
-            "-p:FileVersion=$assemblyVersion",
-            "-p:InformationalVersion=$informationalVersion",
-            '-p:IncludeSourceRevisionInInformationalVersion=false'
-        )
-
-        $publishedExecutablePath = Join-Path $publishPath $executableName
-        if (-not (Test-Path -LiteralPath $publishedExecutablePath -PathType Leaf)) {
-            throw "Published CLI executable was not found: '$publishedExecutablePath'."
-        }
-
-        Copy-Item `
-            -LiteralPath $publishedExecutablePath `
-            -Destination (Join-Path $runtimePayloadPath $executableName)
-    }
-
-    Copy-Item `
-        -LiteralPath (Join-Path $repoRoot 'LICENSE') `
-        -Destination (Join-Path $cliPayloadPath 'ResxFormatter-LICENSE.txt')
 
     Compress-Archive `
         -LiteralPath $stagedSkillPath `

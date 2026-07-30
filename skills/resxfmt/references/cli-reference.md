@@ -8,42 +8,30 @@ resxfmt [options] [<path> ...]
 
 With no path, process the current directory. A directory is non-recursive unless `--recursive` is present. Accept only `.resx` file targets; deduplicate overlapping targets.
 
-The packaged `$resxfmt` skill stores two framework-dependent single-file executables:
+## Tool installation
 
-```text
-<skill-directory>\assets\cli\win-x64\resxfmt.exe
-<skill-directory>/assets/cli/linux-x64/resxfmt
+The skill does not contain an executable. Install the .NET 10 SDK, which also supplies the required runtime, then install the global tool:
+
+```powershell
+dotnet tool install --global PetchNaka.ResxFormatter.Cli
+resxfmt --version
 ```
 
-Select the executable matching the operating system and x64 architecture. Resolve it to an absolute path, then invoke it while the current working directory is the repository containing the target files.
+Installing or updating a global tool changes the user's environment. Explain the requirement and obtain permission before doing so on the user's behalf.
 
-On Linux, restore the executable bit after ZIP extraction when necessary:
+Update an existing installation with:
 
-```bash
-chmod u+x <skill-directory>/assets/cli/linux-x64/resxfmt
+```powershell
+dotnet tool update --global PetchNaka.ResxFormatter.Cli
 ```
 
-Both executables require the .NET 10 runtime. They are single-file and framework-dependent, with ReadyToRun disabled. A single executable cannot target both Windows and Linux because .NET single-file apps are runtime-identifier-specific.
+Prefer `resxfmt` on `PATH`. If a new installation is not immediately visible, the standard global-tool locations are `%USERPROFILE%\.dotnet\tools` on Windows and `$HOME/.dotnet/tools` on Linux and macOS. Add the appropriate directory to `PATH` or start a new shell rather than copying the tool executable.
 
-When running from the ResxFormatter source repository without a directly invocable executable:
+When developing in the ResxFormatter source repository, run the project directly when using the checked-out source is more appropriate than the installed release:
 
 ```powershell
 dotnet run --project ResxFormatter.Cli/ResxFormatter.Cli.csproj -- --check --recursive .
 ```
-
-Build or publish from the repository root with the .NET 10 SDK:
-
-```powershell
-dotnet build ResxFormatter.Cli/ResxFormatter.Cli.csproj --nologo
-dotnet publish ResxFormatter.Cli/ResxFormatter.Cli.csproj -c Release --nologo
-```
-
-Known Windows repository artifacts:
-
-- Debug build: `artifacts/bin/ResxFormatter.Cli/debug/resxfmt.exe`
-- Release publish: `artifacts/publish/ResxFormatter.Cli/release/resxfmt.exe`
-
-Prefer the matching packaged executable. Prefer `dotnet run` over guessing a repository artifact path when the operating system, architecture, build configuration, or platform differs.
 
 ## Options
 
@@ -137,10 +125,11 @@ Paths in output are relative to the current working directory when possible. Wit
 
 ## CI
 
-Use `--check --recursive` to enforce formatting without modifying the checkout:
+Install the tool, then use `--check --recursive` to enforce formatting without modifying the checkout:
 
 ```powershell
+dotnet tool install --global PetchNaka.ResxFormatter.Cli
 resxfmt --check --recursive .
 ```
 
-Treat exit `1` as a formatting-policy violation and exit `2` as an execution/configuration failure. Preserve CLI output in the job log so pending or failed paths are visible.
+Pin the package with `--version <version>` when reproducible CI builds require it. Treat exit `1` as a formatting-policy violation and exit `2` as an execution/configuration failure. Preserve CLI output in the job log so pending or failed paths are visible.

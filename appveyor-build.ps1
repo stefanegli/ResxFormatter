@@ -100,6 +100,27 @@ function Get-VsixVersion {
     return $version
 }
 
+function Get-MsBuildProperty {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $ProjectPath,
+
+        [Parameter(Mandatory = $true)]
+        [string] $Name
+    )
+
+    $value = (& dotnet msbuild $ProjectPath "-getProperty:$Name" -nologo | Out-String).Trim()
+    if ($LASTEXITCODE -ne 0) {
+        throw "Could not read MSBuild property '$Name' from '$ProjectPath'."
+    }
+
+    if ([string]::IsNullOrWhiteSpace($value)) {
+        throw "MSBuild property '$Name' is empty in '$ProjectPath'."
+    }
+
+    return $value
+}
+
 function New-VsixArtifact {
     param(
         [Parameter(Mandatory = $true)]
@@ -273,6 +294,17 @@ function Invoke-Build {
         '--no-build'
     )
 
+    $globalToolPublishScriptPath = Join-Path $repoRoot 'scripts\Publish-GlobalTool.ps1'
+    Invoke-NativeCommand 'powershell.exe' @(
+        '-NoProfile',
+        '-ExecutionPolicy', 'Bypass',
+        '-File', $globalToolPublishScriptPath,
+        '-Version', $buildVersion.ToString(),
+        '-Configuration', 'Release',
+        '-SkipTests',
+        '-PackOnly'
+    )
+
     Invoke-NativeCommand 'powershell.exe' @(
         '-NoProfile',
         '-ExecutionPolicy', 'Bypass',
@@ -282,12 +314,17 @@ function Invoke-Build {
         '-SkipTests'
     )
 
+    $globalToolProjectPath = Join-Path $repoRoot 'ResxFormatter.Cli\ResxFormatter.Cli.csproj'
+    $globalToolPackageId = Get-MsBuildProperty -ProjectPath $globalToolProjectPath -Name 'PackageId'
+    $globalToolArtifactPath = Join-Path $repoRoot (
+        "artifacts\packages\$globalToolPackageId.$buildVersion.nupkg")
     $skillArtifactPath = Join-Path $repoRoot "artifacts\packages\resxfmt-$buildVersion.zip"
     $vsixArtifactPath = New-VsixArtifact `
         -SourcePath 'ResxFormatter\bin\Release\net472\ResxFormatter.vsix' `
         -Version $buildVersion `
         -OutputDirectory (Join-Path $repoRoot 'artifacts\packages')
 
+    Publish-AppVeyorArtifact -Path $globalToolArtifactPath -DeploymentName 'DotNetGlobalTool'
     Publish-AppVeyorArtifact -Path $skillArtifactPath -DeploymentName 'CodexSkill'
     Publish-AppVeyorArtifact -Path $vsixArtifactPath -DeploymentName 'VsixExtension'
     Publish-VsixToGallery $vsixArtifactPath

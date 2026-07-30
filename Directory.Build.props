@@ -2,5 +2,6 @@
   <PropertyGroup Condition="'$(MSBuildProjectName)' == 'ResxFormatter.Cli'">
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts\</ArtifactsPath>
+    <Version>4.0</Version>
   </PropertyGroup>
 </Project>
