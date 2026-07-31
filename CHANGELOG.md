@@ -13,7 +13,7 @@ on the official Visual Studio extension gallery.
 
 ## 4.0
 
-- [x] Support Visual Studio 2026 on amd64
+- [x] Support Visual Studio 2022 17.14 and Visual Studio 2026 on amd64
 - [x] Extract the formatting engine into a reusable .NET Standard core library shared by the Visual Studio extension and command-line tool
 - [x] Harden resource formatting against malformed and adversarial input
 - [x] Improve the reliability of Visual Studio background formatting operations
