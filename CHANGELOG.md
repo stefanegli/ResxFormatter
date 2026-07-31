@@ -1,6 +1,6 @@
 # Road map
 
-- [ ] Drop support for VS 2017 and 2019?
+- [ ] 
 
 Features that have a checkmark are complete and available for
 download in the
@@ -11,7 +11,20 @@ download in the
 These are the changes to each version that has been released
 on the official Visual Studio extension gallery.
 
+## 4.0
+
+- [x] Support Visual Studio 2026 on amd64
+- [x] Extract the formatting engine into a reusable .NET Standard core library shared by the Visual Studio extension and command-line tool
+- [x] Harden resource formatting against malformed and adversarial input
+- [x] Improve the reliability of Visual Studio background formatting operations
+- [x] Publish the ResxFormatter EditorConfig properties for IntelliSense and validation
+- [x] Add the cross-platform `resxfmt` command-line tool with recursive, dry-run, and check modes
+- [x] Publish `resxfmt` as a .NET global tool and package it as an installable Codex skill
+- [x] Modernize the build, test, and packaging pipeline with versioned VSIX, NuGet, and skill artifacts
+- [x] Automate tagged VSIX releases to the Visual Studio Marketplace
+
 ## 3.1
+
 - [x] Fix problem with duplicate keys in [EditorConfig](https://editorconfig.org/) files (cf. issue #10)
 
 ## 3.0
@@ -25,7 +38,7 @@ on the official Visual Studio extension gallery.
 - [x] BugFix: Extension does not load with VS 2017 (cf. issue #7)
 
 ## 2.0
-- [x] Support for Visual Studio 2017, 2019 and **2022** 
+- [x] Support for Visual Studio 2017, 2019 and **2022**
 - [x] "FixResxWriter" setting works without restart of Visual Studio
 
 ## 1.2
@@ -36,7 +49,7 @@ on the official Visual Studio extension gallery.
 - [x] BugFix: Use "ordinal sort" to ensure consistent results regardless of regional settings (cf. issue #2)
 
 ## 1.0
-- [x] Settings / Options: 
+- [x] Settings / Options:
   - [x] Configure automatic file reload after saving: Off, AfterModification, Always
   - [x] Enable / disable 'Remove documentation comment'
   - [x] Enable / disable sorting of resx entries
@@ -57,4 +70,3 @@ on the official Visual Studio extension gallery.
 ## 0.7
 
 - [x] Basic functionality: Remove "comment" and sort entries in resx files
-

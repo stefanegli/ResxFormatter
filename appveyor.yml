@@ -2,8 +2,10 @@ image: Visual Studio 2026
 
 version: 4.0.{build}
 
-# Required for non-PR Gallery publication; configure
+# Required for non-PR Open VSIX Gallery publication; configure
 # VSIX_GALLERY_MANAGE_TOKEN as a secure project environment variable.
+# Tagged builds also publish to the Visual Studio Marketplace; configure
+# VS_MARKETPLACE_PAT as a secure project environment variable.
 
 build: off
 test: off

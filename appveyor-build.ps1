@@ -254,6 +254,78 @@ function Publish-VsixToGallery {
     Write-Host "Extension page: https://www.vsixgallery.com/extension/$extensionId"
 }
 
+function Get-VsixPublisherPath {
+    $vswherePath = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+    if (-not (Test-Path -LiteralPath $vswherePath -PathType Leaf)) {
+        throw "Visual Studio Locator was not found at '$vswherePath'."
+    }
+
+    $publisherPaths = @(& $vswherePath `
+        '-latest' `
+        '-products' '*' `
+        '-find' 'VSSDK\VisualStudioIntegration\Tools\Bin\VsixPublisher.exe')
+    if ($LASTEXITCODE -ne 0) {
+        throw "Visual Studio Locator exited with code $LASTEXITCODE while locating VsixPublisher.exe."
+    }
+
+    $publisherPath = $publisherPaths |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+        Select-Object -First 1
+    if (-not $publisherPath -or -not (Test-Path -LiteralPath $publisherPath -PathType Leaf)) {
+        throw 'VsixPublisher.exe was not found. Install the Visual Studio SDK on the build worker.'
+    }
+
+    return (Resolve-Path -LiteralPath $publisherPath).Path
+}
+
+function Publish-VsixToMarketplace {
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $Path,
+
+        [Parameter(Mandatory = $true)]
+        [string] $PublishManifestPath
+    )
+
+    if ($env:APPVEYOR -ne 'True') {
+        Write-Host 'Not running in AppVeyor; skipping Visual Studio Marketplace publication.'
+        return
+    }
+
+    if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
+        Write-Host 'Pull request build; skipping Visual Studio Marketplace publication.'
+        return
+    }
+
+    if (-not [string]::Equals($env:APPVEYOR_REPO_TAG, 'true', [StringComparison]::OrdinalIgnoreCase)) {
+        Write-Host 'Not a tagged build; skipping Visual Studio Marketplace publication.'
+        return
+    }
+
+    if ([string]::IsNullOrWhiteSpace($env:VS_MARKETPLACE_PAT)) {
+        throw "Set 'VS_MARKETPLACE_PAT' as a secure AppVeyor environment variable before publishing a tagged build."
+    }
+
+    $vsixPath = (Resolve-Path -LiteralPath $Path).Path
+    $manifestPath = (Resolve-Path -LiteralPath $PublishManifestPath).Path
+    $publisherPath = Get-VsixPublisherPath
+
+    if (-not $PSCmdlet.ShouldProcess(
+            'Visual Studio Marketplace',
+            "Publish '$vsixPath' using '$manifestPath'")) {
+        return
+    }
+
+    Write-Host "Publishing '$vsixPath' to the Visual Studio Marketplace..."
+    Invoke-NativeCommand $publisherPath @(
+        'publish',
+        '-payload', $vsixPath,
+        '-publishManifest', $manifestPath,
+        '-personalAccessToken', $env:VS_MARKETPLACE_PAT
+    )
+}
+
 function Invoke-Build {
     $repoRoot = $PSScriptRoot
     Set-Location $repoRoot
@@ -328,6 +400,9 @@ function Invoke-Build {
     Publish-AppVeyorArtifact -Path $skillArtifactPath -DeploymentName 'CodexSkill'
     Publish-AppVeyorArtifact -Path $vsixArtifactPath -DeploymentName 'VsixExtension'
     Publish-VsixToGallery $vsixArtifactPath
+    Publish-VsixToMarketplace `
+        -Path $vsixArtifactPath `
+        -PublishManifestPath (Join-Path $repoRoot 'vs-publish.json')
 }
 
 if ($MyInvocation.InvocationName -ne '.') {
