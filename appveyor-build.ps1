@@ -35,13 +35,13 @@ function Install-DotNetSdk {
     $env:PATH = "$InstallDir;$env:PATH"
 }
 
-function Set-VsixBuildVersion {
+function Set-VsixVersion {
     param(
         [Parameter(Mandatory = $true)]
         [string] $ManifestPath,
 
         [Parameter(Mandatory = $true)]
-        [int] $BuildNumber,
+        [Version] $Version,
 
         [switch] $UpdateAppVeyor
     )
@@ -57,23 +57,34 @@ function Set-VsixBuildVersion {
         throw "The VSIX identity was not found in '$ManifestPath'."
     }
 
-    $baseVersion = [Version]$identity.GetAttribute('Version')
-    $version = [Version]::new($baseVersion.Major, $baseVersion.Minor, $BuildNumber)
-    $identity.SetAttribute('Version', $version.ToString())
+    $identity.SetAttribute('Version', $Version.ToString())
     $document.Save($ManifestPath)
 
-    Write-Host "VSIX version: $version"
+    Write-Host "VSIX version: $Version"
 
     if ($UpdateAppVeyor) {
         if (-not (Get-Command 'appveyor' -ErrorAction SilentlyContinue)) {
             throw 'The AppVeyor build worker command was not found.'
         }
 
-        Invoke-NativeCommand 'appveyor' @('UpdateBuild', '-Version', $version.ToString())
-        $env:APPVEYOR_BUILD_VERSION = $version.ToString()
+        Invoke-NativeCommand 'appveyor' @('UpdateBuild', '-Version', $Version.ToString())
+        $env:APPVEYOR_BUILD_VERSION = $Version.ToString()
     }
 
-    return $version
+    return $Version
+}
+
+function ConvertFrom-VsixVersionTag {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string] $TagName
+    )
+
+    if ($TagName -notmatch '^v(?<Version>\d+\.\d+\.\d+(?:\.\d+)?)$') {
+        throw "Tag '$TagName' is not a valid VSIX release tag. Use a numeric tag such as 'v4.0.121'."
+    }
+
+    return [Version]$Matches.Version
 }
 
 function Get-VsixVersion {
@@ -335,10 +346,25 @@ function Invoke-Build {
 
     $manifestPath = Join-Path $repoRoot 'ResxFormatter\source.extension.vsixmanifest'
     $buildVersion = Get-VsixVersion -ManifestPath $manifestPath
-    if ($env:APPVEYOR_BUILD_NUMBER) {
-        $buildVersion = Set-VsixBuildVersion `
+    if ([string]::Equals($env:APPVEYOR_REPO_TAG, 'true', [StringComparison]::OrdinalIgnoreCase)) {
+        if ([string]::IsNullOrWhiteSpace($env:APPVEYOR_REPO_TAG_NAME)) {
+            throw "AppVeyor marked this as a tagged build but did not provide 'APPVEYOR_REPO_TAG_NAME'."
+        }
+
+        $tagVersion = ConvertFrom-VsixVersionTag -TagName $env:APPVEYOR_REPO_TAG_NAME
+        $buildVersion = Set-VsixVersion `
             -ManifestPath $manifestPath `
-            -BuildNumber ([int]$env:APPVEYOR_BUILD_NUMBER) `
+            -Version $tagVersion `
+            -UpdateAppVeyor
+    } elseif ($env:APPVEYOR_BUILD_NUMBER) {
+        $baseVersion = Get-VsixVersion -ManifestPath $manifestPath
+        $appVeyorVersion = [Version]::new(
+            $baseVersion.Major,
+            $baseVersion.Minor,
+            [int]$env:APPVEYOR_BUILD_NUMBER)
+        $buildVersion = Set-VsixVersion `
+            -ManifestPath $manifestPath `
+            -Version $appVeyorVersion `
             -UpdateAppVeyor
     }
 
