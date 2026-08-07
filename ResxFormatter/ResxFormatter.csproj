@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
-        <LangVersion>latest</LangVersion>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GeneratePkgDefFile>true</GeneratePkgDefFile>
+        <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+        <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+        <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+        <LangVersion>latest</LangVersion>
+        <TargetFramework>net472</TargetFramework>
+        <UseCodebase>true</UseCodebase>
+        <VsixDeployOnDebug>true</VsixDeployOnDebug>
         <!-- VSIX settings -->
         <VSSDKBuildToolsAutoSetup>true</VSSDKBuildToolsAutoSetup>
-        <VsixDeployOnDebug>true</VsixDeployOnDebug>
-        <GeneratePkgDefFile>true</GeneratePkgDefFile>
-        <UseCodebase>true</UseCodebase>
-        <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
-        <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
-        <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,17 +19,17 @@
 
     <ItemGroup>
         <Compile Update="Commands\ResxFormatterPackage.cs">
+            <DependentUpon>ResxFormatterPackage.vsct</DependentUpon>
             <AutoGen>true</AutoGen>
             <DesignTime>true</DesignTime>
-            <DependentUpon>ResxFormatterPackage.vsct</DependentUpon>
         </Compile>
         <Compile Update="OptionPageGrid.cs">
             <SubType>Component</SubType>
         </Compile>
         <Compile Update="source.extension.cs">
+            <DependentUpon>source.extension.vsixmanifest</DependentUpon>
             <AutoGen>true</AutoGen>
             <DesignTime>true</DesignTime>
-            <DependentUpon>source.extension.vsixmanifest</DependentUpon>
         </Compile>
     </ItemGroup>
 
@@ -75,14 +75,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="ResxFormatter.EditorConfig.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <IncludeInVSIX>true</IncludeInVSIX>
-        </Content>
-        <Content Include="ResxFormatter.EditorConfig.pkgdef">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <IncludeInVSIX>true</IncludeInVSIX>
-        </Content>
         <Content Include="Images\Icon.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <IncludeInVSIX>true</IncludeInVSIX>
@@ -92,6 +84,14 @@
             <IncludeInVSIX>true</IncludeInVSIX>
         </Content>
         <Content Include="License.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <IncludeInVSIX>true</IncludeInVSIX>
+        </Content>
+        <Content Include="ResxFormatter.EditorConfig.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <IncludeInVSIX>true</IncludeInVSIX>
+        </Content>
+        <Content Include="ResxFormatter.EditorConfig.pkgdef">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <IncludeInVSIX>true</IncludeInVSIX>
         </Content>
