@@ -1,4 +1,8 @@
 # ResxFormatter
+
+> [!IMPORTANT]
+> This project is in maintenance mode and will at most receive maintenance updates. For new setups, use [PNFmt](https://github.com/stefanegli/PNFmt) instead. PNFmt includes this formatter in a unified .NET tool, but it does not provide a Visual Studio extension.
+
 Optimizes resx files after saving: Removes schema and comments (in particular the 3KB documentation that is included in every resx file) and sorts entries alphabetically so that they look like this:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
